@@ -1,0 +1,4 @@
+Rysunek - schemat podzia³u dorzecza Raby na zlewnie:  Raba_nr.png.
+tablica_PO.m tablica_PW.m - pliki zawieraj¹ identyfikatory posterunków opadowych i wodowskazowych.
+odczyt_PO.m, odczyt_PW.m - pliki czytaj¹ce PO i PW (wymagaj¹ biblioteki obs³uguj¹cej url i json - proszê daæ znaæ, je¿eli ich Pan nie ma).
+linki .ody
