@@ -1,0 +1,17 @@
+
+rainfallloadRainfallStationsFoo();
+% needToLoad = exist('allRainfallStations', 'var')
+% % if needToLoad == 0 
+%    stationsJson = urlread('http://monitor.pogodynka.pl/api/map/?category=meteo');
+%    tempData = loadjson(stationsJson);
+%    
+%    nO = length(tempData); 
+%   allRainfallStations = [];
+%   for i = 1:nO,
+%     allRainfallStations(i).id = tempData{1, i}.i;
+%     allRainfallStations(i).name = tempData{1, i}.n;
+%     allRainfallStations(i).longitude = tempData{1, i}.lo; 
+%     allRainfallStations(i).latitude = tempData{1, i}.la;
+%   end  
+%   clear('tempData');
+% % end

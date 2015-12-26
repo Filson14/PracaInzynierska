@@ -1,0 +1,20 @@
+Witam Pana,
+
+Obieca³em Panu kilka pozycji o metodach obliczania opadu powierzchniowego. Tu jest kilka adresów do pozycji w jêzyku polskim:
+
+http://holmes.iigw.pl/~wbanach/dydaktyka/hydrologia_inf/pliki/cwiczenia/obliczenie_opadu_sredniego_w_zlewni.pdf
+
+http://holmes.iigw.pl/~mbodzion/dydaktyka/hydrologia_zao/pliki/rozklad_opadu.pdf
+
+http://www.ujk.edu.pl/zhig/hio/cw11_met_obl_obsz_wys_opadow.pdf
+
+http://materialy.wb.pb.edu.pl/mariawalery/files/2013/01/wyklad-z-hydrologii_met.-oblicz.-opadu-%C5%9Bred.1.pdf
+
+http://www.google.pl/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CCEQFjAA&url=http%3A%2F%2Fwww.geoinfo.amu.edu.pl%2Fstaff%2Fastach%2Fwyklady%2Finterpolacje.ppt&ei=RJVUVdLlKoGtsgGr9YDABA&usg=AFQjCNECwvntm2rgNm95e4X0vlh54qoyJw&bvm=bv.93112503,d.bGg
+(has³o: interpolacja danych przestrzennych w GIS)
+
+
+W jêzyku angielskim:
+http://www.google.pl/url?sa=t&rct=j&q=&esrc=s&source=web&cd=5&ved=0CEEQFjAE&url=http%3A%2F%2Fcourses.nres.uiuc.edu%2Fnres401%2Frainfall_measurements.ppt&ei=xptUVYnqF4qZsgHqioDgBA&usg=AFQjCNG42UtumIGxJGibEJGxE52yCqAY4A&bvm=bv.93112503,d.bGg
+
+https://ceprofs.tamu.edu/folivera/DissertationsAndThesis/Tarun/Tarun.pdf

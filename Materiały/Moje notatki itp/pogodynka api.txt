@@ -1,0 +1,15 @@
+// Wspó³rzêdne obszarów zlewni zgodne z tymi w pogodynka.pl (bez catchments -> XML)
+http://monitor.pogodynka.pl/api/coordinates/?catchments
+
+
+// Informacje o posterunkach opadowych
+http://monitor.pogodynka.pl/api/map/?category=meteo
+
+    "pd": "2015-12-20T21:00:00Z",
+    "pv": 0.0,
+    "i": "350230595",      <-- id
+    "n": "ZAMOŒÆ",         <-- nazwa
+    "a": 3,
+    "s": "no-precip",
+    "lo": 23.20639,        <-- longitude
+    "la": 50.69779         <-- latitude
