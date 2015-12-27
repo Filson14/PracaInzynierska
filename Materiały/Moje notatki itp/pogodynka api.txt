@@ -13,3 +13,22 @@ http://monitor.pogodynka.pl/api/map/?category=meteo
     "s": "no-precip",
     "lo": 23.20639,        <-- longitude
     "la": 50.69779         <-- latitude
+
+
+// Informacje o posterunkach wodowskazowych
+http://monitor.pogodynka.pl/api/map/?category=hydro
+
+    "cd":"2015-227T17:50:00Z",  <-- currentDate
+    "cv":36,                    <--
+    "i":"151180140",            <-- id
+    "n":"PODGÓRZE",             <-- name
+    "a":12,
+    "s":"low",                  <-- 
+    "lo":18.94263,              <-- longitude
+    "la":51.46536               <-- latitude
+
+posterunki wodowskazowe:
+	waterstateRecords - zapis poziomu wody (co godzinê)
+	dischargeRecords  - zapis przep³ywu (m3/s) (co godzinê)
+	status            - zawiera informacje o posterunku (na jakiej rzece, obecna wartosc pomiaru poziomu wody - currentValue)
+	dla wodowskazu currentValue jest ustalane co 10 minut. wartosci godzinowe dostepne z poziomu tablicy waterStateRecords

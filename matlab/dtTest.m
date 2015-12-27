@@ -1,5 +1,5 @@
-json = urlread('http://monitor.pogodynka.pl/api/meteo/?id=350190566')
-all = loadjson(json);
+json = webread('http://monitor.pogodynka.pl/api/hydro/?id=151180140', weboptions('ContentType', 'text'))
+% all = loadjson(json);
 % 
 % x = rand(10,1);
 % y = rand(10,1);

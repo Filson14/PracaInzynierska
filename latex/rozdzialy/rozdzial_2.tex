@@ -1,0 +1,24 @@
+\chapter{Odczyt danych pogodowych}
+W celu odczytu potrzebnych danych napisano funkcje w~środowisku Matlab. Opierają się na zapytaniu HTTP do API dostępnego na stronie monitor.pogodynka.pl i właściwym parsowaniu odpowiedzi.
+
+Dane z serwera odbierane są w formacie JSON. Do jego obsługi w~Matlab'ie zastosowano bibliotekę JSONlab, która zawiera funkcję loadjson(). Samo zapytanie wykonywane jest poprzez funkcję webread().
+
+Funkcja loadjson() przyjmuje łańcuch znaków zawierający opis obiektu JSON. W wyniku jej działania każdy taki obiekt przekształcany jest do struktury danych Matlab zwanej \textbf{cell array} zawierającej indeksowane kontenery mogące przechowywać różne typy danych. Tablice JSON są przekształcane do tablic Matlab. 
+
+Kody źródłowe poszczególnych funkcji znajdują się w~podrozdziale~\ref{sec:kod_odczyt_danych}.
+\section{Dane posterunków}
+Za pomocą odpowiednich funkcji do pamięci zmiennych środowiska ładowane są informacje na temat posterunków opadowych i wodowskazowych. Zapisywane są tutaj ich współrzędne geograficzne, nazwa oraz identyfikator, który będzie użyty do pobierania pomiarów dla danego posterunku.
+
+\section{Dane zlewni}
+Pobierane dane zlewni obejmują nazwy oraz współrzędne geograficzne punktów stanowiących ich granice i są zapisywane w kontenerze cell array. Dla ułatwienia przeprowadzenia analizy dla pojedynczej zlewni zastosowano wydzielenie poszczególnych elementów kontenera do osobnej zmiennej.
+
+\section{Pomiar opadu}
+\label{sec:pomiar_opadu}
+Została napisana funkcja, która dla zadanych na wejściu posterunków opadowych odczytuje pomiary ze wskazanego na początku rozdziału serwisu. Funkcja ta zwraca strukturę zawierającą poszczególne pomiary.
+
+Pojedynczy element zawiera dane ostatniego pomiaru godzinowego i~dobowego oraz dwie tablice z~godzinowymi pomiarami za ostatnie 48 godzin i dobowymi na przestrzeni tygodnia.
+
+Odczytane dane zostają zapisane automatycznie w~pliku .mat.
+
+\section{Pomiar poziomu wody}
+Funkcja odczytująca wskazania posterunków wodowskazowych działa analogicznie jak ta, opisana w podrozdziale~\ref{sec:pomiar_opadu}. Pojedynczy element kontenera wynikowego zawiera aktualne wskazanie poziomu wody (wraz z datą pomiaru), tablicę godzinowych pomiarów poziomu wody za ostatnie 72 godziny oraz tablicę godzinowych pomiarów wielkości przepływu (w jednostce $m^3/s$) za taki sam okres czasu.

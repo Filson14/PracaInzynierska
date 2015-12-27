@@ -1,0 +1,26 @@
+\chapter{Wstęp}
+\section{Przedmowa}
+Natura to nieposkromiona siła, którą człowiek stara się poznać. Choć już od lat 60-tych prowadzone są badania nad systemami modyfikacji pogody (w szczególności do zastosowań militarnych), to prawidłowe przewidywanie zjawisk atmosferycznych, a także ich skutków, wciąż stanowi problem wymagający rozwiązania.
+
+W lecie 2010 roku Polskę zaatakowała ogromna powódź, która dotknęła 15 województw. W wyniku wzmożonych opadów na południu kraju oraz w państwach sąsiednich rzeki wezbrały i w wielu miejscach wystąpiły z koryta. Mimo istnienia około stu zbiorników retencyjnych oraz wielu zapór wodnych, nie udało się zapobiec tragedii, w wyniku której mnóstwo ludzi straciło swój dobytek.
+
+Istniejąca obecnie infrastruktura dokonująca pomiarów zjawisk pogodowych czy stanów zbiorników wodnych może stanowić bazę do systemów umożliwiających zapobieganie takim tragediom. Analiza wielkości opadu oraz przewidywanie drogi jej spływu może pozwolić na przykład operatorom zapór wodnych na podjęcie właściwych, a przede wszystkim odpowiednio wczesnych działań tak, aby przygotować zbiorniki retencyjne na przyjęcie dodatkowej ilości wody oraz w sposób kontrolowany pokierować jej spływ i zabezpieczyć ludność.
+
+Praca ta traktować będzie o elemencie składowym przybliżonego powyżej rozwiązania, czyli analizie danych opadowych i ich korelacji z wartościami odpływu (wysokości poziomu wody) w zbiorniku.
+\section{Opis dokumentu}
+% Sekcja do rozbudowy w miarę rozszerzenia dokumentu.
+Praca ta porusza tematykę analizy danych opadowych pochodzących z~posterunków opadowych. Opisuje teorię przekształcenia wartości punktowej opadu na wartość powierzchniową w~obszarze wskazanej zlewni rzeki.
+
+\textbf{Odczyt danych} rozdział ten opisuje sposób odczytu danych z~serwisu pogodynka.pl.
+
+\textbf{Interpolacja danych punktowych opadów} w tej części opisano algorytm triangulacji metodą Delaunaya oraz przekształcenie wartości punktowych opadów na obszar zlewni.
+\section{Cele pracy}
+Celem pracy jest analiza korelacji danych opadowych i~odpływowych na rzece. Obliczenia opierać się będą na informacjach ze strony pogodynka.pl udostępnianej przez Instytut Meteorologii i Gospodarki Wodnej. Wszelkie działania i obliczenia przeprowadzone zostaną w~środowisku Matlab (darmowa wersja próbna R2015b). Elementy składowe pracy to:
+\begin{itemize}
+\item
+Odczyt z serwisu pogodynka.pl danych posterunków opadowych i wodowskazowych (takich jak nazwa i lokalizacja), wartości odpowiednich wskazań posterunków oraz parametrów granic zlewni.
+\item
+Przekształcenie danych opadowych metodą triangulacji Delaunaya i aplikacja tej metody do przebiegu granic zlewni.
+\item
+Analiza korelacji opadu powierzchniowego z~wysokością poziomu wody na odpowiednich posterunkach wodowskazowych.
+\end{itemize}

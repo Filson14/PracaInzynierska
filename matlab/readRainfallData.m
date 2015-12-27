@@ -15,6 +15,8 @@ function [ rainfallData ] = readRainfallData( rainfallStations )
     rainfallData(i).stationName = station.name; 
     rainfallData(i).hourly = station.status.precip;
     rainfallData(i).daily = station.status.precipDaily;
+    rainfallData(i).last48hours = station.hourlyPrecipRecords;
+    rainfallData(i).lastWeek = station.dailyPrecipRecords;
   end  
   
   file_name = strcat('precip_',datestr(now,'yyyy_mm_dd_HH_MM'),'.mat');

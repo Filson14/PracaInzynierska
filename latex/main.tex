@@ -38,12 +38,13 @@ url=false,
 % Ustawienia związane z polskimi normami dla bibliografii.
 maxbibnames=3,
 ]{biblatex}
+\addbibresource{bibliografia.bib}
 
 \usepackage{csquotes}
 % Ponieważ `csquotes` nie posiada polskiego stylu, można skorzystać z mocno zbliżonego stylu chorwackiego.
 \DeclareQuoteAlias{croatian}{polish}
 
-\addbibresource{bibliografia.bib}
+
 
 % Nie wyświetlaj wybranych pól.
 %\AtEveryBibitem{\clearfield{note}}
@@ -106,18 +107,14 @@ maxbibnames=3,
 \author{Filip Pasternak}
 \shortauthor{F. Pasternak}
 
-%\titlePL{Przygotowanie bardzo długiej i pasjonującej pracy dyplomowej w~systemie~\LaTeX}
-%\titleEN{Preparation of a very long and fascinating bachelor or master thesis in \LaTeX}
-
 \titlePL{Akwizycja danych dla identyfikacji prostego modelu opad-odpływ.}
 \titleEN{Data acquisition for identification of a simple rainfall runoff model.}
 \title{Praca inżynierska}
 
-\shorttitlePL{Przygotowanie pracy dyplomowej w~systemie \LaTeX} % skrócona wersja tytułu jeśli jest bardzo długi
-\shorttitleEN{Preparation of a long and fascinating thesis in \LaTeX}
+\shorttitlePL{Akwizycja danych dla identyfikacji prostego modelu opad-odpływ.} % skrócona wersja tytułu jeśli jest bardzo długi
+\shorttitleEN{Data acquisition for identification of a simple rainfall runoff model.}
 
 \thesistype{Praca dyplomowa inżynierska}
-%\thesistype{Master of Science Thesis}
 
 \supervisor{dr inż. Janusz Miller}
 %\supervisor{Janusz Miller PhD}
@@ -159,13 +156,14 @@ maxbibnames=3,
 \clearpage
 
 \newpage
-\chapter{Wstęp}
+\input{rozdzialy/rozdzial_1.tex}
+\input{rozdzialy/rozdzial_2.tex}
+\input{rozdzialy/rozdzial_3.tex}
+\input{rozdzialy/slownik_pojec.tex}
+\input{rozdzialy/dodatek_A.tex}
 
-\subsection{Przedmowa}
-\subsection{Cele pracy}
 
-
-\include{tests}
+% \include{tests}
 
 \printbibliography
 
