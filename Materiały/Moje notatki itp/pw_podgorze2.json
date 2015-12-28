@@ -1,0 +1,1755 @@
+{
+  "id": "151180140",
+  "name": "PODG紑ZE",
+  "state": "low",
+  "status": {
+    "name": "151180140",
+    "description": "PODG紑ZE",
+    "river": "Widawka (182)",
+    "parameter": "B00002A",
+    "currentDate": "2015-12-27T18:20:00Z",
+    "currentValue": 36,
+    "previousValue": 36,
+    "previousDate": "2015-12-27T18:10:00Z",
+    "state": 0,
+    "riverCourseKm": 8.97,
+    "catchmentArea": 2366.3,
+    "trend": 3,
+    "waterGaugeZeroOrdinate": 139.6500,
+    "isFromObs": false,
+    "province": "堯dzkie",
+    "alarmValue": 230.0,
+    "warningValue": 190.0,
+    "lowValue": 76.0,
+    "highValue": 130.0
+  },
+  "trend": "const",
+  "connections": {
+    "hydroUp": {
+      "item1": "151180170",
+      "item2": "Warta_do_Welny",
+      "item3": "ROG��NO"
+    },
+    "hydroDown": {
+      "item1": "151180080",
+      "item2": "Warta_do_Welny",
+      "item3": "SIERADZ"
+    },
+    "meteo": [
+      {
+        "item1": "251190210",
+        "item2": "Warta_do_Welny",
+        "item3": "SZCZERC紟"
+      },
+      {
+        "item1": "251190220",
+        "item2": "Warta_do_Welny",
+        "item3": "DOBRYSZYCE"
+      },
+      {
+        "item1": "251190190",
+        "item2": "Warta_do_Welny",
+        "item3": "ｘSK"
+      },
+      {
+        "item1": "251180310",
+        "item2": "Warta_do_Welny",
+        "item3": "KIEｚZYG�紟"
+      }
+    ]
+  },
+  "waterStateRecords": [
+    {
+      "state": "low",
+      "date": "2015-12-24T18:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-24T19:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-24T20:00:00Z",
+      "value": 35.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-24T21:00:00Z",
+      "value": 35.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-24T22:00:00Z",
+      "value": 34.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-24T23:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T00:00:00Z",
+      "value": 34.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T01:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T02:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T03:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T04:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T05:00:00Z",
+      "value": 30.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T06:00:00Z",
+      "value": 30.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T07:00:00Z",
+      "value": 29.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T08:00:00Z",
+      "value": 30.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T09:00:00Z",
+      "value": 30.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T10:00:00Z",
+      "value": 32.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T11:00:00Z",
+      "value": 32.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T12:00:00Z",
+      "value": 32.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T13:00:00Z",
+      "value": 32.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T14:00:00Z",
+      "value": 32.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T15:00:00Z",
+      "value": 32.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T16:00:00Z",
+      "value": 32.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T17:00:00Z",
+      "value": 32.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T18:00:00Z",
+      "value": 32.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T19:00:00Z",
+      "value": 32.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T20:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T21:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T22:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-25T23:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T00:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T01:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T02:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T03:00:00Z",
+      "value": 33.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T04:00:00Z",
+      "value": 34.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T05:00:00Z",
+      "value": 34.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T06:00:00Z",
+      "value": 34.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T07:00:00Z",
+      "value": 34.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T08:00:00Z",
+      "value": 34.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T09:00:00Z",
+      "value": 34.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T10:00:00Z",
+      "value": 34.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T11:00:00Z",
+      "value": 35.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T12:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T13:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T14:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T15:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T16:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T17:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T18:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T19:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T20:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T21:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T22:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-26T23:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T00:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T01:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T02:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T03:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T04:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T05:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T06:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T07:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T08:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T09:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T10:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T11:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T12:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T13:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T14:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T15:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T16:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T17:00:00Z",
+      "value": 36.0
+    },
+    {
+      "state": "low",
+      "date": "2015-12-27T18:00:00Z",
+      "value": 36.0
+    }
+  ],
+  "waterStateObserverRecords": [],
+  "dischargeRecords": [
+    {
+      "date": "2015-12-24T18:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948491646600
+    },
+    {
+      "date": "2015-12-24T19:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948507048100
+    },
+    {
+      "date": "2015-12-24T20:00:00Z",
+      "value": 7.85,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948521665300
+    },
+    {
+      "date": "2015-12-24T21:00:00Z",
+      "value": 7.85,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948536441300
+    },
+    {
+      "date": "2015-12-24T22:00:00Z",
+      "value": 7.70,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948553749200
+    },
+    {
+      "date": "2015-12-24T23:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948572949800
+    },
+    {
+      "date": "2015-12-25T00:00:00Z",
+      "value": 7.70,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948587335200
+    },
+    {
+      "date": "2015-12-25T01:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948602257200
+    },
+    {
+      "date": "2015-12-25T02:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948616985700
+    },
+    {
+      "date": "2015-12-25T03:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948634311200
+    },
+    {
+      "date": "2015-12-25T04:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948669101000
+    },
+    {
+      "date": "2015-12-25T05:00:00Z",
+      "value": 7.10,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948697115300
+    },
+    {
+      "date": "2015-12-25T06:00:00Z",
+      "value": 7.10,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948716511400
+    },
+    {
+      "date": "2015-12-25T07:00:00Z",
+      "value": 6.97,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948731147700
+    },
+    {
+      "date": "2015-12-25T08:00:00Z",
+      "value": 7.10,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948745484000
+    },
+    {
+      "date": "2015-12-25T09:00:00Z",
+      "value": 7.10,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948760210300
+    },
+    {
+      "date": "2015-12-25T10:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948777601400
+    },
+    {
+      "date": "2015-12-25T11:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948797120300
+    },
+    {
+      "date": "2015-12-25T12:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948811522900
+    },
+    {
+      "date": "2015-12-25T13:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948826197200
+    },
+    {
+      "date": "2015-12-25T14:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948840657600
+    },
+    {
+      "date": "2015-12-25T15:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948863633800
+    },
+    {
+      "date": "2015-12-25T16:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948884404800
+    },
+    {
+      "date": "2015-12-25T17:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948904583000
+    },
+    {
+      "date": "2015-12-25T18:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948919265800
+    },
+    {
+      "date": "2015-12-25T19:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948934168500
+    },
+    {
+      "date": "2015-12-25T20:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948948575100
+    },
+    {
+      "date": "2015-12-25T21:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948963316900
+    },
+    {
+      "date": "2015-12-25T22:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948980448700
+    },
+    {
+      "date": "2015-12-25T23:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 948999627100
+    },
+    {
+      "date": "2015-12-26T00:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949014095300
+    },
+    {
+      "date": "2015-12-26T01:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949028945200
+    },
+    {
+      "date": "2015-12-26T02:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949043688400
+    },
+    {
+      "date": "2015-12-26T03:00:00Z",
+      "value": 7.55,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949061041500
+    },
+    {
+      "date": "2015-12-26T04:00:00Z",
+      "value": 7.70,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949126244300
+    },
+    {
+      "date": "2015-12-26T05:00:00Z",
+      "value": 7.70,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949127471600
+    },
+    {
+      "date": "2015-12-26T06:00:00Z",
+      "value": 7.70,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949141881600
+    },
+    {
+      "date": "2015-12-26T07:00:00Z",
+      "value": 7.70,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949156381600
+    },
+    {
+      "date": "2015-12-26T08:00:00Z",
+      "value": 7.70,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949171002800
+    },
+    {
+      "date": "2015-12-26T09:00:00Z",
+      "value": 7.70,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949185704600
+    },
+    {
+      "date": "2015-12-26T10:00:00Z",
+      "value": 7.70,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949203021100
+    },
+    {
+      "date": "2015-12-26T11:00:00Z",
+      "value": 7.85,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949222603600
+    },
+    {
+      "date": "2015-12-26T12:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949237039200
+    },
+    {
+      "date": "2015-12-26T13:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949251697600
+    },
+    {
+      "date": "2015-12-26T14:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949266206200
+    },
+    {
+      "date": "2015-12-26T15:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949289192900
+    },
+    {
+      "date": "2015-12-26T16:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949314998600
+    },
+    {
+      "date": "2015-12-26T17:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949335227500
+    },
+    {
+      "date": "2015-12-26T18:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949349861300
+    },
+    {
+      "date": "2015-12-26T19:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949364708600
+    },
+    {
+      "date": "2015-12-26T20:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949379099100
+    },
+    {
+      "date": "2015-12-26T21:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949393800500
+    },
+    {
+      "date": "2015-12-26T22:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949410339900
+    },
+    {
+      "date": "2015-12-26T23:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949425522000
+    },
+    {
+      "date": "2015-12-27T00:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949439883300
+    },
+    {
+      "date": "2015-12-27T01:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949454738300
+    },
+    {
+      "date": "2015-12-27T02:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949469389700
+    },
+    {
+      "date": "2015-12-27T03:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949486290700
+    },
+    {
+      "date": "2015-12-27T04:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949519675200
+    },
+    {
+      "date": "2015-12-27T05:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949541910700
+    },
+    {
+      "date": "2015-12-27T06:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949567609900
+    },
+    {
+      "date": "2015-12-27T07:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949582373500
+    },
+    {
+      "date": "2015-12-27T08:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949596556800
+    },
+    {
+      "date": "2015-12-27T09:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949611197100
+    },
+    {
+      "date": "2015-12-27T10:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949628467400
+    },
+    {
+      "date": "2015-12-27T11:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949648052000
+    },
+    {
+      "date": "2015-12-27T12:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949662414300
+    },
+    {
+      "date": "2015-12-27T13:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949677024500
+    },
+    {
+      "date": "2015-12-27T14:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949691394600
+    },
+    {
+      "date": "2015-12-27T15:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949714604400
+    },
+    {
+      "date": "2015-12-27T16:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949714604500
+    },
+    {
+      "date": "2015-12-27T17:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949714604600
+    },
+    {
+      "date": "2015-12-27T18:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "Przep造w operacyjny",
+      "parameterId": "B00050W",
+      "versionId": -1,
+      "id": 949714604700
+    }
+  ],
+  "waterTemperatureAutoRecords": [
+    {
+      "date": "2015-12-24T18:00:00Z",
+      "value": 7.50,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948428420500
+    },
+    {
+      "date": "2015-12-24T19:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948452524700
+    },
+    {
+      "date": "2015-12-24T20:00:00Z",
+      "value": 7.30,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948475134700
+    },
+    {
+      "date": "2015-12-24T21:00:00Z",
+      "value": 7.30,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948490279900
+    },
+    {
+      "date": "2015-12-24T22:00:00Z",
+      "value": 7.20,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948505653800
+    },
+    {
+      "date": "2015-12-24T23:00:00Z",
+      "value": 7.10,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948520298200
+    },
+    {
+      "date": "2015-12-25T00:00:00Z",
+      "value": 7.0,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948535118900
+    },
+    {
+      "date": "2015-12-25T01:00:00Z",
+      "value": 6.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948552435000
+    },
+    {
+      "date": "2015-12-25T02:00:00Z",
+      "value": 6.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948571590700
+    },
+    {
+      "date": "2015-12-25T03:00:00Z",
+      "value": 6.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948586037300
+    },
+    {
+      "date": "2015-12-25T04:00:00Z",
+      "value": 6.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948600900600
+    },
+    {
+      "date": "2015-12-25T05:00:00Z",
+      "value": 6.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948615685700
+    },
+    {
+      "date": "2015-12-25T06:00:00Z",
+      "value": 6.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948632538200
+    },
+    {
+      "date": "2015-12-25T07:00:00Z",
+      "value": 6.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948665583500
+    },
+    {
+      "date": "2015-12-25T08:00:00Z",
+      "value": 6.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948695759600
+    },
+    {
+      "date": "2015-12-25T09:00:00Z",
+      "value": 6.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948715185500
+    },
+    {
+      "date": "2015-12-25T10:00:00Z",
+      "value": 6.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948729833800
+    },
+    {
+      "date": "2015-12-25T11:00:00Z",
+      "value": 7.0,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948744190700
+    },
+    {
+      "date": "2015-12-25T12:00:00Z",
+      "value": 7.10,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948758894700
+    },
+    {
+      "date": "2015-12-25T13:00:00Z",
+      "value": 7.20,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948776227300
+    },
+    {
+      "date": "2015-12-25T14:00:00Z",
+      "value": 7.30,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948795813300
+    },
+    {
+      "date": "2015-12-25T15:00:00Z",
+      "value": 7.30,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948810228400
+    },
+    {
+      "date": "2015-12-25T16:00:00Z",
+      "value": 7.30,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948824847600
+    },
+    {
+      "date": "2015-12-25T17:00:00Z",
+      "value": 7.30,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948839310100
+    },
+    {
+      "date": "2015-12-25T18:00:00Z",
+      "value": 7.30,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948862107200
+    },
+    {
+      "date": "2015-12-25T19:00:00Z",
+      "value": 7.30,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948880902200
+    },
+    {
+      "date": "2015-12-25T20:00:00Z",
+      "value": 7.30,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948903223600
+    },
+    {
+      "date": "2015-12-25T21:00:00Z",
+      "value": 7.30,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948917919900
+    },
+    {
+      "date": "2015-12-25T22:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948932805300
+    },
+    {
+      "date": "2015-12-25T23:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948947218900
+    },
+    {
+      "date": "2015-12-26T00:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948962000800
+    },
+    {
+      "date": "2015-12-26T01:00:00Z",
+      "value": 7.40,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948979135700
+    },
+    {
+      "date": "2015-12-26T02:00:00Z",
+      "value": 7.50,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 948998326500
+    },
+    {
+      "date": "2015-12-26T03:00:00Z",
+      "value": 7.50,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949012736400
+    },
+    {
+      "date": "2015-12-26T04:00:00Z",
+      "value": 7.50,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949027610400
+    },
+    {
+      "date": "2015-12-26T05:00:00Z",
+      "value": 7.60,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949042385600
+    },
+    {
+      "date": "2015-12-26T06:00:00Z",
+      "value": 7.70,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949059246100
+    },
+    {
+      "date": "2015-12-26T07:00:00Z",
+      "value": 7.70,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949089329400
+    },
+    {
+      "date": "2015-12-26T08:00:00Z",
+      "value": 7.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949119800300
+    },
+    {
+      "date": "2015-12-26T09:00:00Z",
+      "value": 7.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949140522900
+    },
+    {
+      "date": "2015-12-26T10:00:00Z",
+      "value": 8.0,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949155085900
+    },
+    {
+      "date": "2015-12-26T11:00:00Z",
+      "value": 8.10,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949169339500
+    },
+    {
+      "date": "2015-12-26T12:00:00Z",
+      "value": 8.30,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949184388000
+    },
+    {
+      "date": "2015-12-26T13:00:00Z",
+      "value": 8.40,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949201700100
+    },
+    {
+      "date": "2015-12-26T14:00:00Z",
+      "value": 8.60,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949221293200
+    },
+    {
+      "date": "2015-12-26T15:00:00Z",
+      "value": 8.60,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949235739800
+    },
+    {
+      "date": "2015-12-26T16:00:00Z",
+      "value": 8.70,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949250396200
+    },
+    {
+      "date": "2015-12-26T17:00:00Z",
+      "value": 8.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949264900800
+    },
+    {
+      "date": "2015-12-26T18:00:00Z",
+      "value": 8.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949287785400
+    },
+    {
+      "date": "2015-12-26T19:00:00Z",
+      "value": 8.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949311555000
+    },
+    {
+      "date": "2015-12-26T20:00:00Z",
+      "value": 8.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949333920400
+    },
+    {
+      "date": "2015-12-26T21:00:00Z",
+      "value": 8.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949348563100
+    },
+    {
+      "date": "2015-12-26T22:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949363406600
+    },
+    {
+      "date": "2015-12-26T23:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949377797700
+    },
+    {
+      "date": "2015-12-27T00:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949392549800
+    },
+    {
+      "date": "2015-12-27T01:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949409033300
+    },
+    {
+      "date": "2015-12-27T02:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949424226300
+    },
+    {
+      "date": "2015-12-27T03:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949438583200
+    },
+    {
+      "date": "2015-12-27T04:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949453398900
+    },
+    {
+      "date": "2015-12-27T05:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949468093700
+    },
+    {
+      "date": "2015-12-27T06:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949484879200
+    },
+    {
+      "date": "2015-12-27T07:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949515186600
+    },
+    {
+      "date": "2015-12-27T08:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949540620400
+    },
+    {
+      "date": "2015-12-27T09:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949566259800
+    },
+    {
+      "date": "2015-12-27T10:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949581080800
+    },
+    {
+      "date": "2015-12-27T11:00:00Z",
+      "value": 9.0,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949595255700
+    },
+    {
+      "date": "2015-12-27T12:00:00Z",
+      "value": 9.0,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949609895700
+    },
+    {
+      "date": "2015-12-27T13:00:00Z",
+      "value": 9.0,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949627150400
+    },
+    {
+      "date": "2015-12-27T14:00:00Z",
+      "value": 9.10,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949646755800
+    },
+    {
+      "date": "2015-12-27T15:00:00Z",
+      "value": 9.0,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949661118900
+    },
+    {
+      "date": "2015-12-27T16:00:00Z",
+      "value": 9.0,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949675925900
+    },
+    {
+      "date": "2015-12-27T17:00:00Z",
+      "value": 8.90,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949690099800
+    },
+    {
+      "date": "2015-12-27T18:00:00Z",
+      "value": 8.80,
+      "dreId": 4962,
+      "operationId": "151180140_B00102A",
+      "parameterId": "B00102A",
+      "versionId": -1,
+      "id": 949712926700
+    }
+  ],
+  "waterTemperatureObsRecords": [],
+  "highestHighDischargeValue": 179.0,
+  "mediumHighDischargeValue": 69.8,
+  "highDischargeValue": 17.7,
+  "mediumOfYearMediumsDischargeValue": 13.8,
+  "lowDischargeValue": 9.89,
+  "mediumLowDischargeValue": 5.63,
+  "lowestLowDischargeValue": 0.76
+}
