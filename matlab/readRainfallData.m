@@ -9,7 +9,7 @@ function [ rainfallData ] = readRainfallData( rainfallStations )
     url = strcat(URL,num2str(rainfallStations(i).id));
     jsonData = urlread(url);
     station = loadjson(jsonData);
-    station.name
+    disp(station.name);
     rainfallData(i).stationIndex = i;
     rainfallData(i).stationId = station.id;
     rainfallData(i).stationName = station.name; 
@@ -21,7 +21,7 @@ function [ rainfallData ] = readRainfallData( rainfallStations )
   
   file_name = strcat('precip_',datestr(now,'yyyy_mm_dd_HH_MM'),'.mat');
   save(file_name,'rainfallData');
-  disp(['PO zapisane w pliku ', file_name]);
+  disp(['Posterunki opadowe zapisane w pliku ', file_name]);
 
 end
 

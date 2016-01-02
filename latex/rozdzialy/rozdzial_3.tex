@@ -1,2 +1,5 @@
-\chapter{Interpolacja opadów punktowych na powierzchniowe}
-\section{Triangulacja i algorytm Delaunaya}
+\chapter{Interpolacja danych}
+Jak wspomniano w poprzednim rozdziale, dane wejściowe są wskazaniami pomiarów z~poszczególnych posterunków opadowych. Są to dane punktowe, zatem aby oszacować ilość wody jaka spadła na zadanym obszarze konieczne jest przeprowadzenie ich interpolacji w~celu aproksymacji wartości dla punktów stanowiących granicę wskazanej zlewni, co dalej zmierza do wyznaczenia opadu powierzchniowego.
+
+\section{Triangulacja i algorytm Delone}
+Do przeprowadzenia interpolacji danych punktowych zastosowano technikę triangulacji. Polega to na stworzeniu siatki trójkątów o~wierzchołkach w punktach z~wartością znaną (wysokość opadu na posterunku opadowym). Wybór padł na zastosowanie algorytmu Delone, który wprowadza dodatkowe ograniczenie na tworzone trójkąty. Mianowicie, okrąg opisany na każdym z~nich nie może zawierać innych punktów siatki poza wierzchołkami danego trójkąta. Ta metoda ma na celu maksymalizację równoboczności powstałych trójkątów, a~co za tym idzie, równomierność budowanej siatki.

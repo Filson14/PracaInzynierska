@@ -1,0 +1,20 @@
+Bibliografia/Bodzion i cw11_met...
+> Kwestia obliczania wartoœci œredniego opadu w zlewni poprzez wieloboki Voronoia - czy stosowaæ t¹ metodê czy wczeœniej wspominan¹ interpolacjê?
+
+> Po ustaleniu powy¿szego, jak zabraæ siê do budowania dalszych kroków. //W przypadku u¿ycia metod z tej bibliografii sposób obliczania tych wieloboków jest (chyba) wiadomy. Jak u¿yæ w matlabie innych metod?
+
+> Maj¹c oszacowany rozmiar opadu na danym obszarze, co dalej? Korelacja iloœci wody w zlewni z poziomem wody na wodowskazie poni¿ej tej zlewni? Wykres zmian w czasie jednego i drugiego, analiza i wnioski?
+
+> Wszelkie sugestie i wskazówki Doktora!
+
+
+
+
+
+w kwestii pracy pisemnej:
+
+> Czy krótki opis matlaba i jego mo¿liwoœci mo¿e/powinien siê znaleŸæ?
+
+> Opis matlabowej klasy delaunayTriangulation - jak wy¿ej.
+
+> Opisy klas, metod i bibliotek wydzieliæ do osobnych (pod)rozdzia³ów czy umieœciæ kilka s³ów na ich temat w rozdziale odpowiadaj¹cym tematyce u¿ycia 
