@@ -4,7 +4,8 @@ clc;
 close all;
 
 xAxisLabel = 'X [km]';
-yAxisLabel = 'Y [km]'
+yAxisLabel = 'Y [km]';
+zAxisLabel = 'Wysokoœæ opadu [mm]'
 %% Przygotowanie danych do triangulacji
 disp('Przygotowanie danych do obliczeñ.');
 load ('.\zapisane dane\rainfallStations.mat');
@@ -86,16 +87,37 @@ for i = 1:pointsAmmount
             if max(inpolygon(x(i), y(i), triangle_vx, triangle_vy)) == 1
                 point_value = findValueFromSurface(x(i), y(i), triangleVectors(j,:), rainfallPoints(triangle(1),:));
                 borderPoints = [borderPoints; [x(i), y(i), point_value]];
-                h=plot(x(i),y(i),'bo','MarkerSize',5,'LineWidth',1);
+                h = plot(x(i),y(i),'bo','MarkerSize',5,'LineWidth',1);
+                %%%%%%% Prezentacja interpolacji p³aszczyzn¹
+%                 if i == 123
+%                     figure
+%                     hold on;
+%                     plot([triangle_vx'; triangle_vx(1)], [triangle_vy'; triangle_vy(1)], '-ro');
+%                     triangle_vz = [rainfallPoints(triangle(1),3),rainfallPoints(triangle(2),3),rainfallPoints(triangle(3),3)];
+%                     ft = 'linearinterp';
+%                     opts = fitoptions( ft );
+%                     opts.Weights = zeros(1,0);
+%                     opts.Normalize = 'on';
+%                     fitresult = fit( [triangle_vx', triangle_vy'], triangle_vz', ft, opts );
+%                     
+%                     plot( fitresult, [triangle_vx', triangle_vy'], triangle_vz' );
+%                     
+%                     xlabel(xAxisLabel);
+%                     ylabel(yAxisLabel);
+%                     zlabel(zAxisLabel);
+%                     hold off;
+%                     pause
+%                 end
+                %%%%%%%%%%%%%%%%%%%%%%%%%
             end
-
+            
             for k = 1:3
                 v1_number = triangle(k);
                 v2_number = triangle(mod(k, 3) + 1);
                 
                 endOne = rainfallPoints(v1_number, :);
                 endTwo = rainfallPoints(v2_number, :);
-
+                
                 if ismember([v1_number v2_number], checkedLines, 'rows') == 0 && ismember([v2_number v1_number], checkedLines, 'rows') == 0
                     checkedLines = [checkedLines; [v1_number v2_number] ];
                     line2 = [endOne(1) endOne(2) endTwo(1) endTwo(2)];
@@ -170,7 +192,7 @@ for i = 1:properTrianglesAmmount
         ];
     
     plot([points(:,1);points(1,1)], [points(:,2);points(1,2)]);
-    baseField = polyarea([points(:,1);points(1,1)], [points(:,2);points(1,2)]) * 1000000; % 1 km2 = 1 000 000 m2 
+    baseField = polyarea([points(:,1);points(1,1)], [points(:,2);points(1,2)]) * 1000000; % 1 km2 = 1 000 000 m2
     avgHeight = mean(points(:,3)) * 0.001;  % 1 mm = 0.001 m
     volumes(i) = baseField * avgHeight;     % in m3
 end
