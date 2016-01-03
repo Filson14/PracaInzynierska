@@ -95,7 +95,7 @@ xlabel('D³ugoœæ geograficzna')
 pointsInsideCatchment = stationsInsideCatchment(x, y, rainfallPoints);
 triPoints = [borderPoints; interpolationPoints; pointsInsideCatchment];
 h=plot(pointsInsideCatchment(:,1),pointsInsideCatchment(:,2),'ro','MarkerSize',5,'LineWidth',1);
-
+hold off;
 %% Druga triangulacja - punkty dane i interpolowane.
 %  Wyznaczenie opadu powierzchniowego
 disp('Triangulacja wraz z punktami interpolowanymi.');
@@ -108,7 +108,15 @@ C = [(1:(boarderPtsAmmount - 1))' (2:boarderPtsAmmount)'; boarderPtsAmmount 1];
 triangulation = delaunayTriangulation(triPoints(:, 1), triPoints(:, 2), C);
 triplot(triangulation, 'b');
 plot([triPoints(1:boarderPtsAmmount,1); triPoints(1,1)], [triPoints(1:boarderPtsAmmount,2); triPoints(1,2)], '-r','LineWidth',2);
-
+hold off;
+% while 1
+% [x,y] = ginput(1)
+% end
+ic = incenter(triangulation);
+numtri = size(triangulation,1);
+trilabels = arrayfun(@(x) {sprintf('T%d', x)}, (1:numtri)');
+Htl = text(ic(:,1), ic(:,2), trilabels, 'FontWeight', 'bold', ...
+'HorizontalAlignment', 'center', 'Color', 'blue');
 %% Wyznaczenie trójk¹tów wewn¹trz granicy
 figure;
 hold on;
@@ -117,6 +125,23 @@ properTriangles = triangulation(IO, :);
 triplot(triangulation(IO, :),triangulation.Points(:,1), triangulation.Points(:,2),'LineWidth', 1)
 plot(triPoints(C'),triPoints(C'+size(triPoints,1)),'-r','LineWidth', 2);
 
-% %% Pole wieloboku - polyarea
+%% Pole wieloboku - polyarea
 % U¿yæ properTriangles i triPoints
+figure
+hold on;
+trojkaty = length(properTriangles);
+for i = 1:trojkaty
+    triangle = properTriangles(i, :)
+    A = triangulation.Points(triangle(1),:);
+    B = triangulation.Points(triangle(2),:);
+    C = triangulation.Points(triangle(3),:);
 
+    plot([A(1) B(1) C(1) A(1)], [A(2) B(2) C(2) A(2)]);
+    baseField = polyarea([A(1) B(1) C(1) A(1)], [A(2) B(2) C(2) A(2)]);
+    
+    ic = incenter(dt);
+numtri = size(dt,1);
+trilabels = arrayfun(@(x) {sprintf('T%d', x)}, (1:numtri)');
+Htl = text(ic(:,1), ic(:,2), trilabels, 'FontWeight', 'bold', ...
+   'HorizontalAlignment', 'center', 'Color', 'blue');
+end
