@@ -5,7 +5,7 @@ close all;
 
 xAxisLabel = 'X [km]';
 yAxisLabel = 'Y [km]';
-zAxisLabel = 'WysokoúÊ opadu [mm]'
+zAxisLabel = 'WysokoúÊ opadu [mm]';
 %% Przygotowanie danych do triangulacji
 disp('Przygotowanie danych do obliczeÒ.');
 load ('.\zapisane dane\rainfallStations.mat');
@@ -24,22 +24,39 @@ for i = 1:stationsAmmount
     rainfallPoints(i, 2) = rainfallStations(1, i).latitude;
     rainfallPoints(i, 3) = rand(1) * 10;
 end
-
+%% Wyskalowanie wspÛ≥rzÍdnych do punktu 0,0
+% shift_x = min(rainfallPoints(:,1)) + 10;
+% shift_y = min(rainfallPoints(:,2)) + 10;
+% rainfallPoints(:,1) = rainfallPoints(:,1) - shift;
+% rainfallPoints(:,2) = rainfallPoints(:,2) - shift;
+% catchment(:,1) = catchment(:,1) - shift;
+% catchment(:,2) = catchment(:,2) - shift;
 %% Konwersja wspÛ≥rzÍdnych geograficznych na kilometry
 % SzerokoúÊ geograficzna
 % 1 stopieÒ = 111196,672 m
 % èrÛd≥o: wikipedia
 disp('Konwersja wspÛ≥rzÍdnych na wartoúci metryczne');
-alfa = max(rainfallPoints(:, 2)) - min(rainfallPoints(:, 2));
-R = 6371;                           % åredni promieÒ Ziemi w m
+alfa = min(rainfallPoints(:, 2)) + (max(rainfallPoints(:, 2)) - min(rainfallPoints(:, 2)))/2;
+R = 6371;                           % åredni promieÒ Ziemi w km
 r = cos(alfa*2*pi/360) * R;
 parallelLength = 2 * pi * r;
 xDegree = parallelLength / 360;    % w km
 yDegree = 111.196672;              % w km
 
-rainfallPoints = [rainfallPoints(:, 1).*xDegree rainfallPoints(:, 2).*yDegree rainfallPoints(:, 3)];
-catchment = [catchment(:,1).*xDegree, catchment(:,2).*yDegree];
-
+% rainfallPoints = [rainfallPoints(:, 1).*xDegree rainfallPoints(:, 2).*yDegree rainfallPoints(:, 3)];
+% catchment = [catchment(:,1).*xDegree, catchment(:,2).*yDegree];
+%% Usuwanie pojedynczych posterunkÛw
+% figure
+% hold on;
+% triplot(dt, 'y');
+% plot(pointsInsideCatchment(:,1),pointsInsideCatchment(:,2),'ro','MarkerSize',5,'LineWidth',1);
+% plot(catchment(:,1), catchment(:,2));
+% insidePoints = size(pointsInsideCatchment,1);
+%  labels = arrayfun(@(x) {sprintf('%d', x)}, (1:insidePoints)');
+% text(pointsInsideCatchment(:,1), pointsInsideCatchment(:,2),labels,'HorizontalAlignment','center', 'VerticalAlignment', 'bottom');
+% xlabel(xAxisLabel);
+% ylabel(yAxisLabel);
+% hold off;
 %% Triangulacja punktÛw
 disp('Triangulacja punktÛw wejúciowych.');
 figure
@@ -143,7 +160,7 @@ disp('Filtrowanie punktÛw znanych znajdujπcych siÍ wewnπtrz zlewni.');
 pointsInsideCatchment = stationsInsideCatchment(catchment(:,1), catchment(:,2), rainfallPoints)
 triPoints = [borderPoints; interpolationPoints; pointsInsideCatchment];
 h=plot(pointsInsideCatchment(:,1),pointsInsideCatchment(:,2),'ro','MarkerSize',5,'LineWidth',1);
-hold off;
+
 %% Druga triangulacja - punkty dane i interpolowane.
 %  Wyznaczenie opadu powierzchniowego
 disp('Triangulacja wraz z punktami interpolowanymi.');
@@ -188,13 +205,16 @@ for i = 1:properTrianglesAmmount
     points = [
         triPoints(triangle(1),:);
         triPoints(triangle(2),:);
-        triPoints(triangle(3),:)
+        triPoints(triangle(3),:);
         ];
+    points(:,1) = points(:,1).*xDegree;
+    points(:,2) = points(:,2).*yDegree;
+    
     
     plot([points(:,1);points(1,1)], [points(:,2);points(1,2)]);
     baseField = polyarea([points(:,1);points(1,1)], [points(:,2);points(1,2)]) * 1000000; % 1 km2 = 1 000 000 m2
     avgHeight = mean(points(:,3)) * 0.001;  % 1 mm = 0.001 m
-    volumes(i) = baseField * avgHeight;     % in m3
+    volumes(i) = baseField * avgHeight;     % w m3
 end
 ylabel(yAxisLabel)
 xlabel(xAxisLabel)
