@@ -19,7 +19,6 @@ end
 %     (x - x0)^2 + (y - y0)^2 + (z - z0)^2 = r^2
 z = sqrt(r^2 - x_modif * (x - x0)^2 - y_modif * (y - y0)^2) + z0;
 
-
 if z > 0
     precip = z;
 else

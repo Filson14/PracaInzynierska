@@ -1,4 +1,4 @@
-function [ precip ] = rationalPrecip( x, y, x0, y0 , x_modif, y_modif)
+function [ precip ] = myRationalPrecip( x, y, x0, y0 , x_modif, y_modif)
 %%
 %  x, y - wspó³rzêdne punktu dla jakiego chcemy znaleŸæ wartoœæ
 %  x0, y0 - wspó³rzêdne œrodka powierzchni

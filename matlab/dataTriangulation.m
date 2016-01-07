@@ -3,39 +3,40 @@ clear;
 clc;
 close all;
 
-xAxisLabel = 'X [km]';
-yAxisLabel = 'Y [km]';
+xAxisLabel = 'D≥ugoúÊ geograficzna';
+yAxisLabel = 'SzerokoúÊ geograficzna';
 zAxisLabel = 'WysokoúÊ opadu [mm]';
 %% Przygotowanie danych do triangulacji
 disp('Przygotowanie danych do obliczeÒ.');
-load ('.\zapisane dane\rainfallStations.mat');
+load ('.\zapisane dane\rainfallPoints.mat');
 load ('.\zapisane dane\catchment.mat');
-stationsAmmount = length(rainfallStations);
+% stationsAmmount = length(rainfallStations);
 
-clear('rainfallPoints');
 clear('borderPoints');
 clear('interpolationPoints');
 clear('poinsInsideCatchment');
-rainfallPoints = zeros(stationsAmmount, 3);
+% rainfallPoints = zeros(stationsAmmount, 3);
 interpolationPoints = [];
 borderPoints = [];
-for i = 1:stationsAmmount
-    rainfallPoints(i, 1) = rainfallStations(1, i).longitude;
-    rainfallPoints(i, 2) = rainfallStations(1, i).latitude;
-    rainfallPoints(i, 3) = rand(1) * 10;
-end
-%% Wyskalowanie wspÛ≥rzÍdnych do punktu 0,0
-% shift_x = min(rainfallPoints(:,1)) + 10;
-% shift_y = min(rainfallPoints(:,2)) + 10;
-% rainfallPoints(:,1) = rainfallPoints(:,1) - shift;
-% rainfallPoints(:,2) = rainfallPoints(:,2) - shift;
-% catchment(:,1) = catchment(:,1) - shift;
-% catchment(:,2) = catchment(:,2) - shift;
+global middle_x;
+global middle_y;
+
+geoMiddleX = min(catchment(:, 1)) + (max(catchment(:, 1)) - min(catchment(:, 1)))/2;
+geoMiddleY = min(catchment(:, 2)) + (max(catchment(:, 2)) - min(catchment(:, 2)))/2;
+
+middle_x = geoMiddleX;
+middle_y = geoMiddleY;
+
+% for i = 1:stationsAmmount
+%     rainfallPoints(i, 1) = rainfallStations(1, i).longitude;
+%     rainfallPoints(i, 2) = rainfallStations(1, i).latitude;
+% %     rainfallPoints(i, 3) = rlPrecip(rainfallPoints(i,1), rainfallPoints(i,2));
+% end
 %% Konwersja wspÛ≥rzÍdnych geograficznych na kilometry
 % SzerokoúÊ geograficzna
 % 1 stopieÒ = 111196,672 m
 % èrÛd≥o: wikipedia
-disp('Konwersja wspÛ≥rzÍdnych na wartoúci metryczne');
+%disp('Konwersja wspÛ≥rzÍdnych na wartoúci metryczne');
 alfa = min(rainfallPoints(:, 2)) + (max(rainfallPoints(:, 2)) - min(rainfallPoints(:, 2)))/2;
 R = 6371;                           % åredni promieÒ Ziemi w km
 r = cos(alfa*2*pi/360) * R;
@@ -43,27 +44,46 @@ parallelLength = 2 * pi * r;
 xDegree = parallelLength / 360;    % w km
 yDegree = 111.196672;              % w km
 
+metricMiddleX = geoMiddleX * xDegree * 1000; % w metrach
+metricMiddleY = geoMiddleY * yDegree * 1000; % w metrach
+middle_x = metricMiddleX;
+middle_y = metricMiddleY;
+
+ellipsoidalPrecip(rainfallPoints(:,1), rainfallPoints(:,2))
+pause;
+
 % rainfallPoints = [rainfallPoints(:, 1).*xDegree rainfallPoints(:, 2).*yDegree rainfallPoints(:, 3)];
 % catchment = [catchment(:,1).*xDegree, catchment(:,2).*yDegree];
 %% Usuwanie pojedynczych posterunkÛw
 % figure
 % hold on;
 % triplot(dt, 'y');
-% plot(pointsInsideCatchment(:,1),pointsInsideCatchment(:,2),'ro','MarkerSize',5,'LineWidth',1);
-% plot(catchment(:,1), catchment(:,2));
+% plot(pointsInsideCatchment(:,1),pointsInsideCatchment(:,2),'k.','MarkerSize',5,'LineWidth',1);
+% plot(catchment(:,1), catchment(:,2), 'r');
 % insidePoints = size(pointsInsideCatchment,1);
 %  labels = arrayfun(@(x) {sprintf('%d', x)}, (1:insidePoints)');
 % text(pointsInsideCatchment(:,1), pointsInsideCatchment(:,2),labels,'HorizontalAlignment','center', 'VerticalAlignment', 'bottom');
 % xlabel(xAxisLabel);
 % ylabel(yAxisLabel);
 % hold off;
+%% Prezentacja danych wejúciowych
+figure;
+hold on;
+ylabel(yAxisLabel);
+xlabel(xAxisLabel);
+
+plot(rainfallPoints(:,1), rainfallPoints(:,2) ,'o', 'MarkerSize', 2, 'MarkerFaceColor','black','MarkerEdgeColor','black');
+plot(catchment(:,1), catchment(:, 2),'-r');
+
+hold off;
 %% Triangulacja punktÛw
 disp('Triangulacja punktÛw wejúciowych.');
 figure
 hold on;
+ylabel(yAxisLabel)
+xlabel(xAxisLabel)
 dt = delaunayTriangulation(rainfallPoints(:, 1), rainfallPoints(:, 2));
-triplot(dt, 'y');
-
+triplot(dt, '-yo', 'MarkerSize', 2, 'MarkerFaceColor','black','MarkerEdgeColor','black');
 %% Rysowanie obszaru zlewni na wykresie
 disp('Zlewnia na wykresie');
 plot(catchment(:,1), catchment(:, 2),'-r');
@@ -151,15 +171,20 @@ for i = 1:pointsAmmount
     end
 end;
 toc
-
-ylabel(yAxisLabel)
-xlabel(xAxisLabel)
-
 %% Punkty dane znajdujπce siÍ wewnπtrz obszaru zlewni
 disp('Filtrowanie punktÛw znanych znajdujπcych siÍ wewnπtrz zlewni.');
-pointsInsideCatchment = stationsInsideCatchment(catchment(:,1), catchment(:,2), rainfallPoints)
+pointsInsideCatchment = stationsInsideCatchment(catchment(:,1), catchment(:,2), rainfallPoints);
 triPoints = [borderPoints; interpolationPoints; pointsInsideCatchment];
 h=plot(pointsInsideCatchment(:,1),pointsInsideCatchment(:,2),'ro','MarkerSize',5,'LineWidth',1);
+hold off;
+%% Dane dla drugiej sieci trÛjkπtÛw
+figure
+hold on;
+xlabel(xAxisLabel);
+ylabel(yAxisLabel);
+plot(catchment(:,1), catchment(:,2), '-r');
+plot(triPoints(:,1), triPoints(:,2) ,'o', 'MarkerSize', 2, 'MarkerFaceColor','black','MarkerEdgeColor','black');
+hold off;
 
 %% Druga triangulacja - punkty dane i interpolowane.
 %  Wyznaczenie opadu powierzchniowego
@@ -198,7 +223,12 @@ disp('Wyznaczanie objÍtoúci opadu w poszczegÛlnych trÛjkπtach i ca≥ej zlewni.');
 figure
 hold on;
 properTrianglesAmmount = length(properTriangles);
-volumes = zeros(properTrianglesAmmount, 1);
+volumes = zeros(properTrianglesAmmount, 2);
+middle_x
+middle_y
+% middle_x = middle_x * xDegree * 1000
+% middle_y = middle_y * yDegree * 1000
+
 for i = 1:properTrianglesAmmount
     triangle = properTriangles(i, :);
     
@@ -207,18 +237,22 @@ for i = 1:properTrianglesAmmount
         triPoints(triangle(2),:);
         triPoints(triangle(3),:);
         ];
-    points(:,1) = points(:,1).*xDegree;
-    points(:,2) = points(:,2).*yDegree;
+%     points(:,1) = points(:,1).*xDegree;
+%     points(:,2) = points(:,2).*yDegree;
     
     
     plot([points(:,1);points(1,1)], [points(:,2);points(1,2)]);
     baseField = polyarea([points(:,1);points(1,1)], [points(:,2);points(1,2)]) * 1000000; % 1 km2 = 1 000 000 m2
     avgHeight = mean(points(:,3)) * 0.001;  % 1 mm = 0.001 m
-    volumes(i) = baseField * avgHeight;     % w m3
+    volumes(i, 1) = baseField * avgHeight;     % w m3
+    volumes(i, 2) = opad_na_trojkacie(@ellipsoidalPrecip, points(:,1)', points(:,2)');
+%      plot([points(:,1);points(1,1)],[points(:,2);points(1,2)])
 end
 ylabel(yAxisLabel)
 xlabel(xAxisLabel)
 hold off;
 disp('ObjÍtoúci opadu w poszczegÛlnych trÛjkπtach zapisana w macierzy volumes.');
-totalRainfall = sum(volumes);
+totalRainfall = sum(volumes(:,1));
+totalRealRainfall = sum(volumes(:,2));
 disp(strcat('£πczny opad powierzchniowy dla zlewni wynosi', {' '}, num2str(totalRainfall),{' '}, 'm3'));
+disp(strcat('Rzeczywista objÍtoúÊ opadu dla zlewni wynosi', {' '}, num2str(totalRealRainfall),{' '}, 'm3'));
