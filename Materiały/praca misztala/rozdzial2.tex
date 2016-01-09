@@ -1,0 +1,98 @@
+\chapter{Algorytm detekcji ruchu}
+\label{cha:algorytm detekcji ruchu}
+
+Wybierając algorytm który miałby działać na smartfonie trzeba było uwzględnić dwa znaczące ograniczenia współczesnych urządzeń tego typu:
+\begin{itemize}
+	\item mimo ciągle rosnącej mocy obliczeniowej smartfony w dalszym ciągu będą ustępować komputerom stacjonarnym jeżeli chodzi o wydajność. Ponadto założeniem tej pracy jest stworzenie taniego zamiennika dla kamer bezpieczeństwa, tak więc aplikacja powinna działać zadowalająco nawet na starszych urządzeniach;
+	\item Pomijając kwestie wydajnościowe należy pamiętać o ograniczeniach jakie stawia przed nami czas pracy na baterii. Zbyt długie obciążenie procesora może bardzo szybko wyczerpywać baterię.
+\end{itemize}
+
+Dodatkowo należy zastanowić się jakie warunki powinien spełniać algorytm który będzie wykorzystany w kamerze bezpieczeństwa. Przede wszystkim:
+\begin{itemize}
+	\item nie powinien reagować na drobny szum żeby nie wzbudzać niepotrzebnego alarmu, tzw. {\it false positive},
+	\item nie powinien reagować na gwałtowne zmiany sceny, jak np. padający deszcz, czy zmiana oświetlenia wywołana np.: zapaleniem światła w pomieszczeniu.
+\end{itemize}
+
+Biorąc pod uwagę powyższe fakty należy zastosować algorytm możliwie jak najszybszy, który spełni powyższe wymagania. Po przeanalizowaniu dostępnych opcji wybrany został prosty algorytm oparty metodę obliczania różnicy klatek opisany w pracy D. Xiaohui \cite{Motiondet}.
+
+
+\section{Opis użytego algorytmu}
+\label{sec:użyty algorytm}
+
+Tak jak wspomniano w poprzednim rozdziale algorytm bazuje na metodzie obliczenia różnicy klatek przedstawionej w pracy D. Xiaohui\cite{Motiondet}. Metoda została jednak nieznacznie zmodyfikowana w celem uzyskania lepszych rezultatów. 
+
+Należy zaznaczyć, że algorytm dostaje obraz w odcieniu szarości. 
+
+Algorytm dzieli się na dwa etapy. Pierwszy z nich polega na znalezieniu pikseli które uległy zmianie w stosunku do poprzednich klatek.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.75]{alg1}
+	\caption{Pierwszy etap algorytmu}
+	\label{fig:pierwszy_etap_alg}
+\end{figure}
+
+Etap pierwszy polega na wyłonieniu pikseli które się zmieniły. Poniżej przedstawiono kolejne kroki tego etapu.
+\begin{enumerate}
+	\item Pobranie bieżącej, {\bf n}-tej klatki w odcieniu szarości.
+	
+	\item Obliczenie wartości bezwzględnej z różnicy pomiędzy bieżącą klatką {\bf n}, a klatą ostatnią {\bf n - 1}-- zapisujemy jako {\bf R1}. Analogicznie obliczamy różnice pomiędzy {\bf n}-tą klatką, a klatką {\bf n - 2}; różnicę tę zapisujemy jako {\bf R2}.
+	
+	\item Obliczanie sumy bitowej pomiędzy {\bf R1}, a {\bf R2}. Sumę tę zapisujemy jako {\bf S}. Zabieg ten ma na celu wyeliminowanie szumów. Podobny efekt (proponowany w \cite{Motiondet}) można uzyskać za pomocą rozmycia Gaussa, w testach jednak rozmycie osiągało gorszą wydajność. 
+	
+	\item Binaryzacja osiągniętej w poprzednim kroku sumie {\bf S}. Operacja ma na celu dostarczyć do następnego etapu jasną, zero -- jedynkową informację, które piksele się zmieniły. 
+	
+	Binaryzacja zastosowana tutaj jest binaryzacją o stałym progu binaryzacji. Empirycznie próg został ustalony na wartość {\bf 35}. Oznacza to, że piksele w {\bf S} których wartość jest większa bądź równa {\bf 35} zostają uznane za zmienione i oznaczone w wynikowym obrazie binarnym jako {\bf 1}. 
+	
+	Im mniejszy próg binaryzacji tym algorytm potrzebuje mniejszej zmiany pikseli do uznania ich za zmienione. W skrajnej sytuacji przy progu = 0 nawet identyczne piksele zostają uznane za zmienione, a algorytm jest zbyt czuły. W sytuacji odwrotnej (próg = 255) algorytm jest nieczuły na zmiany -- do uznania pikseli za zmienione potrzebuje zmiany wartości z 0 na 255. 
+\end{enumerate}
+
+W etapie drugim algorytm podejmuje decyzję czy otrzymany z poprzedniego etapu obraz binarny uznać za ruch czy nie. Poniżej opisano kolejne kroki etapu.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1]{alg2}
+	\caption{Drugi etap algorytmu}
+	\label{fig:drugi_etap_alg}
+\end{figure}
+
+\begin{enumerate}
+	\item Liczenie zmienionych pikseli = 1. Trzeba zabezpieczyć się przed sytuacją kiedy mała ilość zmienionych pikseli sprawia, że algorytm uznaje je za ruch. Użytkownik może w opcjach aplikacji sam zmieniać próg który uznawany jest za {\it minimalną ilość zmienionych pikseli}. Jest to minimalny próg który musi być przekroczony, alby algorytm dalej dokonywał analizę klatki. 
+
+	\item Liczenie odchylenia standardowego. Jest to krok który użytkownik może wyłączyć.
+	
+	Bazując na \cite{Pwn} odchylenie standardowe jest to pierwiastek kwadratowy z wariancji zmiennej losowej
+	
+	$\sigma(X) = \sqrt{D^2X} = \sqrt{E(X - EX)^2}$
+	
+	Krok ten zabezpiecza przed sytuacją kiedy gwałtowna zmiana całej sceny (jak np.: zapalenie światła w pokoju) uznawana zostaje za ruch ({\it false positive}). Im odchylenie standardowe większe tym większa ogólna zmiana całego obrazu. Algorytm uzna obraz za ruch w sytuacji kiedy odchylenie standardowe będzie mniejsze niż {\it maksymalne odchylenie standardowe}. Próg ten użytkownik może zmieniać w ustawieniach aplikacji. 
+	
+\end{enumerate}
+
+Jeżeli warunki przedstawione na etapie drugim zostają spełnione algorytm uznaje że ``coś się rusza''. Dalsze zachowanie jest niezależne od detekcji ruchu i jest możliwe do zdefiniowanie przez użytkownika. Możliwe zachowania są opisane w rozdziale \ref{sec:aplikacja}
+
+
+\section{Możliwe ulepszenia algorytmu}
+\label{sec:ulepszenia}
+
+Algorytm zaimplementowany w pracy oczywiście może być ulepszany. D. Xiaohui \cite{Motiondet} proponuje wiele ulepszeń i poprawek w algorytmie zwiększając poprawność działania algorytmu. Mając jednak na uwadze argumenty wymienione w \ref{cha:algorytm detekcji ruchu} większą wagę ma szybkość i lekkość działania. Średnia dokładność jest wystarczająca i jej zwiększanie nie jest priorytetem. 
+
+Implementacja różnych wariantów algorytmu nie jest zawiera się w celach tej pracy. Należy jednak wymienić możliwe udoskonalenia. Można je zaimplementować jako opcjonalne zachowania (np. dla bardziej wydajnych urządzeń). Jeżeli projekt będzie rozwijany z pewnością będzie to dobry ``pierwszy krok''.
+
+Przechodząc do rzeczy, bazując na \cite{Motiondet} dobrym pomysłem będzie:
+
+\begin{itemize}
+	\item w drugim kroku drugiego etapu opisanego w \ref{sec:użyty algorytm} zamiast liczyć dwie różnic można zastosować filtr uśredniający. Jest to rozwiązanie które nieznacznie lepiej eliminuje szumy przy nieznacznym zmniejszeniu prędkości,
+	
+	\item można użyć algorytmu indeksacji w celu oddzielenia od siebie poruszających się algorytmów. Jest to zabieg zbędny jeżeli naszym celem jest dostanie binarnej informacji: jest ruch -- nie ma ruchu,
+	
+	\item osiągnięty obraz binarny możną poddać operacji koniunkcji z wynikiem algorytmu Canny; wykrywa on krawędzie; zabieg ten bardzo dobrze radzi sobie z szumem spowodowanym przez światło; zabieg ten znacząco zmniejsza prędkość działania algorytmu, dlatego jego użycie powinno być możliwe do wyłączenia przez użytkownika. 
+	
+\end{itemize}
+
+
+
+%\section{Alternatywne rozwiązania}
+%\label{sec:alternatywy}
+%
+%// TODO zastanów się czy coś tu wrzucać i czy będzie to korzystne w kontekście zwiększenia %ilości stron :)) możesz wstawić diagram algorytmu z \cite{Motiondet}

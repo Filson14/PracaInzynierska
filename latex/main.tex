@@ -11,12 +11,35 @@
 \usepackage[utf8]{inputenc}
 
 % dodatkowe pakiety
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.png, .jpg}
+\graphicspath{ {./img/} }
 
 \usepackage{mathtools}
 \usepackage{amsfonts}
 \usepackage{amsmath}
 \usepackage{amsthm}
 
+\usepackage{listings}
+
+\lstset{
+	frame=tb,
+	aboveskip=3mm,
+	belowskip=3mm,	
+	language=Matlab,%
+    %basicstyle=\color{red},
+    breaklines=true,%
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{purple},
+    commentstyle=\color{green},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    numbers=left,%
+    numberstyle={\tiny \color{black}},% size of the numbers
+    numbersep=9pt % this defines how far the numbers are from the text
+}
 % --- < bibliografia > ---
 
 \usepackage[
@@ -130,7 +153,8 @@ maxbibnames=3,
 \faculty{Wydział Elektrotechniki, Automatyki,\protect\\[-1mm] Informatyki i Inżynierii Biomedycznej}
 %\faculty{Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical Engineering}
 
-\acknowledgements{Work hard and never give up!}
+\acknowledgements{Work hard and never give up!
+Bardzo dziękuję mojemu promotorowi za okazaną pomoc przy tworzeniu tej pracy.}
 
 
 \setlength{\cftsecnumwidth}{10mm}
@@ -159,12 +183,13 @@ maxbibnames=3,
 \input{rozdzialy/rozdzial_1.tex}
 \input{rozdzialy/rozdzial_2.tex}
 \input{rozdzialy/rozdzial_3.tex}
+\input{rozdzialy/implementacja.tex}
 \input{rozdzialy/slownik_pojec.tex}
 \input{rozdzialy/dodatek_A.tex}
 
 
 % \include{tests}
-
-\printbibliography
+%\bibliographystyle{abbrv}
+%\bibliography{bibliografia}
 
 \end{document}

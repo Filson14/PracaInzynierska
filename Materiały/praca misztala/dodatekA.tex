@@ -1,0 +1,595 @@
+\chapter{Dodatek A - fragmenty kodów źródłowych}
+\label{cha:dodatekA}
+
+\section{Android}
+\label{sec:android}
+
+
+\subsection{Klient RESTowy}
+\label{sec:androidApi}
+
+Kod klienta 
+
+\begin{lstlisting}
+package pl.edu.agh.misztal.secam.rest;
+
+import pl.edu.agh.misztal.secam.rest.callback.LoginCallback;
+import pl.edu.agh.misztal.secam.rest.model.EmptyEntity;
+import pl.edu.agh.misztal.secam.rest.model.Login;
+import retrofit.Callback;
+import retrofit.http.DELETE;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
+import retrofit.http.Header;
+import retrofit.http.Multipart;
+import retrofit.http.POST;
+import retrofit.http.Part;
+import retrofit.mime.TypedFile;
+
+public interface SecamApi {
+
+    @FormUrlEncoded
+    @POST("/detector/login")
+    void login(@Header("api_key") String apiKey, @Field("email") String email, @Field("password") String password, @Field("device_id") String deviceId, Callback<Login> callback);
+
+    @DELETE("/users/logout")
+    void logout(@Header("api_key") String apiKey, @Header("token") String token, Callback<EmptyEntity> callback);
+
+    @FormUrlEncoded
+    @POST("/detector/devicename")
+    void setDevicename(@Header("api_key") String apiKey, @Header("token") String token, @Field("device_id") String deviceId, @Field("name") String name, Callback<EmptyEntity> callback);
+
+    @FormUrlEncoded
+    @POST("/detector/beep")
+    void beep(@Header("api_key") String apiKey, @Header("token") String token, @Field("device_id") String deviceId, Callback<EmptyEntity> callback);
+
+    @Multipart
+    @POST("/detector/photo")
+    void postPhoto(@Header("api_key") String apiKey, @Header("token") String token, @Part("device_id") String deviceId, @Part("photo")TypedFile photo, Callback<EmptyEntity> callback);
+
+}
+\end{lstlisting}
+
+Tworzenie obiektu będącego klientem:
+
+\begin{lstlisting}
+
+// Tworzenie GSON'a, tak aby poprawnie automatycznie konwertował wiadomość JSON na obiekt POJO ({\it Plain Old Java Object})
+Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                    .create();
+			
+			// Ustawienie konwertera i adresu serwera
+            RestAdapter adapter = new RestAdapter.Builder()
+                    .setConverter(new GsonConverter(gson))
+                    .setEndpoint(ENDPOINT)
+                    .build();
+
+            SecamApi api = adapter.create(SecamApi.class);
+
+\end{lstlisting}
+
+\subsection{Wykrywanie ruchu}
+
+\begin{lstlisting}
+
+curr.copyTo(prev);
+next.copyTo(curr);
+inputFrame.gray().copyTo(next);
+binarizeMovement();
+			
+// (...)
+			
+if(isMovement())
+		reactMovement(in);
+
+\end{lstlisting}
+
+Po wykoananiu {\it binarizeMovement()} w zmiennej {\it result} mamy binarną macierz z zanzaczonymi pikselami które się zmieniły. 
+
+Oto kod funkcji {\it isMovement()} stwierdzającej czy ruch wystąpił:
+
+\begin{lstlisting}
+private boolean isMovement() {
+	//sprawdź czy jest minimalna ilość zmienionych pikseli
+	if(result != null && Core.countNonZero(result) > preferences.getMinimumMovement()) {
+		if(preferences.isUseStdDev()) { //czy bierzemy pod uwagę odchylenie standardowe ?
+			MatOfDouble mean = new MatOfDouble();
+			MatOfDouble stddev = new MatOfDouble();
+			Core.meanStdDev(result, mean, stddev);
+			
+			if(stddev.get(0, 0)[0] < preferences.getMaxStdDev()) 
+				return true;
+			else
+				return false;
+		}
+		return true;	
+	}
+	
+	return false;
+}
+
+\end{lstlisting}
+			
+\section{Serwer API}
+\label{sec:serwerApi}
+
+Implementacja klasy odpowiadającej za udostępnienie API
+
+\begin{lstlisting}
+@Path("v1.0")
+public class Api {
+	
+	private static final String apiKey = "asd";
+	
+	private static final int MINUTES_ONLINE = 5; //minutes in the past that beeps is considered to be online
+	
+	private DBController db = new DBController();
+	private String baseImagePath = "/var/www/images/secam/";
+	//private String baseImagePath = "F:/SeCam/";
+	private Gson gson = new GsonBuilder()
+		.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+		.excludeFieldsWithoutExposeAnnotation()
+		.create();
+	
+	// USERS ============================================================
+	
+	@POST
+	@Path("users/register")
+	public Response register(@HeaderParam("api_key") String apiKey, @FormParam("email") String email, @FormParam("password") String password) {
+		Response ret;
+		if(!apiKey.equals(Api.apiKey)) {
+			ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		} else {
+			boolean ok = db.newUser(email, password);
+			if(ok) {
+				ret = Response.ok().build();
+			} else {
+				Error error = new Error("User register", "User exists");
+				ret = Response.status(Response.Status.NOT_ACCEPTABLE).entity(gson.toJson(error)).build();
+			}
+		}
+		return ret;
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/users/login")
+	public Response login(@HeaderParam("api_key") String apiKey, @FormParam("email") String email, @FormParam("password") String password) {
+		Response ret;
+		if(!apiKey.equals(Api.apiKey)) {
+			ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		} else {
+			String token = db.newSession(email, password, "client");
+			if(token != null) {
+				ret = Response.ok(gson.toJson(new Token(token))).build();
+			} else {
+				Error error = new Error("User login", "Incorrect credentials");
+				ret = Response.status(Response.Status.NOT_ACCEPTABLE).entity(gson.toJson(error)).build();
+			}
+		}
+		
+		return ret;
+	}
+	
+	@DELETE
+	@Path("users/logout")
+	public Response logout(@HeaderParam("api_key") String apiKey, @HeaderParam("token") String token) {
+		Response ret;
+		
+		if(!apiKey.equals(Api.apiKey)) {
+			ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		} else {
+			boolean ok = db.deleteSession(token);
+			
+			if(ok)
+				ret = Response.ok().build();
+			else
+				ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		}
+		
+		
+		
+		return ret;		
+	}
+	
+	// DETECTOR ============================================================
+	
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/detector/login")
+	public Response detectorLogin(@HeaderParam("api_key") String apiKey, @FormParam("email") String email, @FormParam("password") String password,
+			@FormParam("device_id") String deviceId) {
+		Response ret;
+		if(!apiKey.equals(Api.apiKey)) {
+			ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		} else {
+			String token = db.newSession(email, password, "detector");
+			if(token != null) {
+				int uid = db.getUserIdByToken(token);
+				if(db.getDeviceIdByImei(deviceId, uid) < 0) { //dodaj urządzenie jeżeli nie istnieje
+					boolean ok = db.newDevice(uid, deviceId);
+					if(ok)
+						ret = Response.ok(gson.toJson(new Token(token))).build();
+					else
+						ret = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+				}
+				else
+					ret = Response.ok(gson.toJson(new Token(token))).build();
+			} else {
+				Error error = new Error("User login", "Incorrect credentials");
+				ret = Response.status(Response.Status.NOT_ACCEPTABLE).entity(gson.toJson(error)).build();
+			}
+		}
+		
+		return ret;
+	}
+	
+	@POST
+	@Path("detector/beep")
+	public Response beep(@HeaderParam("api_key") String apiKey, @HeaderParam("token") String token, @FormParam("device_id") String deviceId) {
+		Response ret;
+		int uid = db.getUserIdByToken(token);
+		
+		if(!apiKey.equals(Api.apiKey) || uid < 0) {
+			ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		} else {
+			int _deviceid = db.getDeviceIdByImei(deviceId, uid);
+			if(_deviceid >= 0) {
+				boolean ok = db.beep(_deviceid);
+				if(ok)
+					ret = Response.ok().build();
+				else
+					ret = Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			} else 
+				ret = Response.status(Response.Status.NOT_FOUND).build();
+		}
+		
+		return ret;
+	}
+	
+	@POST
+	@Path("detector/devicename")
+	public Response setDeviceName(@HeaderParam("api_key") String apiKey, @HeaderParam("token") String token, @FormParam("device_id") String deviceId,
+			@FormParam("name") String name) {
+		Response ret;
+		
+		int uid = db.getUserIdByToken(token);
+		
+		if(!apiKey.equals(Api.apiKey) || uid < 0) {
+			ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		} else {
+			int _deviceid = db.getDeviceIdByImei(deviceId, uid);
+			if(_deviceid < 0)
+				ret = Response.status(Status.NOT_FOUND).build();
+			else {
+				boolean ok = db.setDeviceName(_deviceid, name);
+				if(ok)
+					ret = Response.ok().build();
+				else
+					ret = Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			}
+		}
+		
+		return ret;
+	}
+	
+	@POST
+	@Path("detector/photo")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response postPhoto(@HeaderParam("api_key") String apiKey, @HeaderParam("token") String token, @FormDataParam("device_id") String deviceId,
+			@FormDataParam("photo") InputStream fileInputStream) {
+		
+		Response ret;
+		
+		int uid = db.getUserIdByToken(token);
+		
+		if(!apiKey.equals(Api.apiKey) || uid < 0) {
+			ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		} else {
+			int _deviceid = db.getDeviceIdByImei(deviceId, uid);
+			if(_deviceid < 0)
+				ret = Response.status(Status.NOT_FOUND).build();
+			else {
+				File dir = new File(baseImagePath + Integer.toString(uid) + "/" + Integer.toString(_deviceid));
+				dir.mkdirs();
+				int imageCount = db.getImages(_deviceid).size();
+				String filepath = dir.getAbsolutePath() + "/" + Integer.toString(imageCount) + ".jpg";
+				
+				if(writeToFile(fileInputStream, filepath)){
+					boolean ok = db.addImage(_deviceid, filepath);
+					if(ok)
+						Response.ok().build();
+					else
+						Response.status(Status.INTERNAL_SERVER_ERROR);
+				}
+				ret = Response.ok().build();
+			}
+		}
+		
+		return ret;
+		
+	}
+	
+	// CLIENT ===========================================================
+	
+	@GET
+	@Path("client/devices")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getDevices(@HeaderParam("api_key") String apiKey, @HeaderParam("token") String token) {
+		Response ret;
+		
+		int uid = db.getUserIdByToken(token);
+		
+		if(!apiKey.equals(Api.apiKey) || uid < 0) {
+			ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		} else {
+			List<Devices> list = db.getDevices(uid);
+			if(list != null) {
+				DevicesList devicesList = new DevicesList(list);
+				ret = Response.ok(gson.toJson(devicesList)).build();
+				
+			} else 
+				ret = Response.status(Status.NOT_FOUND).build();
+		}
+		
+		return ret;
+		
+	}
+	
+	@GET
+	@Path("client/isonline")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response isOnline(@HeaderParam("api_key") String apiKey, @HeaderParam("token") String token, @QueryParam("device_id") String deviceId) {
+		Response ret;
+		
+		int uid = db.getUserIdByToken(token);
+		
+		if(!apiKey.equals(Api.apiKey) || uid < 0) {
+			ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		} else {
+			Beeps b = db.getBeeps(deviceId, uid);
+			IsOnline online;
+			
+			if(b != null) { 
+				if(isOnline(b.getTimestamp()))
+					online = new IsOnline(true);
+				else
+					online = new IsOnline(false);
+				
+				ret = Response.ok(gson.toJson(online)).build();
+			} else
+				ret =  Response.status(Status.NOT_FOUND).build();
+		}
+		
+		return ret;
+		
+	}
+	
+	
+	@GET
+	@Path("client/images")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getImages(@HeaderParam("api_key") String apiKey, @HeaderParam("token") String token, @QueryParam("device_id") String deviceId) {
+		Response ret;
+		
+		int uid = db.getUserIdByToken(token);
+		
+		if(!apiKey.equals(Api.apiKey) || uid < 0) {
+			ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		} else {
+			int _deviceid = db.getDeviceIdByImei(deviceId, uid);
+			if(_deviceid < 0)
+				ret= Response.status(Status.NOT_FOUND).build();
+			else {
+				List<Images> list = db.getImages(_deviceid);
+				ImagesList images = new ImagesList(list);
+				
+				ret = Response.ok(gson.toJson(images)).build();
+			}
+		}
+			
+		
+		return ret;
+		
+	}
+	
+	@GET
+	@Path("client/images/fetch/{id}")
+	@Produces("image/jpeg")
+	public Response getImage(@HeaderParam("api_key") String apiKey, @HeaderParam("token") String token, @PathParam("id") String _id, @QueryParam("device_id") String deviceId) {
+		Response ret;
+		
+		int uid = db.getUserIdByToken(token);
+		
+		if(!apiKey.equals(Api.apiKey) || uid < 0) {
+			ret = Response.status(Response.Status.UNAUTHORIZED).build();
+		} else {
+			try {
+				int id = Integer.parseInt(_id);
+				int _deviceid = db.getDeviceIdByImei(deviceId, uid);
+				if(_deviceid < 0)
+					ret = Response.status(Status.NOT_FOUND).build();
+				else {
+					String filepath = baseImagePath + "/" + Integer.toString(uid) + "/" + Integer.toString(_deviceid) + "/"
+							+ Integer.toString(id) + ".jpg";
+					
+					File file = new File(filepath);
+					
+					if(file.exists()) {
+						ret = Response.ok(file, "image/jpeg").build();
+					} else {
+						ret = Response.status(Response.Status.NOT_FOUND).build();
+					}
+				} 
+			} catch(NumberFormatException ex) {
+				ret = Response.status(Response.Status.BAD_REQUEST).build();
+			}
+		}
+		
+		return ret;
+	}
+	
+	// PRIVATE  ============================================================
+	
+	private boolean writeToFile(InputStream uploadedInputStream,
+			String uploadedFileLocation) {
+	 
+			try {
+				OutputStream out = new FileOutputStream(new File(
+						uploadedFileLocation));
+				int read = 0;
+				byte[] bytes = new byte[1024];
+	 
+				out = new FileOutputStream(new File(uploadedFileLocation));
+				while ((read = uploadedInputStream.read(bytes)) != -1) {
+					out.write(bytes, 0, read);
+				}
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+			return true;
+	 
+		}
+	
+	private boolean isOnline(Timestamp t) {
+		long milis = (new Date()).getTime();
+		Date border = new Date(milis - MINUTES_ONLINE * 60 * 1000);
+		if(t.before(border))
+			return false;
+		
+		return true;
+	}
+	
+}
+\end{lstlisting}
+
+
+\section{Baza danych - kod SQL}
+\label{sec:dbsql}
+
+	\lstset{
+		language=SQL}
+		
+	\begin{lstlisting}
+	
+USE secam;
+
+SET FOREIGN_KEY_CHECKS=0;
+
+
+--  Drop Tables, Stored Procedures and Views 
+
+DROP TABLE IF EXISTS Beeps CASCADE;
+DROP TABLE IF EXISTS Devices CASCADE;
+DROP TABLE IF EXISTS Images CASCADE;
+DROP TABLE IF EXISTS Sessions CASCADE;
+DROP TABLE IF EXISTS Users CASCADE;
+
+--  Create Tables 
+CREATE TABLE Beeps
+(
+	id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	deviceid INTEGER UNSIGNED NOT NULL,
+	timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	UNIQUE UQ_Beeps_deviceid(deviceid),
+	UNIQUE UQ_Beeps_id(id),
+	KEY (deviceid)
+
+) ;
+
+
+CREATE TABLE Devices
+(
+	id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	userid INTEGER UNSIGNED NOT NULL,
+	deviceid VARCHAR(50) NOT NULL,
+	devicename VARCHAR(50),
+	PRIMARY KEY (id),
+	UNIQUE UQ_Devices_id(id),
+	UNIQUE UQ_PAIR_Deviceid_Userid(deviceid, userid),
+	KEY (userid)
+
+) ;
+
+
+CREATE TABLE Images
+(
+	id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	deviceid INTEGER UNSIGNED NOT NULL,
+	path VARCHAR(100) NOT NULL,
+	timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (id),
+	UNIQUE UQ_Images_id(id),
+	KEY (deviceid)
+
+) ;
+
+
+CREATE TABLE Sessions
+(
+	id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	userid INTEGER UNSIGNED NOT NULL,
+	token VARCHAR(50) NOT NULL,
+	sessiontype VARCHAR(10) NOT NULL,
+	expires DATETIME,
+	PRIMARY KEY (id),
+	UNIQUE UQ_Sessions_id(id),
+	UNIQUE UQ_Sessions_token(token),
+	KEY (userid)
+
+) ;
+
+
+CREATE TABLE Users
+(
+	id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+	email VARCHAR(40) NOT NULL,
+	password VARCHAR(40) NOT NULL,
+	PRIMARY KEY (id),
+	UNIQUE UQ_Users_email(email),
+	UNIQUE UQ_Users_id(id)
+
+) ;
+
+
+
+SET FOREIGN_KEY_CHECKS=1;
+
+
+--  Create Foreign Key Constraints 
+ALTER TABLE Beeps ADD CONSTRAINT FK_Beeps_Devices 
+	FOREIGN KEY (deviceid) REFERENCES Devices (id);
+
+ALTER TABLE Devices ADD CONSTRAINT FK_Devices_Users 
+	FOREIGN KEY (userid) REFERENCES Users (id);
+
+ALTER TABLE Images ADD CONSTRAINT FK_Images_Devices 
+	FOREIGN KEY (deviceid) REFERENCES Devices (id);
+
+ALTER TABLE Sessions ADD CONSTRAINT FK_Sessions_Users 
+	FOREIGN KEY (userid) REFERENCES Users (id);
+
+
+
+
+
+
+--  Create Triggers 
+DROP TRIGGER IF EXISTS tr_setexpiredate;
+
+DELIMITER $$
+CREATE TRIGGER tr_setexpiredate BEFORE INSERT ON Sessions
+FOR EACH ROW
+BEGIN
+	SET NEW.expires = DATE_ADD(NOW(), INTERVAL 280 DAY);
+END $$
+;
+
+
+\end{lstlisting}

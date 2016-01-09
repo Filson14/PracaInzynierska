@@ -1,5 +1,5 @@
-\chapter{Podstawy teoretyczne}
-Jak wspomniano w poprzednim rozdziale, dane wejściowe dla programu są wskazaniami pomiarów z~poszczególnych posterunków opadowych. Są to dane punktowe, zatem aby oszacować ilość wody jaka spadła na zadanym obszarze konieczne jest przeprowadzenie ich interpolacji w~celu aproksymacji wartości dla punktów stanowiących granicę wskazanej zlewni, co dalej zmierza do wyznaczenia opadu powierzchniowego.
+\chapter{Implementacja}
+Jak wspomniano w poprzednim rozdziale, dane wejściowe są wskazaniami pomiarów z~poszczególnych posterunków opadowych. Są to dane punktowe, zatem aby oszacować ilość wody jaka spadła na zadanym obszarze konieczne jest przeprowadzenie ich interpolacji w~celu aproksymacji wartości dla punktów stanowiących granicę wskazanej zlewni, co dalej zmierza do wyznaczenia opadu powierzchniowego.
 
 Istnieje wiele metod wyznaczania średniego opadu powierzchniowego. Począwszy od prostego obliczenia średniej arytmetycznej wartości z~posterunków opadowych, poprzez metody wieloboków Voronoia, izohiet po hipsometryczną. Różnią się one dokładnością, sposobem aproksymacji czy też zaawansowaniem danych wejściowych.
 
@@ -11,13 +11,6 @@ Jak wspomniano we wstępie, praca ta traktuje o analizie danych pojedynczego opa
 \section{Zastosowana metoda}
 Wybór padł na połączenie techniki triangulacji wraz z~interpolacją przy użyciu płaszczyzny.
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.3]{algorytm}
-	\caption{Schemat krokowy zastosowanej metody}
-	\label{fig:delaunay}
-\end{figure}
-
 Triangulacja polega na stworzeniu siatki trójkątów o~wierzchołkach w~zadanych punktach (w tym wypadku są to posterunki opadowe o znanej wysokości opadu). Zastosowano algorytm Delaunay'a, który wprowadza dodatkowe ograniczenie na tworzone trójkąty. Mianowicie, okrąg opisany na każdym z~nich nie może zawierać innych punktów siatki poza wierzchołkami danego trójkąta. Ta metoda ma na celu maksymalizację równoboczności powstałych trójkątów, a~co za tym idzie, równomierność budowanej siatki.
 
 \begin{figure}[ht]
@@ -27,8 +20,34 @@ Triangulacja polega na stworzeniu siatki trójkątów o~wierzchołkach w~zadanyc
 	\label{fig:delaunay}
 \end{figure}
 
+\begin{figure}[ht]
+	\centering
+\begin{subfigure}[t]{.5\textwidth}
+	\centering
+	\includegraphics[width=0.7\linewidth]{dane_wejsciowe}
+	\caption{Posterunki opadowe i~obszar zlewni}
+	\label{fig:dane_wejsciowe}
+\end{subfigure}	
+	\begin{subfigure}[t]{0.5\textwidth}
+	\centering
+	\includegraphics[width=0.7\linewidth]{triangulacja_zlewnia}
+	\caption{Siatka triangulacji dla posterunków}
+	\label{fig:triagnulacja_danych}
+\end{subfigure}	
+\caption{Prezentacja danych wejściowych}
+	
+\end{figure}
 
 Po zastosowaniu triangulacji następnym etapem jest wyznaczenie punktów, dla których należy interpolować wartość opadu. Tymi punktami są poszczególne węzły granicy wskazanej zlewni oraz miejsca przecięcia tej granicy z krawędziami trójkątów. Wraz z~posterunkami opadowymi znajdującymi się wewnątrz obszaru dla jakiego wyznaczany jest obszar powierzchniowy będą stanowiły węzły kolejnej triangulacji.
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.5]{punkty_do_interpolacji}
+	\caption{Punkty wyznaczone do interpolacji.
+	O - węzły granicy, X - przecięcia granicy z~liniami siatki.}
+	\label{fig:punkty_interpolacji}
+\end{figure}
 
 Jak wspomniano na początku tego rozdziału, wyznaczenie wartości dla powstałych punktów odbywa się poprzez interpolację powierzchniową poszczególnych trójkątów.
 
@@ -50,6 +69,44 @@ gdzie
 
 Przy użyciu przygotowanej funkcji, dla wszystkich wyznaczonych do interpolacji punktów uzyskiwana jest wartość opadu korzystając ze współrzędnych $x$~i~$y$ punktu i~wektora normalnego trójkąta, w~którym ten punkt się znajduje.
 
-Po przeprowadzeniu interpolacji wartości przeprowadzana jest ponowna triangulacja, tym razem z~użyciem punktów interpolowanych oraz posterunków wewnątrz zlewni.
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.5]{algorytm}
+	\caption{Schemat krokowy zastosowanej metody}
+	\label{fig:algorytm}
+\end{figure}
 
-\section{Możliwe rozszerzenia algorytmu}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.5]{prezentacja_interpolacji}
+	\caption{Interpolacja płaszczyzną dla pojedynczego trójkąta}
+	\label{fig:plaszczyzna_interpolacji}
+\end{figure}
+
+Po zakończeniu interpolacji wartości przeprowadzana jest ponowna triangulacja mająca na celu stworzenie brył o~trójkątnej podstawie (wysokości brył to wartość opadu w~punkcie będącym wierzchołkiem). Tym razem zastosowane zostaną punkty interpolowane oraz posterunki wewnątrz zlewni. Jak zaprezentowano na rysunku~\ref{fig:druga_triangulacja}, pojawia się komplikacja
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.3]{delaunay}
+	\caption{Schemat zastosowania algorytmu Delaunay'a (źródło: wikipedia)}
+	\label{fig:delaunay}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+\begin{subfigure}[t]{.5\textwidth}
+	\centering
+	\includegraphics[width=0.7\linewidth]{dane_druga_triangulacja}
+	\caption{Punkty dla ponownej triangulacji}
+	\label{fig:dane_wejsciowe}
+\end{subfigure}	
+	\begin{subfigure}[t]{0.5\textwidth}
+	\centering
+	\includegraphics[width=0.7\linewidth]{druga_triangulacja}
+	\caption{Siatka triangulacji dla wyznaczonych punktów}
+	\label{fig:druga_triagnulacja}
+\end{subfigure}	
+\caption{Triangulacja danych interpolowanych}
+	
+\end{figure}

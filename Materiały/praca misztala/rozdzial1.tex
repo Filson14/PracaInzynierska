@@ -1,0 +1,36 @@
+\chapter{Wstęp}
+\label{cha:wstęp}
+
+\section{Przedmowa}
+\label{sec:przedmowa}
+
+Ostatnie lata były czasem gwałtownego rozpowszechnienia się smartfonów -- urządzeń łączących cechy telefonu komórkowego, oraz komputera osobistego. W roku 2011 przewidywana sprzedaż smartfonów wzrosła o 175\% \cite{Wwwsales}. Urządzenia te posiadają coraz więcej możliwości i są w stanie zastępować m.in. kamery, aparaty cyfrowe, odtwarzacze wideo, konsole do gier i wiele innych. Sam współtwórca wskaźnika {\it Smartphone Index} na amerykańskiej giełdzie NASDAQ powiedział: ``Nieustanna ewolucja smartfonów i tabletów generuje nowe możliwości ich wykorzystania, zwiększając tym samym ich użyteczność i wartość, ale jednocześnie wypierając inne urządzenia z polskich domów, np. aparaty cyfrowe''. 
+
+Idąc tym tropem pomysł zastąpienia kamery bezpieczeństwa smartfonem wydaje się bardzo trafiony. Rozwiązanie to umożliwia łatwe implementowanie i rozszerzanie funkcjonalności. Dodatkowo ludzie często posiadają swoje stare smartfony, przez co zakup kamery bezpieczeństwa może sprowadzać się do zainstalowania odpowiedniej aplikacji. 
+
+Praca ta będzie opisywać to zagadnienie zarówno od strony teoretycznej jak i implementacyjnej.
+
+\section{Opis dokumentu}
+\label{sec:opis dokumentu}
+
+Praca ta traktuje o użyciu smartfona jako kamery bezpieczeństwa z zaimplementowanym mechanizmem detekcji ruchu. Opisuje teorię wykrywania ruchu oraz technologię wykorzystaną do implementacji aplikacji na system {\it Android OS} jak i serwera z którą aplikacja ta będzie wymieniać dane. 
+
+W pracy zawarto rozdziały:
+\begin{description}
+	\item[Algorytm detekcji ruchu] w rozdziale opisano użyty algorytm wykrywania ruchu, oraz ogarniczenia jakie wprowadza odpalanie algorytmu na smartfonie,
+	\item[Użyte technologie] opisane zostały tu wszystkie technologie, biblioteki oraz framework-i wykorzystane w pracy. Uzasadniony został też ich wybór,
+	\item[Implementacja] opisane problemy i rozwiązania części implementacyjnej systemu. Opisane zostało też API z którego korzysta aplikacja. 
+\end{description}
+
+\section{Cele pracy}
+\label{sec:cele pracy}
+
+Celem pracy jest stworzenie automatycznego detektora ruchu na system {\it Android OS}. Aplikacja ta będzie w stanie:
+\begin{itemize}
+	\item wykrywać ruch, oraz zaznaczać na obrazie fragment sceny gdzie ten ruch został wykryty,
+	\item powiadomić użytkownika o wykrytym ruchu poprzez alarm dźwiękowy,
+	\item powiadomić serwer o tym, że jest detekcja ruchu jest włączona,
+	\item zapisać oraz przesłać na serwer klatki z wykrytym ruchem.
+\end{itemize}
+
+Stworzony serwer będzie w stanie przechowywać informacje o stanie aplikacji -- o tym czy włączona jest detekcja ruchu. Dodatkowo będzie przechowywał klatki zawierające wykryty ruch. Użytkownik poprzez prostą stronę www będzie w stanie zalogować się oraz oglądać logi z pracy swojego detektora.

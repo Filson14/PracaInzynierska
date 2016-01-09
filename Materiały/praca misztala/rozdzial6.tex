@@ -1,0 +1,28 @@
+\chapter{Architektura projektu}
+
+Opisane w poprzednim rozdziale komponenty łączą się w całość tworząc integralną całość. Aplikacja wykrywająca ruch przesyła dane na serwer. Serwer przetwarza dane i zapisuje je w bazie danych; umożliwia także wgląd do danych poprzez prostą stronę www. 
+
+\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.34\textwidth,height=0.34\textheight,keepaspectratio]{arch}
+		\caption{Architektura systemu}
+		\label{fig:arch}
+	\end{figure}
+	
+Elementem leżącym najniżej w architekturze projektu jest baza danych. Do bazy danych bezpośredni dostęp ma jedynie aplikacja serwerowa która łączy się z nią za pomocą biblioteki {\it Hibernate}. Aplikacja serwerowa udostępnia API przy pomocy którego aplikacja wykrywająca ruch przesyła dane na serwer. Dzięki temu API możliwe również jest działanie serwisu www, który pobiera dzięki niemu dane dla użytkownika. 
+	
+	
+\section{Baza danych}
+\label{sec:mysql2}
+
+W pracy użyto relacyjnej bazy danych MySQL \cite{Mysql}. W sekcji \ref{sec:dbsql} załączono skrypt którego użyto do założenia bazy danych. Poniżej przedstawiony jest schemat użytej w systemie bazy danych:
+
+	\begin{figure}[p]
+		\centering
+		\includegraphics[angle=90,width=\textwidth,height=\textheight,keepaspectratio]{database2}
+		\caption{Baza danych użyta na serwerze}
+		\label{fig:database}
+	\end{figure}
+
+\FloatBarrier
+

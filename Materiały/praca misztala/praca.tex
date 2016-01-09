@@ -1,0 +1,135 @@
+\documentclass[11pt]{aghdpl}
+% \documentclass[en,11pt]{aghdpl}  % praca w języku angielskim
+\usepackage[polish]{babel}
+%\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+% dodatkowe pakiety----------------------------------
+\usepackage{enumerate}
+\usepackage{listings}
+
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.png,.jpg}
+\graphicspath{ {./img/} }
+\usepackage{rotating}
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+\usepackage{listings}
+\usepackage{tabularx}
+
+\usepackage[section]{placeins}
+\usepackage{amsmath}
+\everymath{\displaystyle}
+
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=5
+}
+
+\lstloadlanguages{TeX}
+
+\lstset{
+  literate={ą}{{\k{a}}}1
+           {ć}{{\'c}}1
+           {ę}{{\k{e}}}1
+           {ó}{{\'o}}1
+           {ń}{{\'n}}1
+           {ł}{{\l{}}}1
+           {ś}{{\'s}}1
+           {ź}{{\'z}}1
+           {ż}{{\.z}}1
+           {Ą}{{\k{A}}}1
+           {Ć}{{\'C}}1
+           {Ę}{{\k{E}}}1
+           {Ó}{{\'O}}1
+           {Ń}{{\'N}}1
+           {Ł}{{\L{}}}1
+           {Ś}{{\'S}}1
+           {Ź}{{\'Z}}1
+           {Ż}{{\.Z}}1
+}
+
+%---------------------------------------------------------------------------
+
+\author{Krzysztof Misztal}
+\shortauthor{Krzysztof Misztal}
+
+\titlePL{Automatyczny detektor ruchu – aplikacja mobilna dla systemu Android}
+\titleEN{Automatic movement detector – mobile application for Android platform}
+
+\shorttitlePL{Automatyczny detektor ruchu – aplikacja mobilna dla systemu Android} % skrócona wersja tytułu jeśli jest bardzo długi
+\shorttitleEN{Automatic movement detector – mobile application for Android platform}
+
+\thesistype{Praca dyplomowa inżynierska}
+%\thesistype{Master of Science Thesis}
+
+\supervisor{dr inż. Paweł Skrzyński}
+%\supervisor{}
+
+\degreeprogramme{Informatyka}
+%\degreeprogramme{Computer Science}
+
+\date{2015}
+
+\department{Katedra Informatyki Stosowanej}
+%\department{Department of Applied Computer Science}
+
+\faculty{Wydział Elektrotechniki, Automatyki,\protect\\[-1mm] Informatyki i Inżynierii Biomedycznej}
+%\faculty{Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical Engineering}
+
+\acknowledgements{Serdecznie dziękuję mojej Mamie, dzięki której jestem w miejscu w którym jestem. Bez Jej pomocy niewątpliwie ta praca by nie powstała.}
+
+
+\setlength{\cftsecnumwidth}{10mm}
+
+%---------------------------------------------------------------------------
+\setcounter{secnumdepth}{4}
+
+\begin{document}
+
+\titlepages
+\setcounter{tocdepth}{3}
+\tableofcontents
+\clearpage
+
+\include{rozdzial1}
+\include{rozdzial2}
+\include{rozdzial3}
+\include{rozdzial6} %architektura 
+\include{rozdzial4}
+\include{rozdzial5}
+\include{dodatekA}
+%\include{dodatekB}
+
+
+
+% itd.
+% \appendix
+% \include{dodatekA}
+% \include{dodatekB}
+% itd.
+
+\bibliographystyle{abbrv}
+\bibliography{bibliografia}
+
+\end{document}

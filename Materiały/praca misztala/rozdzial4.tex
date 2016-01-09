@@ -1,0 +1,270 @@
+\chapter{Implementacja}
+\label{cha:implementacja}
+
+Rozdział ten traktuje o tym w jaki sposób praktycznie zaimplementowano wszystkie funkcjonalności systemu - zostały przedstawione tu kluczowe elementy systemu niezbędne do jego działania. 
+
+\section{Serwer}
+\label{sec:serwer}
+
+Sekcja ta dotyczy aplikacji serwerowej, a więc elementu systemu, który pobiera dane od detektorów, odpowiednio je przechowuje oraz umożliwia ich pobieranie upoważnionym użytkownikom.
+
+\subsection{RESTful API}
+\label{sec:api}
+
+Aplikacja serwerowa wystawia REST-owe API, które umożliwia pełną obsługę systemu. Cechuje się możliwością:
+
+\begin{itemize}
+	\item rejestracji nowego użytkownika,
+	\item logowania z rozpoznaniem typu aplikacji która wykonuje logowanie (detektor, czy np. klient www),
+	\item wylogowania (kończenia sesji),
+	\item powiadomienia serwera przez detektor o fakcie wykrywania ruchu ,
+	\item ustawienia nazwy dla detektora ruchu celem łatwiejszego rozpoznawania urządzenia przez użytkownika,
+	\item wysyłania zdjęć przez detektor na serwer ,
+	\item pobrania wszystkich urządzeń podłączonych pod użytkownika,
+	\item sprawdzenia czy dane urządzenie aktualnie pracuje, jest online i wykrywa ruch,
+	\item pobrania zdjęć wysłanych przez dane urządzenie.
+\end{itemize}
+
+
+W sekcji \ref{sec:serwerApi} umieszczony jest fragment kodu bezpośrednio odpowiadający za udostępnienie usług webowych. Aplikacja została napisana w języku Java z wykorzystaniem biblioteki \cite{Jersey}. Do podłączenia się do bazy danych frameworka Hibernate \cite{Hibernate}
+
+Poniżej znajduje się tabela przedstawiająca typy zapytań, zwracane wartości, oraz potrzebne argumenty do ich wywołania. 
+
+\begin{description}
+	\item[Użytkownicy] \hfill \\
+	
+		\begin{tabularx}{\linewidth} {|c|X|}
+		\hline
+						& {\bf POST}\\ \hline
+		  URL 			& /users/register\\
+		  Zwracany typ 	& application/json\\
+		  Nagłówek 		& {\bf api\_key}: string\\
+		  Parametry 	& {\bf email}: string, {\bf password}: string [SHA-256]\\
+		  Opis 			& Rejestruje w systemie nowego użytkownia \\
+		  SUKCES 		& {\bf 200}\\
+		  PORAŻKA 		& {\bf 401}: zły API key, {\bf 406} użytkownik o podanym adresie email istnieje, lub podano nieprawidłowe dane, {\bf ErrorJSON}\\
+		  \hline
+		\end{tabularx}
+		
+		\begin{tabularx}{\linewidth} {|c|X|}
+		\hline
+						& {\bf POST}\\ \hline
+		  URL 			& /users/login\\
+		  Zwracany typ 	& application/json\\
+		  Nagłówek 		& {\bf api\_key}: string\\
+		  Parametry 	& {\bf email}: string, {\bf password}: string [SHA-256]\\
+		  Opis 			& Otwiera nową sesję dla aplikacji klienckiej (wyświetlającej dane) \\
+		  SUKCES 		& {\bf 200}: \{"Token": string\} \\
+		  PORAŻKA 		& {\bf 401}: zły API key, {\bf 406} niepoprawne dane logowania, {\bf ErrorJSON}\\
+		  \hline
+		\end{tabularx}
+		
+		\begin{tabularx}{\linewidth} {|c|X|}
+			\hline
+						& {\bf DELETE}\\ \hline
+		  URL 			& /users/logout\\
+		  Zwracany typ 	& Kod odpowiedzi HTTP\\
+		  Nagłówek 		& {\bf api\_key}: string, {\bf token}: string\\
+		  Parametry 	& \\
+		  Opis 			& Zamyka sesje \\
+		  SUKCES 		& {\bf 200} \\
+		  PORAŻKA 		& {\bf 401}: zły API key lub niewłaściwy token\\
+		  \hline
+		\end{tabularx}
+		
+		\item[API dla detektora ruchu] \hfill \\
+		
+		\begin{tabularx}{\linewidth} {|c|X|}
+		\hline
+						& {\bf POST}\\ \hline
+		  URL 			& /detector/login\\
+		  Zwracany typ 	& application/json\\
+		  Nagłówek 		& {\bf api\_key}: string\\
+		  Parametry 	& {\bf email}: string, {\bf password}: string [SHA-256], {\bf device\_id}: string\\
+		  Opis 			& Otwiera sesję dla detektora ruchu. Jeżeli datektor o podanym device\_id nie istnieje tworzony jest odpowiedni wpis w bazie danych \\
+		  SUKCES 		& {\bf 200}: \{"Token": string\}\\
+		  PORAŻKA 		& {\bf 401}: zły API key, {\bf 406} niepoprawne dane logowania, {\bf ErrorJSON}\\
+		  \hline
+		\end{tabularx}
+		
+		\begin{tabularx}{\linewidth} {|c|X|}
+		\hline
+						& {\bf POST}\\ \hline
+		  URL 			& /detector/beep\\
+		  Zwracany typ 	& Kod odpowiedzi HTTP\\
+		  Nagłówek 		& {\bf api\_key}: string, {\bf token}: string\\
+		  Parametry 	& {\bf device\_id}: string\\
+		  Opis 			& Dodaje wpis o tym, że detektor działa\\
+		  SUKCES 		& {\bf 200}\\
+		  PORAŻKA 		& {\bf 401}: zły API key, lub niewłaściwy token, {\bf 404} urządzenie nie znalezione\\
+		  \hline
+		\end{tabularx}
+		
+		\begin{tabularx}{\linewidth} {|c|X|}
+		\hline
+						& {\bf POST}\\ \hline
+		  URL 			& /detector/devicename\\
+		  Zwracany typ 	& application/json\\
+		  Nagłówek 		& {\bf api\_key}: string, {\bf token}: string\\
+		  Parametry 	& {\bf device\_id}: string, {\bf name}: string\\
+		  Opis 			& Ustawia nazwę dla urządzenia\\
+		  SUKCES 		& {\bf 200}\\
+		  PORAŻKA 		& {\bf 401}: zły API key, lub niewłaściwy token, {\bf 404} urządzenie nie znalezione\\
+		  \hline
+		\end{tabularx}
+		
+		\begin{tabularx}{\linewidth} {|c|X|}
+		\hline
+						& {\bf POST}\\ \hline
+		  URL 			& /detector/photo\\
+		  Konsumuje		& mediapart/form-data\\
+		  Zwracany typ 	& Kod odpowiedzi HTTP\\
+		  Nagłówek 		& {\bf api\_key}: string, {\bf token}: string\\
+		  Parametry 	& {\bf device\_id}: string, {\bf photo}: file\\
+		  Opis 			& Wysyła zdjęcie oznaczające ruch\\
+		  SUKCES 		& {\bf 200}\\
+		  PORAŻKA 		& {\bf 401}: zły API key, lub niewłaściwy token, {\bf 404} urządzenie nie znalezione\\
+		  \hline
+		\end{tabularx}
+		
+		\item[API dla klienta] \hfill \\
+		
+		\begin{tabularx}{\linewidth} {|c|X|}
+		\hline
+						& {\bf GET}\\ \hline
+		  URL 			& /client/devices\\
+		  Zwracany typ 	& application/json\\
+		  Nagłówek 		& {\bf api\_key}: string, {\bf token}: string\\
+		  Parametry 	& \\
+		  Opis 			& Zwraca listę wszystkich detektorów ruchu użytkownika\\
+		  SUKCES 		& {\bf 200}: JSON \{"Devices": [\{"DeviceId": string, "DeviceName": string\}, ... ]\}\\
+		  PORAŻKA 		& {\bf 401}: zły API key, lub niewłaściwy token, {\bf 404} użytkownik nie znaleziony\\
+		  \hline
+		\end{tabularx}
+		
+		\begin{tabularx}{\linewidth} {|c|X|}
+		\hline
+						& {\bf GET}\\ \hline
+		  URL 			& /client/isonline\\
+		  Zwracany typ 	& application/json\\
+		  Nagłówek 		& {\bf api\_key}: string, {\bf token}: string\\
+		  Parametry 	& {\bf device\_id}: string\\
+		  Opis 			& Sprawdza czy detektor jest OnLine\\
+		  SUKCES 		& {\bf 200}: JSON \{``Online'': boolean\}\\
+		  PORAŻKA 		& {\bf 401}: zły API key, lub niewłaściwy token, {\bf 404} urządzenie nie znalezione\\
+		  \hline
+		\end{tabularx}
+		
+		\begin{tabularx}{\linewidth} {|c|X|}
+		\hline
+						& {\bf GET}\\ \hline
+		  URL 			& /client/iamges\\
+		  Zwracany typ 	& application/json\\
+		  Nagłówek 		& {\bf api\_key}: string, {\bf token}: string\\
+		  Parametry 	& {\bf device\_id}: string\\
+		  Opis 			& Zwraca listę zdjęć wysłanych przez urządzenie \\
+		  SUKCES 		& {\bf 200}: JSON \{"Images": [\{"Id": integer, "Date": string\}, ...]\}, gdzie Id oznacza Id zdjęcia w strumieniu zdjęć \\
+		  PORAŻKA 		& {\bf 401}: zły API key, lub niewłaściwy token, {\bf 404} urządzenie nie znalezione, ErrorJSON\\
+		  \hline
+		\end{tabularx}
+		
+		\begin{tabularx}{\linewidth} {|c|X|}
+		\hline
+						& {\bf GET}\\ \hline
+		  URL 			&  /client/fetch/\{id\} \\ 
+  		  Zwracany typ 	& image/jpg\\
+		  Nagłówek 		& {\bf api\_key}: string, {\bf token}: string\\
+		  Parametry 	& {\bf device\_id}: string, {\bf \{id\}}: integer\\
+		  Opis 			& Zwraca zdjęcie o \{id\} wysłane przez urządzenie o danym device\_id\\
+		  SUKCES 		& {\bf 200}: image/jpg\\
+		  PORAŻKA 		& {\bf 401}: zły API key, lub niewłaściwy token, {\bf 404} urządzenie nie znalezione, lub zdjęcie nie znalezione, ErrorJSON\\
+
+		  \hline
+		\end{tabularx}
+
+\end{description}
+
+Poniżej przedstawiona jest forma wiadomości ErrorJSON:
+
+\begin{lstlisting}
+ErrorJSON:
+	{
+		"OperationType": string, 
+		"ErrorMessage": string
+	}
+\end{lstlisting}
+	
+\section{Aplikacja}
+\label{sec:aplikacja}
+
+Do implementacji aplikacji na system Android użyto IDE Android Studio w wersji 1.0.0, oraz systemu do automatycznego budowania aplikacji Gradle. Do działania wymaga wersji 4.0 lub wyższej systemu Android. Najważniejsze fragmenty kodu załączono w sekcji \ref{sec:android}. 
+
+Aplikacja cechuje się następującymi funkcjonalnościami: 
+\begin{itemize}
+	\item wykrywania ruchu oraz prezentacji jego wyników w trybie: kolorowym, odcieniu szarości, oraz binarnym,
+	\item łączenia się ze zdalnym serwerem, oraz przesyłania mu informacji o tym czy wykrywanie jest włączone,
+	\item wysyłania na serwer zdjęć zawierających klatki z wykrytym ruchem,
+	\item zaznaczania, oraz wycinania obszaru ruchu z klatki, oraz jego zapisu na kartę pamięci,
+	\item włączenia alarmu głosowego w razie wykrytego ruchu,
+	\item ustalenia parametrów algorytmu, które zostały opisane w sekcji \ref{sec:użyty algorytm}.
+
+\end{itemize}
+
+Aplikacja do wykonania obliczeń na obrazach wykorzystuje bibliotekę OpenCV, napisaną w C++. Dla zwiększenia OpenCV potrzebuje bibliotek napisanych pod konkretny hardware. Z tego względu wymagane jest pobranie dodatkowej aplikacji. Proces ten wykonywany jest przy pierwszym uruchomieniu detektora ruchu.
+
+Po naciśnięciu przycisku detektor rozpoczyna analizę kolejnych klatek w czasie rzeczywistym, zgodnie z algorytmem opisanym w sekcji \ref{sec:użyty algorytm}. Proces ten jest jednowątkowy, mimo to nawet na słabszych urządzeniach otrzymano zadowalające rezultaty 13fps. 
+
+Poniżej przedstawiono zrzuty ekranu:
+
+\begin{figure}
+\centering
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+	  \includegraphics[width=.7\linewidth]{scr1}
+	  \caption{Wykrywanie ruchu w trybie RGB}
+	  \label{fig:sub1}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+	  \includegraphics[width=.7\linewidth]{scr2}
+	  \caption{Wykrywanie ruchu w trybie GRAY}
+	  \label{fig:sub2}
+	\end{subfigure}
+	
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+	  \includegraphics[width=.7\linewidth]{scr3}
+	  \caption{Wykrywanie ruchu w trybie binarnym}
+	  \label{fig:scr3}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+	  \centering
+	  \includegraphics[width=.7\linewidth]{scr4}
+	  \caption{Zrzut ekranu części opcji programu}
+	  \label{fig:scr4}
+	\end{subfigure}
+\caption{Zrzuty ekrany działającej aplikacji}
+\label{fig:test}
+\end{figure}
+
+\FloatBarrier
+\subsection{Użyte biblioteki zewnętrzne}
+\label{sec:biblioteki zewnętrzne}
+
+Przy tworzeniu aplikacji wykrywającej ruch na system Android użyto kilku bibliotek, jeżeli nie napisano inaczej udostępnionych na licencji Apache 2.0 \cite{Apachelicense}. Oto one:
+
+\begin{description}
+	\item[OPEN CV] \cite{Opencv}, wersja 2.4.9 \hfil \\
+	{\it Open Source Computer Vision} jako jedyna z wykorzystanych bibliotek udostępniona na licencji BSD. OpenCV udostępnia wiele narzędzi z zakresu przetwarzania obrazów. Została napisana przy użyciu Android NDK w języku C++ dzięki czemu działa ona znacznie szybciej. OpenCV wymaga zainstalowania na Smartfonie binarnych plików dla konkretnego hardware'u, jednak aplikacja stworzona w ramach tej pracy przeprowadza użytkownika przez cały proces. 
+	
+	\item[Retrofit] \cite{Retrofit}, wersja 1.8.0 \hfil \\
+	Retrofit jest lekkim klientem REST'a dla Androida. Umożliwia zarówno synchroniczne jak asynchroniczne wywołania. Retrofit zamienia RESTful API w interfejs, oraz używa biblioteki GSON do automatycznego parsowania odpowiedzi serwera. Zastosowanie biblioteki załączono w sekcji \ref{sec:androidApi}
+	
+	\item[GSON] \cite{Gson}, wersja 2.3.1 \hfil \\
+	GSON jest biblioteką która automatycznie przekształca String w formie JSON \cite{Json} na obiekt Javowy.
+	
+	\item[ButterKnife] \cite{Butterknife} \hfil \\
+	ButterKnife jest małą biblioteką która za pomocą {\it Java annotations} ułatwia odnajdowanie i programowanie widoków 
+
+\end{description}
+

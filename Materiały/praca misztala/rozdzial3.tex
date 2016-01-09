@@ -1,0 +1,74 @@
+\chapter{Użyte technologie}
+\label{cha:użyte technologie}
+
+Tak jak opisano w sekcji \ref{sec:cele pracy} cele pracy będzie zaimplementowanie detektora ruchu na system Android, który będzie łączył się z serwerem i przekazywał tam pewne informacje o swojej pracy. Nie trudno wyciągnąć wniosek, że do pracy potrzebne będą następujące komponenty:
+
+\begin{itemize}
+	\item urządzenie z system Android wyposażone w kamerę plus Android SKD,
+	\item serwer na którym będzie ``postawiona'' aplikacja z którą komunikować się będzie smartfon; wybór padł na Amazon AWS,
+	\item system do zarządzania bazami danych,
+	\item ponieważ aplikacja webowa będzie pisana w języku Java przydatny staje się serwer aplikacji. Wybrany został Apache Tomcat. 	
+\end{itemize}
+
+Komunikacja pomiędzy smartfonem a aplikacją webową będzie odbywać się przy użyciu architektury REST oraz formatu danych JSON. 
+
+\section{Android OS}
+\label{sec:android}
+
+Android jest system operacyjnym o jądro Linuxa. Jest to najpopularniejszy system operacyjny na urządzenia mobilne (smartfony i tablety). 
+
+W kontekście tej pracy najważniejszą rzeczą o której trzeba powiedzieć jest fakt, iż natywne aplikacje na ten system tworzy się w używając Android SDK który udostępnia API do języka Java. Dokumentacja znajduje się na oficjalnej stronie projektu Android \cite{Androiddocs}.
+
+Jest to bardzo ważne ponieważ kod tworzony przez developerów, tak samo jak przy korzystaniu ze ``zwykłej'' Javy, jest kompilowany do kodu bajtowego. Kod ten nie jest rozumiany przez procesor, a do jego uruchomienia potrzebna jest maszyna wirtualna. W przypadku Androida jest to Dalvik, który został zastąpiony w najnowszej wersji systemu Android Lolipop maszyną wirtualną ART.
+
+Kod uruchamiany w maszynie wirtualnej jest wolniejszy od kodu maszynowego. W przypadku prostych użytkowych aplikacji, które nie wykonują skomplikowanych obliczeń fakt ten nie przeszkadza istotnie, jednak kiedy piszemy program który wykonuje dużo obliczeń sprawa się komplikuje. Kod wykonuje się dużo wolniej i zużywa więcej pamięci. Z tego powodu implementowanie algorytmu detekcji ruchu w Javie na urządzeniach mobilnych mija się z celem. Takie rozwiązanie jest całkowicie bezużyteczne. Na szczęście inżynierowie odpowiadający za Androida przewidzieli taką sytuację i udostępnili coś co nazywa się NDK -- {\it Native Development Kit}. Jest to zestaw narzędzi umożliwiających programowanie urządzeń z Androidem w języku C/C++. NDK umożliwia (a nawet wymaga) integracje z SDK. 
+
+W praktyce NDK używa się do programowania tylko tych części aplikacji które są krytyczne pod względem wydajnościowym. W przypadku tej pracy -- części aplikacji analizującej kolejne klatki z aparatu. 
+
+Trzeba też zaznaczyć że programowanie z użyciem NDK jest znacznie mniej wygodne niż SDK. Na szczęście istnieje biblioteka {\it OpenCV -- Open source Computer Vision} \cite{Opencv}. Jest ona przeznaczona dla systemów przetwarzających obrazy. Udostępnia API Javo-we i jest przygotowana do pracy z system Android. Biblioteka ta została szerzej opisana w sekcji \ref{sec:biblioteki zewnętrzne} 
+
+%\section{Serwer: Amazon AWS}
+%\label{sec:serwer}
+%
+%Amazon AWS -- tutaj postawiłem bazę danych i tomcata. Po krótce opiszę serwer. Raczej krótka %sekcja 
+
+\section{Baza danych: MySQL}
+\label{sec:baza danych}
+
+MySQL \cite{Mysql} jest serwerem oraz systemem zarządzania relacyjnymi bazami danych. Dostęp do bazy danych uzyskujemy poprzez język zapytań bazy danych SQL. MySQL jest rozwijany przez firmę Oracle. 
+
+Relacyjna baza danych jest niczym innym jak zbiorem relacji. Przedstawiając sprawę jak najprościej można powiedzieć, że relacja jest dwuwymiarową tabelą złożoną z kolumn i wierszy, gdzie liczba kolumn jest z góry określona. Każdą kolumnę określa nazwa, oraz dziedzina. Na przecięciu wiersza i kolumny znajduje się pojedyncza wartość należąca do dziedziny kolumny. Wiersze w relacji są unikalne, tj. nie nie występuje taka para wierszy że wartości dla każdej z kolumn są takie same. 
+Kolejność wierszy i kolumn jest nieistotna. 
+
+
+\section{Serwer aplikacji: Tomcat}
+\label{sec:serwer aplikacji}
+
+Ponieważ aplikacja serwerowa pisana jest w języku Java EE niezbędny jest serwer aplikacji. {\it Apache Tomcat} \cite{Tomcat} idealnie się do tego nadaje. Tomcat jest otwarto--źródłową implementacją technologii {\it Java Servlet}, oraz {\it JavaServer Pages}. 
+
+\section{Forma komunikacji: REST i Jersey}
+\label{sec:forma komunikacji}
+
+{\it REST -- Representational State Transfer} \cite{Rest} -- jest to abstrakcyny wzorzec architektury oprogramowania opisujący sposób komunikacji aplikacji rozproszonych. Jest bezstanowy, to znaczy, że klient musi dostarczyć wszelkich niezbędnych informacji do realizacji zapytania.
+
+{\it JAX-RS: Java API for RESTful Web Services} jest API Javowym zapewniającym wsparcie w tworzeniu usług internetowych ({\it web service}) zgodnych z wzrocem REST. {\it JAX-RS} jest częścią Javy EE 6.
+
+{\it Rest Jersey} \cite{Jersey} jest otwarto--źródłowym framework'iem wspomagającym tworzenie webservice'ów RESTowych. {\it Jersey} w pełni wspiera {\it JAX-RS}. 
+
+W pracy aplikacja kliencka komunikuje się z serwerem przy użyciu formatu {\it JSON} \cite{Json}. Jest to lekki, tekstowy i nadający się do czytania przez człowieka format wymiany danych. Przykładowe dane przekazywane w tym formacie: 
+
+\begin{lstlisting}
+{"obiad": {
+   "kalorie": 800,
+   "godzina": "14:00",
+   "składniki": [
+     {
+		"nazwa": "schabowy",
+		"kalorie": 600
+	 },
+	 {
+		"nazwa": "ziemniaki",
+		"kalorie": 200
+   ]
+ }}
+\end{lstlisting}
