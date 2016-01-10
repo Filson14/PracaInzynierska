@@ -1,5 +1,6 @@
 \chapter{Odczyt danych pogodowych}
-Posterunki opadowe i~innego rodzaju podobna infrastruktura jest własnością Instytutu Meteorologii i Gospodarki Wodnej. Oferuje on serwis internetowy prezentujący liczne dane meteorologiczne oraz hydrologiczne.
+\label{cha:odczyt_danych}
+Posterunki opadowe i~innego rodzaju podobna infrastruktura są własnością Instytutu Meteorologii i Gospodarki Wodnej. Oferuje on serwis internetowy prezentujący liczne dane meteorologiczne oraz hydrologiczne \cite{pogodynka_pl}.
 
 W ramach pracy nad niniejszym projektem, wspomniany wyżej serwis został poddany analizie celem automatycznego odczytu danych, które dalej mogłyby być poddane przetworzeniu. Zostały przygotowane narzędzia odczytujące dane o~posterunkach opadowych i~wodowskazowych (jak nazwa, lokalizacja) oraz ich wartości pomiarowe, a~także informacje o~przebiegu granic poszczególnych zlewni rzek.
 
@@ -8,6 +9,8 @@ W przypadku posterunków opadowych zapisywano wartości ostatniego pomiaru godzi
 Dane pojedynczego posterunku wodowskazowego składały się z aktualnego wskazania poziomu wody (wraz z datą pomiaru), kolekcji godzinowych pomiarów poziomu wody za ostatnie 72 godziny(w jednostce cm) i~godzinowych pomiarów wielkości przepływu (w jednostce $m^3/s$) za taki sam okres czasu.
 
 
-Z powodu obostrzeń prawnych zawartych w~\textbf{Zasadach użytkowania serwisu internetowego IMGW PIB} nie można jednak wykorzystać rzeczywistych danych pobieranych z~serwisu na potrzeby pracy. Zgodnie z~\textsection~2~ust.~5 warunkiem koniecznym jest uzyskanie pisemnej zgody Instytutu. Złożone zostało odpowiednie podanie, a~także przeprowadzono spotkanie z~Zastępcą Kierownika Centrum Hydrologicznej Osłony Kraju, Radosławem Doktorem. Podczas rozmowy dowiedziano się, iż warunkiem koniecznym uzyskania dostępu do danych IMGW, na potrzeby pracy podobnej jak niniejsza, jest zawarcie umowy między Instytutem a Uczelnią. Kolejnym punktem są pozwolenia w~kontekście konkretnego projektu, gdzie należy precyzyjnie określić między innymi rodzaj oczekiwanych danych oraz obszar jakiego mają dotyczyć. Po pozytywnym rozpatrzeniu prośby rozpoczęte zostają prace nad indywidualnym API przekazującym wskazane informacje. Reasumując, okres oczekiwania na wyrażenie zgody i~dalej stworzenie odpowiedniego interfejsu to co najmniej kilka miesięcy.
+Z powodu obostrzeń prawnych zawartych w~\textbf{Zasadach użytkowania serwisu internetowego IMGW PIB} nie można jednak wykorzystać rzeczywistych danych pobieranych z~serwisu na potrzeby pracy. Zgodnie z~\textsection~2~ust.~5 warunkiem koniecznym jest uzyskanie pisemnej zgody Instytutu. Złożone zostało odpowiednie podanie, a~także przeprowadzono spotkanie z~Zastępcą Kierownika Centrum Hydrologicznej Osłony Kraju, Radosławem Doktorem.
+
+Podczas rozmowy dowiedziano się, iż warunkiem koniecznym uzyskania dostępu do danych IMGW, na potrzeby pracy podobnej jak niniejsza, jest zawarcie umowy między Instytutem a Uczelnią. Kolejnym punktem są pozwolenia w~kontekście konkretnego projektu, gdzie należy precyzyjnie określić między innymi rodzaj oczekiwanych danych oraz obszar jakiego mają dotyczyć. Po pozytywnym rozpatrzeniu prośby rozpoczęte zostają prace nad indywidualnym API przekazującym wskazane informacje. Reasumując, okres oczekiwania na wyrażenie zgody i~dalej stworzenie odpowiedniego interfejsu to co najmniej kilka miesięcy.
 
 Ponieważ nie uzyskano zgody na użycie w~pracy danych rzeczywistych przeprowadzenie analizy korelacji wyznaczanych wartości opadu powierzchniowego stało się niemożliwe. 

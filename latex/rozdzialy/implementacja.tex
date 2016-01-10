@@ -1,24 +1,75 @@
 \chapter{Implementacja}
-Jak wspomniano w poprzednim rozdziale, dane wejściowe są wskazaniami pomiarów z~poszczególnych posterunków opadowych. Są to dane punktowe, zatem aby oszacować ilość wody jaka spadła na zadanym obszarze konieczne jest przeprowadzenie ich interpolacji w~celu aproksymacji wartości dla punktów stanowiących granicę wskazanej zlewni, co dalej zmierza do wyznaczenia opadu powierzchniowego.
+\label{cha:implementacja}
+%Możliwości wyboru technologii dla rozwiązania problemu omawianego w~niniejszej pracy jest bardzo wiele. Począwszy od popularnych języków obiektowych jak Java, która swoimi, niemal nieograniczonymi możliwościami i~ogromem rozszerzających je bibliotek, pozwala rozwiązywać dowolne problemy czy technologii webowych jak JavaScript, która  
 
-Istnieje wiele metod wyznaczania średniego opadu powierzchniowego. Począwszy od prostego obliczenia średniej arytmetycznej wartości z~posterunków opadowych, poprzez metody wieloboków Voronoia, izohiet po hipsometryczną. Różnią się one dokładnością, sposobem aproksymacji czy też zaawansowaniem danych wejściowych.
+Praktyczna część niniejszej pracy została zrealizowana w~środowisku Matlab 2015b (darmowa wersja próbna). Łączy on niemal wszystkie kwestie poruszane w~niniejszej pracy - zaawansowane obliczenia matematyczne, przetwarzanie zbioru danych, pozwala na dynamiczne budowanie wykresów do prezentacji. Sprawdza się idealnie w~przypadku zadań analitycznych bądź symulacyjnych, a~jego konfiguracja sprowadza się do instalacji samego programu. Triangulację przeprowadzono w~oparciu o~klasę \textit{delaunayTriangulation}.
 
-Jak wspomniano we wstępie, praca ta traktuje o analizie danych pojedynczego opadu, a~nie zbieranych przez pewien okres czasu. Przy wyborze sposobu przekształcenia danych jest to bardzo istotne kryterium, które wraz z~możliwością jak najlepszego dopasowania do kształtu zlewni stanowiło główne wymagania tej części pracy.
+\section{Konwersja współrzędnych geograficznych}
+Współrzędne poszczególnych punktów wejściowych określane są poprzez współrzędne geograficzne w~formacie dziesiętnym. Wobec tego, konieczne jest przekształcenie ich na wartości metryczne, aby móc wyznaczyć wartość opadu w~jednostkach SI.
 
-%\section{Triangulacja i algorytm Delaunay'a}
-%Do przeprowadzenia interpolacji danych punktowych zastosowano technikę triangulacji. Polega ona na stworzeniu siatki trójkątów o~wierzchołkach w punktach z~wartością znaną (wysokość opadu na posterunku opadowym). Wybór padł na zastosowanie algorytmu Delaunay'a, który wprowadza dodatkowe ograniczenie na tworzone trójkąty. Mianowicie, okrąg opisany na każdym z~nich nie może zawierać innych punktów siatki poza wierzchołkami danego trójkąta. Ta metoda ma na celu maksymalizację równoboczności powstałych trójkątów, a~co za tym idzie, równomierność budowanej siatki.
+Jednostki wzdłuż osi $Y$ przekształcone zostały stosując zależność $1^o=111196.672 [m]$, ponieważ w~przypadku szerokości geograficznej jest ona stała.
 
-\section{Zastosowana metoda}
-Wybór padł na połączenie techniki triangulacji wraz z~interpolacją przy użyciu płaszczyzny.
+Dla długości geograficznej sytuacja nie jest tak prosta, gdyż długość jednego stopnia zależy od równoleżnika, na którym dokonuje się pomiaru. Przyjęto, że konwersja zostanie przeprowadzona w~oparciu o~długość równoleżnika leżącego na średniej szerokości geograficznej danych wejściowych. Praca zorientowana jest na analizę opadu z~konkretnej zlewni, zatem różnica z~wartością rzeczywistą jest niewielka (zostanie podana dla konkretnego przypadku). Przekształcenia dokonano w~oparciu o~wzór~\ref{eq:konwersja_wspolrzednych}. Do obliczeń przyjęto promień równikowy Ziemi o~wartości 6378410~m.
 
-Triangulacja polega na stworzeniu siatki trójkątów o~wierzchołkach w~zadanych punktach (w tym wypadku są to posterunki opadowe o znanej wysokości opadu). Zastosowano algorytm Delaunay'a, który wprowadza dodatkowe ograniczenie na tworzone trójkąty. Mianowicie, okrąg opisany na każdym z~nich nie może zawierać innych punktów siatki poza wierzchołkami danego trójkąta. Ta metoda ma na celu maksymalizację równoboczności powstałych trójkątów, a~co za tym idzie, równomierność budowanej siatki.
+\begin{equation}
+	r = \cos(\alpha)*R \Rightarrow 1^o = \frac{2 \pi r}{360} [m] \\
+	\label{eq:konwersja_wspolrzednych}
+\end{equation}
+gdzie
+\begin{description}[leftmargin=2cm, itemsep=0cm, labelsep=0cm]
+	\item[$\alpha$] kąt, będący wartością szerokości geograficznej
+	\item[$R$] równikowy promień Ziemi
+	\item[$r$] promień równoleżnika na szerokości geograficznej $\alpha$
+\end{description}
+
+\section{Wielkość opadu}
+Z~powodu braku dostępu do rzeczywistych danych meteorologicznych oraz hydrologicznych, co zostało opisane w~rozdziale~\ref{cha:odczyt_danych}, wykluczona została możliwość racjonalnej i~miarodajnej analizy pomiarów wraz z~określeniem korelacji opadu i~wysokości poziomu wody rzeki. Wobec powyższego, zdecydowano o~zastosowaniu danych symulowanych. Stworzone zostały funkcje generujące pomiar opadu we wskazanym punkcie. Przygotowane zostały dwa warianty - opad elipsoidalny oparty na wzorze~\ref{eq:opad_elipsa} oraz zdefiniowany funkcją wymierną~\ref{eq:opad_wymierny}.
+
+\begin{equation}
+A = 1%z = h - \alpha * (x - x_0)^2 - \betha * (y - y_0)^2;
+\label{eq:opad_elipsa}
+\end{equation}
+
+\begin{equation}
+z = MAX\_PRECIP * \frac{-1}{h+(x-x_0)^2 + \alpha * (y-y_0)^2}
+\label{eq:opad_wymierny}
+\end{equation}
+
+Zdefiniowano również funkcję, która ma za zadanie wyznaczenie objętości rzeczywistego opadu we wskazanym trójkącie w~oparciu o~zadany wariant opadu. Tym sposobem zostało rozwiązane zagadnienie weryfikacji dokładności działania algorytmu opisanego w~podrozdziale~\ref{sec:zastosowana_metoda}. Uzyskiwane wyniki porównywane są z~danymi pseudorzeczywistymi.
 
 \begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.3]{delaunay}
-	\caption{Schemat zastosowania algorytmu Delaunay'a (źródło: wikipedia)}
-	\label{fig:delaunay}
+\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{chmura_elipsoidalna_1}
+		\caption{Wykres zastosowanej funkcji elipsoidalnej}
+		\label{fig:elipsa_3d}
+	\end{subfigure}%	
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{chmura_elipsoidalna_2}
+		\caption{Rzut wykresu zastosowanej funkcji elipsoidalnej}
+		\label{fig:elipsa_2d}
+	\end{subfigure}	
+	
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{chmura_wymierna_1}
+		\caption{Wykres zastosowanej funkcji wymiernej}
+		\label{fig:elipsa_3d}
+	\end{subfigure}%	
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\includegraphics[width=1\linewidth]{chmura_wymierna_2}
+		\caption{Rzut wykresu zastosowanej funkcji wymiernej}
+		\label{fig:elipsa_2d}
+	\end{subfigure}	
+\caption{Funkcje wartości opadu}
 \end{figure}
+
+\section{Zastosowana metoda}
+
+Jak wspomniano na początku tego rozdziału, przeprowadzenie triangulacji oparto o~klasę delaunayTriangulation. Powstała siatka trójkątów została zaprezentowana na rysunku \ref{fig:triagnulacja_danych}.
 
 \begin{figure}[ht]
 	\centering
@@ -27,7 +78,7 @@ Triangulacja polega na stworzeniu siatki trójkątów o~wierzchołkach w~zadanyc
 	\includegraphics[width=0.7\linewidth]{dane_wejsciowe}
 	\caption{Posterunki opadowe i~obszar zlewni}
 	\label{fig:dane_wejsciowe}
-\end{subfigure}	
+\end{subfigure}%	
 	\begin{subfigure}[t]{0.5\textwidth}
 	\centering
 	\includegraphics[width=0.7\linewidth]{triangulacja_zlewnia}
@@ -38,8 +89,6 @@ Triangulacja polega na stworzeniu siatki trójkątów o~wierzchołkach w~zadanyc
 	
 \end{figure}
 
-Po zastosowaniu triangulacji następnym etapem jest wyznaczenie punktów, dla których należy interpolować wartość opadu. Tymi punktami są poszczególne węzły granicy wskazanej zlewni oraz miejsca przecięcia tej granicy z krawędziami trójkątów. Wraz z~posterunkami opadowymi znajdującymi się wewnątrz obszaru dla jakiego wyznaczany jest obszar powierzchniowy będą stanowiły węzły kolejnej triangulacji.
-
 
 \begin{figure}[ht]
 	\centering
@@ -49,32 +98,9 @@ Po zastosowaniu triangulacji następnym etapem jest wyznaczenie punktów, dla kt
 	\label{fig:punkty_interpolacji}
 \end{figure}
 
-Jak wspomniano na początku tego rozdziału, wyznaczenie wartości dla powstałych punktów odbywa się poprzez interpolację powierzchniową poszczególnych trójkątów.
+Wyznaczenie wartości dla powstałych punktów odbywa się poprzez interpolację powierzchniową poszczególnych trójkątów. Została stworzona funkcja wyznaczająca wektor normalny dla pojedynczego trójkąta. Z~jego pomocą (oraz znając współrzędne punktu należącego do płaszczyzny - np. jeden z~wierzchołków trójkąta) wyznacza się wartość \textit{z} punktu o~współrzędnych $x$~i~$y$~w~oparciu o~równanie ogólne płaszczyzny.
 
-Została stworzona funkcja wyznaczająca wektor normalny dla pojedynczego trójkąta. Wektor normalny jest prostopadły do powierzchni zadanej płaszczyzny. Z~jego pomocą (oraz znając współrzędne punktu należącego do płaszczyzny - np. jeden z~wierzchołków trójkąta) wyznacza się wartość \textit{z} punktu o~współrzędnych $x$~i~$y$~w~oparciu o~równanie ogólne płaszczyzny.
-
-\begin{equation*}
-\begin{gathered}
-A(x - x_0) + B(y - y_0) + C(z - z_0) = 0 \\
-[A, B, C] = (P_2 - P_1) \times (P_3 - P_2)
-\label{eq:rownanie_plaszczyzny}
-\end{gathered}
-\end{equation*}
-gdzie
-% eqwhere z aghdpl powoduje błąd
-\begin{description}[leftmargin=3cm, itemsep=0cm, labelsep=0cm]
-	\item[$x_0, y_0, z_0$] współrzędne punktu należącego do płaszczyzny
-	\item[$A, B, C$] współrzędne wektora normalnego
-\end{description}
-
-Przy użyciu przygotowanej funkcji, dla wszystkich wyznaczonych do interpolacji punktów uzyskiwana jest wartość opadu korzystając ze współrzędnych $x$~i~$y$ punktu i~wektora normalnego trójkąta, w~którym ten punkt się znajduje.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.5]{algorytm}
-	\caption{Schemat krokowy zastosowanej metody}
-	\label{fig:algorytm}
-\end{figure}
+Przy użyciu przygotowanej funkcji (opartej na wzorze~\ref{eq:wartosc_interpolowana}, dla wszystkich wyznaczonych do interpolacji punktów uzyskiwana jest wartość opadu korzystając ze współrzędnych $x$~i~$y$ punktu i~wektora normalnego trójkąta, w~którym ten punkt się znajduje.
 
 \begin{figure}[ht]
 	\centering
@@ -83,30 +109,31 @@ Przy użyciu przygotowanej funkcji, dla wszystkich wyznaczonych do interpolacji 
 	\label{fig:plaszczyzna_interpolacji}
 \end{figure}
 
-Po zakończeniu interpolacji wartości przeprowadzana jest ponowna triangulacja mająca na celu stworzenie brył o~trójkątnej podstawie (wysokości brył to wartość opadu w~punkcie będącym wierzchołkiem). Tym razem zastosowane zostaną punkty interpolowane oraz posterunki wewnątrz zlewni. Jak zaprezentowano na rysunku~\ref{fig:druga_triangulacja}, pojawia się komplikacja
 
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[scale=0.3]{delaunay}
-	\caption{Schemat zastosowania algorytmu Delaunay'a (źródło: wikipedia)}
-	\label{fig:delaunay}
-\end{figure}
+Wyizolowane punkty, krytyczne z~punktu widzenia zadanego obszaru opadu, stanowią węzły kolejnej triangulacji. Jak zaprezentowano na rysunku~\ref{fig:druga_triangulacja}, pojawia się komplikacja wynikająca z~łączenia ze sobą wszystkich pobliskich punktów. Tym sposobem kreowane są trójkąty, które nie wprowadzają informacji dla rozwiązania. Co więcej, wpływają negatywnie na ewentualny wynik.
 
 \begin{figure}[ht]
 	\centering
-\begin{subfigure}[t]{.5\textwidth}
+\begin{subfigure}[t]{1\textwidth}
 	\centering
-	\includegraphics[width=0.7\linewidth]{dane_druga_triangulacja}
+	\includegraphics[width=1\linewidth]{dane_druga_triangulacja}
 	\caption{Punkty dla ponownej triangulacji}
-	\label{fig:dane_wejsciowe}
+	\label{fig:dane_druga_triangulacja}
 \end{subfigure}	
-	\begin{subfigure}[t]{0.5\textwidth}
+	\begin{subfigure}[t]{1\textwidth}
 	\centering
-	\includegraphics[width=0.7\linewidth]{druga_triangulacja}
+	\includegraphics[width=1\linewidth]{druga_triangulacja}
 	\caption{Siatka triangulacji dla wyznaczonych punktów}
 	\label{fig:druga_triagnulacja}
 \end{subfigure}	
 \caption{Triangulacja danych interpolowanych}
-	
+\end{figure}
+
+Problem ten rozwiązano poprzez dodanie ograniczenia dla obiektu klasy \textit{delaunayTriangulation} zdefiniowanego jako zbiór węzłów triangulacji stanowiących granicę zlewni poddawanej analizie. Odfiltrowanie nieistotnych fragmentów wykonano stosując metodę \textit{isInterior}, która wskazuje czy poszczególne trójkąty utworzonej siatki zawierają się w~obszarze wskazanym przez ograniczenie. Rezultat tych kroków prezentuje rysunek~\ref{fig:druga_triangulacja_ograniczenie}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.5]{druga_triangulacja_z_ograniczeniem}
+	\caption{Triangulacja z~ograniczeniem obszarem zlewni}
+	\label{fig:druga_triangulacja_ograniczenie}
 \end{figure}
