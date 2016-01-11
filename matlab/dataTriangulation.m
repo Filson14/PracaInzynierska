@@ -3,19 +3,17 @@ clear;
 clc;
 close all;
 
-xAxisLabel = 'D³ugoœæ geograficzna';
-yAxisLabel = 'Szerokoœæ geograficzna';
+xAxisLabel = 'X [km]';
+yAxisLabel = 'Y [km]';
 zAxisLabel = 'Wysokoœæ opadu [mm]';
-%% Przygotowanie danych do triangulacji
-disp('Przygotowanie danych do obliczeñ.');
+%% Przygotowanie danych wejœciowych
+disp('Przygotowanie danych wejœciowych.');
 load ('.\zapisane dane\rainfallPoints.mat');
 load ('.\zapisane dane\catchment.mat');
-% stationsAmmount = length(rainfallStations);
 
 clear('borderPoints');
 clear('interpolationPoints');
 clear('poinsInsideCatchment');
-% rainfallPoints = zeros(stationsAmmount, 3);
 interpolationPoints = [];
 borderPoints = [];
 global middle_x;
@@ -27,34 +25,27 @@ geoMiddleY = min(catchment(:, 2)) + (max(catchment(:, 2)) - min(catchment(:, 2))
 middle_x = geoMiddleX;
 middle_y = geoMiddleY;
 
-% for i = 1:stationsAmmount
-%     rainfallPoints(i, 1) = rainfallStations(1, i).longitude;
-%     rainfallPoints(i, 2) = rainfallStations(1, i).latitude;
-% %     rainfallPoints(i, 3) = rlPrecip(rainfallPoints(i,1), rainfallPoints(i,2));
-% end
 %% Konwersja wspó³rzêdnych geograficznych na kilometry
 % Szerokoœæ geograficzna
 % 1 stopieñ = 111196,672 m
 % ród³o: wikipedia
-%disp('Konwersja wspó³rzêdnych na wartoœci metryczne');
+disp('Konwersja wspó³rzêdnych na wartoœci metryczne');
 alfa = min(rainfallPoints(:, 2)) + (max(rainfallPoints(:, 2)) - min(rainfallPoints(:, 2)))/2;
-R = 6371;                           % Œredni promieñ Ziemi w km
+R = 6378410;                       % Promieñ równikowy Ziemi w metrach
 r = cos(alfa*2*pi/360) * R;
 parallelLength = 2 * pi * r;
-xDegree = parallelLength / 360;    % w km
-yDegree = 111.196672;              % w km
+xDegree = (parallelLength / 360);  % w metrach
+yDegree = 111196.672;              % w metrach
 
-metricMiddleX = geoMiddleX * xDegree * 1000; % w metrach
-metricMiddleY = geoMiddleY * yDegree * 1000; % w metrach
+metricMiddleX = geoMiddleX * xDegree; % w metrach
+metricMiddleY = geoMiddleY * yDegree; % w metrach
 middle_x = metricMiddleX;
 middle_y = metricMiddleY;
 
-ellipsoidalPrecip(rainfallPoints(:,1), rainfallPoints(:,2))
-pause;
+rainfallPoints = [rainfallPoints(:, 1).*xDegree rainfallPoints(:, 2).*yDegree rainfallPoints(:, 3)];
+catchment = [catchment(:,1).*xDegree, catchment(:,2).*yDegree];
 
-% rainfallPoints = [rainfallPoints(:, 1).*xDegree rainfallPoints(:, 2).*yDegree rainfallPoints(:, 3)];
-% catchment = [catchment(:,1).*xDegree, catchment(:,2).*yDegree];
-%% Usuwanie pojedynczych posterunków
+%% Indentyfikatory posterunków wewn¹trz zlewni
 % figure
 % hold on;
 % triplot(dt, 'y');
@@ -66,6 +57,16 @@ pause;
 % xlabel(xAxisLabel);
 % ylabel(yAxisLabel);
 % hold off;
+%% Usuwanie pojedynczych posterunków
+% 
+% [~,index]=ismember([pointsInsideCatchment(28,1:2) 0],rainfallPoints,'rows');
+% if index > 0
+%     rainfallPoints = [rainfallPoints(1:(index-1), :); rainfallPoints((index+1):end, :)]
+% end
+
+%% Generowanie wartoœci opadu
+% rainfallPoints(:,3) = paraboloidalPrecip(rainfallPoints(:,1), rainfallPoints(:,2));
+rainfallPoints(:,3) = rationalPrecip(rainfallPoints(:,1), rainfallPoints(:,2));
 %% Prezentacja danych wejœciowych
 figure;
 hold on;
@@ -224,10 +225,6 @@ figure
 hold on;
 properTrianglesAmmount = length(properTriangles);
 volumes = zeros(properTrianglesAmmount, 2);
-middle_x
-middle_y
-% middle_x = middle_x * xDegree * 1000
-% middle_y = middle_y * yDegree * 1000
 
 for i = 1:properTrianglesAmmount
     triangle = properTriangles(i, :);
@@ -242,10 +239,11 @@ for i = 1:properTrianglesAmmount
     
     
     plot([points(:,1);points(1,1)], [points(:,2);points(1,2)]);
-    baseField = polyarea([points(:,1);points(1,1)], [points(:,2);points(1,2)]) * 1000000; % 1 km2 = 1 000 000 m2
+    baseField = polyarea([points(:,1);points(1,1)], [points(:,2);points(1,2)]); % m2
     avgHeight = mean(points(:,3)) * 0.001;  % 1 mm = 0.001 m
     volumes(i, 1) = baseField * avgHeight;     % w m3
-    volumes(i, 2) = opad_na_trojkacie(@ellipsoidalPrecip, points(:,1)', points(:,2)');
+%     volumes(i, 2) = precipOnTriangle(@paraboloidalPrecip, points(:,1)', points(:,2)') / 1000; % Wydaje mi siê, ¿e wysokoœæ opadu jest w m zamiast mm. St¹d dzielenie przez 1000
+    volumes(i, 2) = precipOnTriangle(@rationalPrecip, points(:,1)', points(:,2)') / 1000; % precipOnTriangle() daje wynik [mm * m * m] => [mm * m * m]/1000 = m^3
 %      plot([points(:,1);points(1,1)],[points(:,2);points(1,2)])
 end
 ylabel(yAxisLabel)
