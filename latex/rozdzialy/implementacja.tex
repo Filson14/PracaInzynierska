@@ -23,32 +23,50 @@ gdzie
 \end{description}
 
 \section{Wielkość opadu}
-Z~powodu braku dostępu do rzeczywistych danych meteorologicznych oraz hydrologicznych, co zostało opisane w~rozdziale~\ref{cha:odczyt_danych}, wykluczona została możliwość racjonalnej i~miarodajnej analizy pomiarów wraz z~określeniem korelacji opadu i~wysokości poziomu wody rzeki. Wobec powyższego, zdecydowano o~zastosowaniu danych symulowanych. Stworzone zostały funkcje generujące pomiar opadu we wskazanym punkcie. Przygotowane zostały dwa warianty - opad elipsoidalny oparty na wzorze~\ref{eq:opad_elipsa} oraz zdefiniowany funkcją wymierną~\ref{eq:opad_wymierny}.
+Z~powodu braku dostępu do rzeczywistych danych meteorologicznych oraz hydrologicznych, co zostało opisane w~rozdziale~\ref{cha:odczyt_danych}, wykluczona została możliwość racjonalnej i~miarodajnej analizy pomiarów wraz z~określeniem korelacji opadu i~wysokości poziomu wody rzeki. Wobec powyższego, zdecydowano o~zastosowaniu danych symulowanych. Stworzone zostały funkcje generujące pomiar opadu we wskazanym punkcie. Przygotowane zostały dwa warianty - opad paraboliczny oparty na wzorze~\ref{eq:opad_parabola} oraz zdefiniowany funkcją wymierną~\ref{eq:opad_wymierny}.
+
+
+Pierwszy z~nich jest funkcją wklęsłą. Należy zaznaczyć, iż zastosowanie jej do generowania wartości opadu wymaga spłaszczenia, gdyż interesujące są jedynie wartości większe lub równe 0. Dla tego przypadku spodziewa się wyniku z~niedomiarem w~stosunku do wartości rzeczywistej. Drugi jest bardziej zróżnicowany. Posiada obszary wklęsłe i wypukłe. Spodziewany wynik powinien być bardziej dokładny. Zastosowanie wyżej opisanych metod pozwoli na weryfikację działania programu w~odmiennych warunkach.
 
 \begin{equation}
-A = 1%z = h - \alpha * (x - x_0)^2 - \betha * (y - y_0)^2;
-\label{eq:opad_elipsa}
+z = h \cdot (1 - (\alpha (x - x_0)^2 - \beta (y - y_0)^2) );
+\label{eq:opad_parabola}
 \end{equation}
+gdzie
+\begin{description}[leftmargin=3cm, itemsep=0cm, labelsep=0cm]
+	\item[$\alpha, \beta$] współczynniki modyfikujące kształt opadu,
+	\item[$x_0, y_0$] współrzędne środka płaszczyzny,
+	\item[$h$] maksymalna wartość opadu
+\end{description}
 
 \begin{equation}
-z = MAX\_PRECIP * \frac{-1}{h+(x-x_0)^2 + \alpha * (y-y_0)^2}
+z = h \cdot \frac{1}{1 + \alpha (x-x_0)^2 + \beta (y-y_0)^2}
 \label{eq:opad_wymierny}
 \end{equation}
+gdzie
+\begin{description}[leftmargin=3cm, itemsep=0cm, labelsep=0cm]
+	\item[$\alpha, \beta$] współczynniki modyfikujące kształt opadu,
+	\item[$x_0, y_0$] współrzędne środka płaszczyzny,
+	\item[$h$] maksymalna wartość opadu
+\end{description}
 
-Zdefiniowano również funkcję, która ma za zadanie wyznaczenie objętości rzeczywistego opadu we wskazanym trójkącie w~oparciu o~zadany wariant opadu. Tym sposobem zostało rozwiązane zagadnienie weryfikacji dokładności działania algorytmu opisanego w~podrozdziale~\ref{sec:zastosowana_metoda}. Uzyskiwane wyniki porównywane są z~danymi pseudorzeczywistymi.
+Ustalona na potrzeby przeprowadzonych testów wielkość maksymalnego opadu wynosi 100 milimetrów. Dla opadu parabolicznego przyjęto współczynniki $\alpha$ i $\beta$ o wartościach odpowiednio \num{50e-12} oraz \num{70e-12}, natomiast dla drugiego wariantu opadu \num{50e-12} i~\num{200e-12}. 
+
+
+Zdefiniowano również funkcję, która ma za zadanie wyznaczenie objętości rzeczywistego opadu we wskazanym trójkącie w~oparciu o~zadany wariant opadu. Zdecydowano się na numeryczne obliczanie całki podwójnej obszaru ograniczonego odcinkami trójkąta. Zrezygnowano z~podejścia analitycznego, ponieważ dla opadu parabolicznego z~użyciem sklejenia taki sposób jest niewygodny (konieczne byłoby zdefiniowanie funkcji ograniczającej obszar całkowania). Ponadto, w~przypadku niektórych testowanych funkcji (jak np. $e^{(x-x_0)^2 - (y-y_0)^2}$) nie ma możliwości analitycznego obliczenia całki\footnote{Kształt tej funkcji jest zbliżony do tej zdefiniowanej wzorem~\ref{eq:opad_wymierny}, dlatego pominięto go w~testach}, wobec tego użyta metoda zachowuje uniwersalność. Tym sposobem zostało rozwiązane zagadnienie weryfikacji dokładności działania algorytmu opisanego w~podrozdziale~\ref{sec:zastosowana_metoda}. Uzyskiwane wyniki porównywane są z~danymi pseudorzeczywistymi.
 
 \begin{figure}[ht]
 \centering
 	\begin{subfigure}{.5\textwidth}
 		\centering
-		\includegraphics[width=1\linewidth]{chmura_elipsoidalna_1}
-		\caption{Wykres zastosowanej funkcji elipsoidalnej}
+		\includegraphics[width=1\linewidth]{chmura_paraboloidalna_1}
+		\caption{Wykres zastosowanej funkcji parabolicznej}
 		\label{fig:elipsa_3d}
 	\end{subfigure}%	
 	\begin{subfigure}{0.5\textwidth}
 		\centering
-		\includegraphics[width=1\linewidth]{chmura_elipsoidalna_2}
-		\caption{Rzut wykresu zastosowanej funkcji elipsoidalnej}
+		\includegraphics[width=1\linewidth]{chmura_paraboloidalna_2}
+		\caption{Rzut wykresu zastosowanej funkcji parabolicznej}
 		\label{fig:elipsa_2d}
 	\end{subfigure}	
 	
