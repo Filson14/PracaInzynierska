@@ -7,7 +7,7 @@ load ('.\zapisane dane\rainfallPoints.mat');
 load ('.\zapisane dane\catchment.mat');
 pointsToDelete = stationsInsideCatchment(catchment(:,1), catchment(:,2), rainfallPoints);
 analytics = zeros(length(pointsToDelete)+1, 4);
- pos = 8
+pos = 0;
 % for pos = 0:length(pointsToDelete)
     %% Sprz¹tanie
     clearvars -except pointsToDelete toDelete pos analytics;
@@ -94,8 +94,8 @@ analytics = zeros(length(pointsToDelete)+1, 4);
     end
     
     %% Generowanie wartoœci opadu
-    rainfallPoints(:,3) = paraboloidalPrecip(rainfallPoints(:,1), rainfallPoints(:,2));
-%     rainfallPoints(:,3) = rationalPrecip(rainfallPoints(:,1), rainfallPoints(:,2));
+%     rainfallPoints(:,3) = paraboloidalPrecip(rainfallPoints(:,1), rainfallPoints(:,2));
+    rainfallPoints(:,3) = rationalPrecip(rainfallPoints(:,1), rainfallPoints(:,2));
     %% Prezentacja danych wejœciowych
     figure;
     hold on;
@@ -117,7 +117,6 @@ analytics = zeros(length(pointsToDelete)+1, 4);
     %% Rysowanie obszaru zlewni na wykresie
     disp('Zlewnia na wykresie');
     plot(catchment(:,1), catchment(:, 2),'-r');
-    
     %% Wyznaczanie wektorów normalnych dla poszczególnych trójk¹tów
     disp('Wyznaczanie wektorów normalnych dla p³aszczyzn poszczególnych trójk¹tów.');
     numtri = length(dt.ConnectivityList);
@@ -154,27 +153,27 @@ analytics = zeros(length(pointsToDelete)+1, 4);
                     point_value = findValueFromSurface(x(i), y(i), triangleVectors(j,:), rainfallPoints(triangle(1),:));
                     borderPoints = [borderPoints; [x(i), y(i), point_value]];
                     h = plot(x(i),y(i),'bo','MarkerSize',5,'LineWidth',1);
-                    %%%%%%% Prezentacja interpolacji p³aszczyzn¹
-                    %                 if i == 123
-                    %                     figure
-                    %                     hold on;
-                    %                     plot([triangle_vx'; triangle_vx(1)], [triangle_vy'; triangle_vy(1)], '-ro');
-                    %                     triangle_vz = [rainfallPoints(triangle(1),3),rainfallPoints(triangle(2),3),rainfallPoints(triangle(3),3)];
-                    %                     ft = 'linearinterp';
-                    %                     opts = fitoptions( ft );
-                    %                     opts.Weights = zeros(1,0);
-                    %                     opts.Normalize = 'on';
-                    %                     fitresult = fit( [triangle_vx', triangle_vy'], triangle_vz', ft, opts );
-                    %
-                    %                     plot( fitresult, [triangle_vx', triangle_vy'], triangle_vz' );
-                    %
-                    %                     xlabel(xAxisLabel);
-                    %                     ylabel(yAxisLabel);
-                    %                     zlabel(zAxisLabel);
-                    %                     hold off;
-                    %                     pause
-                    %                 end
-                    %%%%%%%%%%%%%%%%%%%%%%%%%
+%                     %%%%%% Prezentacja interpolacji p³aszczyzn¹
+%                                     if i == 106
+%                                         figure
+%                                         hold on;
+%                                         plot([triangle_vx'; triangle_vx(1)], [triangle_vy'; triangle_vy(1)], '-ro');
+%                                         triangle_vz = [rainfallPoints(triangle(1),3),rainfallPoints(triangle(2),3),rainfallPoints(triangle(3),3)];
+%                                         ft = 'linearinterp';
+%                                         opts = fitoptions( ft );
+%                                         opts.Weights = zeros(1,0);
+%                                         opts.Normalize = 'on';
+%                                         fitresult = fit( [triangle_vx', triangle_vy'], triangle_vz', ft, opts );
+%                     
+%                                         plot( fitresult, [triangle_vx', triangle_vy'], triangle_vz' );
+%                     
+%                                         xlabel(xAxisLabel);
+%                                         ylabel(yAxisLabel);
+%                                         zlabel(zAxisLabel);
+%                                         hold off;
+%                                         pause
+%                                     end
+%                     %%%%%%%%%%%%%%%%%%%%%%%%
                 end
                 
                 for k = 1:3
@@ -260,15 +259,15 @@ analytics = zeros(length(pointsToDelete)+1, 4);
         baseField = polyarea([points(:,1);points(1,1)], [points(:,2);points(1,2)]); % m2
         avgHeight = mean(points(:,3)) * 0.001;  % 1 mm = 0.001 m
         volumes(i, 1) = baseField * avgHeight;     % w m3
-            volumes(i, 2) = precipOnTriangle(@paraboloidalPrecip, points(:,1)', points(:,2)') / 1000; % Wydaje mi siê, ¿e wysokoœæ opadu jest w m zamiast mm. St¹d dzielenie przez 1000
-%         volumes(i, 2) = precipOnTriangle(@rationalPrecip, points(:,1)', points(:,2)') / 1000; % precipOnTriangle() daje wynik [mm * m * m] => [mm * m * m]/1000 = m^3
+%       volumes(i, 2) = precipOnTriangle(@paraboloidalPrecip, points(:,1)', points(:,2)') / 1000; % Wydaje mi siê, ¿e wysokoœæ opadu jest w m zamiast mm. St¹d dzielenie przez 1000
+        volumes(i, 2) = precipOnTriangle(@rationalPrecip, points(:,1)', points(:,2)') / 1000; % precipOnTriangle() daje wynik [mm * m * m] => [mm * m * m]/1000 = m^3
 
     end
 
     disp('Objêtoœci opadu w poszczególnych trójk¹tach zapisana w macierzy volumes.');
     totalRainfall = sum(volumes(:,1));
     totalRealRainfall = sum(volumes(:,2));
-    diff = (totalRealRainfall - totalRainfall) / totalRealRainfall * 100;
+    diff = (totalRainfall - totalRealRainfall) / totalRealRainfall * 100;
     
     disp(strcat('£¹czny opad powierzchniowy dla zlewni wynosi', {' '}, num2str(totalRainfall),{' '}, 'm3'));
     disp(strcat('Rzeczywista objêtoœæ opadu dla zlewni wynosi', {' '}, num2str(totalRealRainfall),{' '}, 'm3'));
