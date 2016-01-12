@@ -17,10 +17,18 @@ Dla długości geograficznej sytuacja nie jest tak prosta, gdyż długość jedn
 \end{equation}
 gdzie
 \begin{description}[leftmargin=2cm, itemsep=0cm, labelsep=0cm]
-	\item[$\alpha$] kąt, będący wartością szerokości geograficznej
-	\item[$R$] równikowy promień Ziemi
-	\item[$r$] promień równoleżnika na szerokości geograficznej $\alpha$
+	\item[$\alpha$] kąt, będący wartością szerokości geograficznej,
+	\item[$R$] równikowy promień Ziemi,
+	\item[$r$] promień równoleżnika na szerokości geograficznej $\alpha$.
 \end{description}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.3\linewidth]{ziemia}
+	\caption{Schemat dla konwersji współrzędnych geograficznych.}
+	\label{fig:ziemia}
+\end{figure}
 
 \section{Wielkość opadu}
 Z~powodu braku dostępu do rzeczywistych danych meteorologicznych oraz hydrologicznych, co zostało opisane w~rozdziale~\ref{cha:odczyt_danych}, wykluczona została możliwość racjonalnej i~miarodajnej analizy pomiarów wraz z~określeniem korelacji opadu i~wysokości poziomu wody rzeki. Wobec powyższego, zdecydowano o~zastosowaniu danych symulowanych. Stworzone zostały funkcje generujące pomiar opadu we wskazanym punkcie. Przygotowane zostały dwa warianty - opad paraboliczny oparty na wzorze~\ref{eq:opad_parabola} oraz zdefiniowany funkcją wymierną~\ref{eq:opad_wymierny}.
@@ -36,7 +44,7 @@ gdzie
 \begin{description}[leftmargin=3cm, itemsep=0cm, labelsep=0cm]
 	\item[$\alpha, \beta$] współczynniki modyfikujące kształt opadu,
 	\item[$x_0, y_0$] współrzędne środka płaszczyzny,
-	\item[$h$] maksymalna wartość opadu
+	\item[$h$] maksymalna wartość opadu.
 \end{description}
 
 \begin{equation}
@@ -47,59 +55,62 @@ gdzie
 \begin{description}[leftmargin=3cm, itemsep=0cm, labelsep=0cm]
 	\item[$\alpha, \beta$] współczynniki modyfikujące kształt opadu,
 	\item[$x_0, y_0$] współrzędne środka płaszczyzny,
-	\item[$h$] maksymalna wartość opadu
+	\item[$h$] maksymalna wartość opadu.
 \end{description}
 
-Ustalona na potrzeby przeprowadzonych testów wielkość maksymalnego opadu wynosi 100 milimetrów. Dla opadu parabolicznego przyjęto współczynniki $\alpha$ i $\beta$ o wartościach odpowiednio \num{50e-12} oraz \num{70e-12}, natomiast dla drugiego wariantu opadu \num{50e-12} i~\num{200e-12}. 
+Ustalona na potrzeby przeprowadzonych testów wielkość maksymalnego opadu wynosi 100 milimetrów. Dla opadu parabolicznego przyjęto współczynniki $\alpha$ i $\beta$ o wartościach odpowiednio \num{50e-12} oraz \num{70e-12}, natomiast dla drugiego wariantu opadu \num{50e-12} i~\num{200e-12}. Kształt funkcji opadu przedstawia rysunek~\ref{fig:opady}.
 
-
-Zdefiniowano również funkcję, która ma za zadanie wyznaczenie objętości rzeczywistego opadu we wskazanym trójkącie w~oparciu o~zadany wariant opadu. Zdecydowano się na numeryczne obliczanie całki podwójnej obszaru ograniczonego odcinkami trójkąta. Zrezygnowano z~podejścia analitycznego, ponieważ dla opadu parabolicznego z~użyciem sklejenia taki sposób jest niewygodny (konieczne byłoby zdefiniowanie funkcji ograniczającej obszar całkowania). Ponadto, w~przypadku niektórych testowanych funkcji (jak np. $e^{(x-x_0)^2 - (y-y_0)^2}$) nie ma możliwości analitycznego obliczenia całki\footnote{Kształt tej funkcji jest zbliżony do tej zdefiniowanej wzorem~\ref{eq:opad_wymierny}, dlatego pominięto go w~testach}, wobec tego użyta metoda numeryczna zachowuje uniwersalność oraz daje dowolną dokładność (co zostało wykazane eksperymentalnie). Tym sposobem zostało rozwiązane zagadnienie weryfikacji dokładności działania algorytmu opisanego w~podrozdziale~\ref{sec:zastosowana_metoda}. Uzyskiwane wyniki porównywane są z~danymi pseudorzeczywistymi.
-
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}{0.5\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{chmura_paraboloidalna_1}
 		\caption{Wykres zastosowanej funkcji parabolicznej}
-		\label{fig:elipsa_3d}
+		\label{fig:parabola_3d}
 	\end{subfigure}%	
 	\begin{subfigure}{0.5\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{chmura_paraboloidalna_2}
 		\caption{Rzut wykresu zastosowanej funkcji parabolicznej}
-		\label{fig:elipsa_2d}
+		\label{fig:parabola_2d}
 	\end{subfigure}	
 	
-	\begin{subfigure}{.5\textwidth}
+	\begin{subfigure}{0.5\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{chmura_wymierna_1}
 		\caption{Wykres zastosowanej funkcji wymiernej}
-		\label{fig:elipsa_3d}
+		\label{fig:wymierna_3d}
 	\end{subfigure}%	
 	\begin{subfigure}{0.5\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{chmura_wymierna_2}
 		\caption{Rzut wykresu zastosowanej funkcji wymiernej}
-		\label{fig:elipsa_2d}
+		\label{fig:wymierna_2d}
 	\end{subfigure}	
 \caption{Funkcje wartości opadu}
+\label{fig:opady}
 \end{figure}
 
-\section{Zastosowana metoda}
+Zdefiniowano również funkcję, która ma za zadanie wyznaczenie objętości rzeczywistego opadu we wskazanym trójkącie w~oparciu o~zadany wariant opadu. Zdecydowano się na numeryczne obliczanie całki podwójnej obszaru ograniczonego odcinkami trójkąta. Zrezygnowano z~podejścia analitycznego, ponieważ dla opadu parabolicznego z~użyciem sklejenia taki sposób jest niewygodny (konieczne byłoby zdefiniowanie funkcji ograniczającej obszar całkowania). Ponadto, w~przypadku niektórych testowanych funkcji (jak np. $e^{(x-x_0)^2 - (y-y_0)^2}$) nie ma możliwości analitycznego obliczenia całki\footnote{Kształt tej funkcji jest zbliżony do tej zdefiniowanej wzorem~\ref{eq:opad_wymierny}, dlatego pominięto go w~testach}, wobec tego użyta metoda numeryczna zachowuje uniwersalność oraz daje dowolną dokładność (co zostało wykazane eksperymentalnie). Tym sposobem zostało rozwiązane zagadnienie weryfikacji błędu działania algorytmu opisanego w~podrozdziale~\ref{sec:zastosowana_metoda}. Uzyskiwane wyniki porównywane są z~danymi pseudorzeczywistymi.
 
-Jak wspomniano na początku tego rozdziału, przeprowadzenie triangulacji oparto o~klasę delaunayTriangulation. Powstała siatka trójkątów została zaprezentowana na rysunku \ref{fig:triagnulacja_danych}.
 
-\begin{figure}[ht]
+
+\section{Kroki implementacji}
+W~ramach implementacji rozwiązania przygotowano zbiór punktów pełniących rolę posterunków opadowych oraz zestaw węzłów granicy obszaru, dla którego wyznaczony zostanie opad powierzchniowy.
+
+Jak wspomniano na początku tego rozdziału, przeprowadzenie triangulacji oparto o~klasę \textit{delaunayTriangulation}~\cite{delaunayTriangulation}. Powstała siatka trójkątów została zaprezentowana na rysunku~\ref{fig:triagnulacja_danych}.
+
+\begin{figure}[!ht]
 	\centering
-\begin{subfigure}[t]{.5\textwidth}
+\begin{subfigure}{1\textwidth}
 	\centering
-	\includegraphics[width=0.7\linewidth]{dane_wejsciowe}
+	\includegraphics[width=1\linewidth]{dane_wejsciowe}
 	\caption{Posterunki opadowe i~obszar zlewni}
 	\label{fig:dane_wejsciowe}
-\end{subfigure}%	
-	\begin{subfigure}[t]{0.5\textwidth}
+\end{subfigure}	
+	\begin{subfigure}{1\textwidth}
 	\centering
-	\includegraphics[width=0.7\linewidth]{triangulacja_zlewnia}
+	\includegraphics[width=1\linewidth]{triangulacja_zlewnia}
 	\caption{Siatka triangulacji dla posterunków}
 	\label{fig:triagnulacja_danych}
 \end{subfigure}	
@@ -108,50 +119,52 @@ Jak wspomniano na początku tego rozdziału, przeprowadzenie triangulacji oparto
 \end{figure}
 
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 	\centering
-	\includegraphics[scale=0.5]{punkty_do_interpolacji}
+	\includegraphics[width=1\linewidth]{punkty_do_interpolacji}
 	\caption{Punkty wyznaczone do interpolacji.
 	O - węzły granicy, X - przecięcia granicy z~liniami siatki.}
 	\label{fig:punkty_interpolacji}
 \end{figure}
 
-Wyznaczenie wartości dla powstałych punktów odbywa się poprzez interpolację powierzchniową poszczególnych trójkątów. Została stworzona funkcja wyznaczająca wektor normalny dla pojedynczego trójkąta. Z~jego pomocą (oraz znając współrzędne punktu należącego do płaszczyzny - np. jeden z~wierzchołków trójkąta) wyznacza się wartość \textit{z} punktu o~współrzędnych $x$~i~$y$~w~oparciu o~równanie ogólne płaszczyzny.
+Wyznaczenie wartości dla powstałych punktów odbywa się poprzez interpolację powierzchniową poszczególnych trójkątów. Stworzono mechanizm wyznaczający wektory normalne dla wygenerowanych trójkątów. 
 
 Przy użyciu przygotowanej funkcji (opartej na wzorze~\ref{eq:wartosc_interpolowana}, dla wszystkich wyznaczonych do interpolacji punktów uzyskiwana jest wartość opadu korzystając ze współrzędnych $x$~i~$y$ punktu i~wektora normalnego trójkąta, w~którym ten punkt się znajduje.
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 	\centering
-	\includegraphics[scale=0.5]{prezentacja_interpolacji}
-	\caption{Interpolacja płaszczyzną dla pojedynczego trójkąta}
+	\includegraphics[width=1\linewidth]{prezentacja_interpolacji}
+	\caption{Interpolacja płaszczyzną dla pojedynczego trójkąta.}
 	\label{fig:plaszczyzna_interpolacji}
 \end{figure}
 
 
 Wyizolowane punkty, krytyczne z~punktu widzenia zadanego obszaru opadu, stanowią węzły kolejnej triangulacji. Jak zaprezentowano na rysunku~\ref{fig:druga_triangulacja}, pojawia się komplikacja wynikająca z~łączenia ze sobą wszystkich pobliskich punktów. Tym sposobem kreowane są trójkąty, które nie wprowadzają informacji dla rozwiązania. Co więcej, wpływają negatywnie na ewentualny wynik.
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 	\centering
-\begin{subfigure}[t]{1\textwidth}
+\begin{subfigure}{1\textwidth}
 	\centering
 	\includegraphics[width=1\linewidth]{dane_druga_triangulacja}
 	\caption{Punkty dla ponownej triangulacji}
 	\label{fig:dane_druga_triangulacja}
 \end{subfigure}	
-	\begin{subfigure}[t]{1\textwidth}
+	\begin{subfigure}{1\textwidth}
 	\centering
 	\includegraphics[width=1\linewidth]{druga_triangulacja}
 	\caption{Siatka triangulacji dla wyznaczonych punktów}
-	\label{fig:druga_triagnulacja}
+\label{fig:druga_triangulacja}	
 \end{subfigure}	
 \caption{Triangulacja danych interpolowanych}
 \end{figure}
 
 Problem ten rozwiązano poprzez dodanie ograniczenia dla obiektu klasy \textit{delaunayTriangulation} zdefiniowanego jako zbiór węzłów triangulacji stanowiących granicę zlewni poddawanej analizie. Odfiltrowanie nieistotnych fragmentów wykonano stosując metodę \textit{isInterior}, która wskazuje czy poszczególne trójkąty utworzonej siatki zawierają się w~obszarze wskazanym przez ograniczenie. Rezultat tych kroków prezentuje rysunek~\ref{fig:druga_triangulacja_ograniczenie}
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 	\centering
-	\includegraphics[scale=0.5]{druga_triangulacja_z_ograniczeniem}
+	\includegraphics[width=1\linewidth]{druga_triangulacja_z_ograniczeniem}
 	\caption{Triangulacja z~ograniczeniem obszarem zlewni}
 	\label{fig:druga_triangulacja_ograniczenie}
 \end{figure}
+
+Ostatecznie, dla uzyskanych trójkątów wyznaczana jest wartość opadu powierzchniowego, co po zsumowaniu jest łącznym opadem na wskazanej zlewni.

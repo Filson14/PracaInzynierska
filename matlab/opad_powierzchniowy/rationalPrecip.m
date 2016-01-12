@@ -9,4 +9,3 @@ alpha = 50e-12;
 beta = 200e-12;
 z = h * (1 + alpha .* (x - x0).^2 + beta .* (y - y0).^2).^-1;
 end
-

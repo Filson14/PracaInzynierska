@@ -1,9 +1,7 @@
 function [ z ] = findValueFromSurface( x, y, v, p )
-%FINDVALUEFROMSURFACE
 %   x, y - wspó³rzêdne punktu szukanego
 %   v - wektor normalny p³aszczyzny [A B C]
 %   p - punkt nale¿¹cy do p³aszczyzny
-
 if v(3) == 0
     z = 0;
 else

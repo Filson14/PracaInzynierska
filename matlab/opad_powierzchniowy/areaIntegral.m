@@ -9,4 +9,3 @@ ymin = @(x) (y2d-y1d)/(x2-x1)*(x-x1)+y1d;
 ymax = @(x) (y2g-y1g)/(x2-x1)*(x-x1)+y1g;
 precip = integral2(fun,x1,x2,ymin,ymax,'RelTol',1e-6);
 end
-

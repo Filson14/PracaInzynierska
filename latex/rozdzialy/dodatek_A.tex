@@ -1,30 +1,398 @@
 \chapter{Dodatek A - fragmenty kodów źródłowych}
 \label{cha:dodatek_A}
-\section{Odczyt danych z serwisu}
+\section{Odczyt danych} % Zastanowić się czy ta część powinna się znaleźć w pracy
+\label{sec:kod_odczyt_danych}
+Jak zaznaczono w~rozdziale~\ref{cha:odczyt_danych}, wykorzystanie poniższego kodu jest niedozwolone bez uzyskania pisemnej zgody Instytutu Meteorologii i Gospodarki Wodnej.
 
+Odczyt obszarów zlewni.
 \begin{lstlisting}
-function z = ellipsoidalPrecip(x, y)
-global middle_x;
-global middle_y;
-
-x0 = middle_x;
-y0 = middle_y;
-% x0 = 2;  y0 = 4;
-h = 100;
-alpha = h/(300000000000); 
-betha = h/(40000000000);
-
-z = h - alpha .* (x-x0).^2 - betha.*(y-y0).^2;
-[w,k] = size(z);
-for i=1:w,
-    for j=1:k,
-        if z(i,j) < 0, z(i,j)=0; end
-    end
+function [ catchments ] = loadCatchments( )
+  disp('Odczyt obszarów zlewni został rozpoczęty.');
+  catchmentsJson = urlread('http://monitor.pogodynka.pl/api/coordinates/?catchments');
+  catchments = loadjson(catchmentsJson);
+  save('zlewnie.mat','catchments');
+  disp('Obszary zlewni zostały załadowane i zapisane w pliku "zlewnie.mat".');
 end
+\end{lstlisting}
+
+Odczyt posterunków opadowych.
+\begin{lstlisting}
+function [ stations ] = loadRainfallStations( )
+  disp('Odczyt posterunków opadowych rozpoczęty.');
+  stationsJson = urlread('http://monitor.pogodynka.pl/api/map/?category=meteo');
+  tempData = loadjson(stationsJson);
+  nO = length(tempData);
+  stations = [];
+  for i = 1:nO,
+    stations(i).id = tempData{1, i}.i;
+    stations(i).name = tempData{1, i}.n;
+    stations(i).longitude = tempData{1, i}.lo;
+    stations(i).latitude = tempData{1, i}.la;
+  end
+  disp('Posterunki opadowe zostały załadowane');
+end
+\end{lstlisting}
+
+Odczyt punktów wodowskazowych.
+\begin{lstlisting}
+function [ stations ] = loadWaterstateStations( )
+  disp('Odczyt posterunków wodowskazowych rozpoczęty.');
+  stationsJson = urlread('http://monitor.pogodynka.pl/api/map/?category=hydro');
+  tempData = loadjson(stationsJson);
+  nO = length(tempData);
+  stations = [];
+  for i = 1:nO,
+    stations(i).id = tempData{1, i}.i;
+    stations(i).name = tempData{1, i}.n;
+    stations(i).longitude = tempData{1, i}.lo;
+    stations(i).latitude = tempData{1, i}.la;
+  end
+  disp('Posterunki wodowskazowe zostały załadowane');
+end
+\end{lstlisting}
+
+Odczyt pomiarów posterunku opadowego.
+\begin{lstlisting}
+function [ rainfallData ] = readRainfallData( rainfallStations )
+  URL = 'http://monitor.pogodynka.pl/api/meteo/?id=';
+  stationsAmmount = length(rainfallStations); 
+  rainfallData = [];
+  for i = 1:stationsAmmount,
+    url = strcat(URL,num2str(rainfallStations(i).id));
+    jsonData = urlread(url);
+    station = loadjson(jsonData);
+    disp(station.name);
+    rainfallData(i).stationIndex = i;
+    rainfallData(i).stationId = station.id;
+    rainfallData(i).stationName = station.name; 
+    rainfallData(i).hourly = station.status.precip;
+    rainfallData(i).daily = station.status.precipDaily;
+    rainfallData(i).last48hours = station.hourlyPrecipRecords;
+    rainfallData(i).lastWeek = station.dailyPrecipRecords;
+  end  
+  file_name = strcat('precip_',datestr(now,'yyyy_mm_dd_HH_MM'),'.mat');
+  save(file_name,'rainfallData');
+  disp(['Dane opadowe zapisane w pliku ', file_name]);
 end
 \end{lstlisting}
 
 
-\label{sec:kod_odczyt_danych}
-\section{Interpolacja}
-\section{inny podrozdzial}
+Odczyt pomiarów wodowskazu.
+\begin{lstlisting}
+function [ waterstateData ] = readWaterstateData( waterstateStations )
+  URL = 'http://monitor.pogodynka.pl/api/hydro/?id=';
+  stationsAmmount = length(waterstateStations);
+  waterstateData = [];
+  for i = 1:stationsAmmount,
+    url = strcat(URL,num2str(waterstateStations(i).id));
+    jsonData = urlread(url);
+    station = loadjson(jsonData);
+    station.name
+    waterstateData(i).stationIndex = i;
+    waterstateData(i).stationId = station.id;
+    waterstateData(i).stationName = station.name;
+    waterstateData(i).value = station.status.currentValue;
+    waterstateData(i).measurementDate = station.status.currentDate;
+    waterstateData(i).waterstateLast72hours = station.waterStateRecords;
+    waterstateData(i).dischargeLast72hours = station.dischargeRecords;
+  end
+  file_name = strcat('waterstate_',datestr(now,'yyyy_mm_dd_HH_MM'),'.mat');
+  save(file_name,'waterstateData');
+  disp(['Dane wodowskazowe zapisane w pliku ', file_name]);
+end
+\end{lstlisting}
+
+
+
+%==========================================================
+\section{Funkcje opadu}
+Funkcja paraboliczna
+%------------------------------------------
+\begin{lstlisting}
+function z = paraboloidalPrecip(x, y)
+  global middle_x;
+  global middle_y;
+
+  x0 = middle_x;
+  y0 = middle_y;
+
+  h = 100;
+  alpha = 50e-12; 
+  beta = 70e-12;
+
+  z = h * (1 - (alpha * (x-x0).^2 + beta*(y-y0).^2));
+  [w,k] = size(z);
+  for i=1:w,
+    for j=1:k,
+      if z(i,j) < 0, z(i,j)=0; end
+    end
+  end
+end
+\end{lstlisting}
+
+%-----------------------------------------
+Funkcja wymierna
+\begin{lstlisting}
+function z = rationalPrecip(x, y)
+  global middle_x;
+  global middle_y;
+
+  x0 = middle_x;  y0 = middle_y;
+
+  h = 100;
+  alpha = 50e-12; 
+  beta = 200e-12;
+  z = h * (1 + alpha .* (x - x0).^2 + beta .* (y - y0).^2).^-1;
+end
+\end{lstlisting}
+%-----------------------------------------
+Obliczanie całki podwójnej w obszarze.
+\begin{lstlisting}
+function precip = areaIntegral(fun,x1,x2,y1d,y2d,y1g,y2g)
+  % Obliczanie całki podwójnej w obszarze:
+  % x należące do [x1, x2],
+  % y zawarte między prostą ograniczającą obszar:
+  %        od dołu - przechodzącą przez punkty (x1,y1d) i (x2,y2d),
+  %        od góry -                           (x1,y1g) i (x2,y2g)
+
+  ymin = @(x) (y2d-y1d)/(x2-x1)*(x-x1)+y1d;
+  ymax = @(x) (y2g-y1g)/(x2-x1)*(x-x1)+y1g;
+  precip = integral2(fun,x1,x2,ymin,ymax,'RelTol',1e-6);
+end
+\end{lstlisting}
+
+%-----------------------------------------
+Funkcja wyznaczająca opad rzeczywisty na wskazanym trójkącie.
+\begin{lstlisting}
+function precip = precipOnTriangle( fun,X,Y )
+  %Funkcja oblicza wielkość opadu na powierzchnię trójkąta zadanego
+  %współrzędnymi 3 wierzchołków
+
+  % Dane wejściowe:
+  % fun - funkcja wyznaczająca wielkość opadu w punkcie (x,y),
+  % X - wektor odciętych x wierzchołków trójkąta,
+  % Y - wektor rzędnych y wierzchołków trójkąta.
+
+  % Dana wyjściowa:
+  % precip - ilość wody, jaka spadła na obszar zadanego trójkąta.
+
+  % UWAGA: Jednostką wyniku jest [jx*jy*jh/jp, gdzie:
+  % jx, jy - jednostka odciętej x, rzędnej y,
+  % jh - jednostka wielkości opadu.
+  % W przypadku opadu podawanego jako wysokość słupa wody - 12mm = 0.012m i
+  % x, y podawanych w metrach - otrzymamy objętość wody, jaka spadła na
+  % zadany trójkąt.
+  % Podobnie w przypadku opadu podawanego jako ilość wody/m2 - 12 [litrów/m2] = 0.012m i
+  % x, y podawanych w metrach - otrzymamy objętość wody, jaka spadła na
+  % zadany trójkąt.
+
+  % Sortowanie wierzchołków wzdłuż x - od lewej do prawej:
+  [Xs,IX] = sort(X); Ys = Y(IX);
+  precip = 0;
+  Tol = sum(abs(Xs))*1e-6; 
+  if Xs(3)-Xs(1) < Tol, return, end  % Powierzchnia trójkąta bliska 0
+  if Xs(2)-Xs(1) < Tol,
+    % Całka obliczana w pojedynczym obszarze normalnym
+    if Ys(1) < Ys(2),
+      precip = areaIntegral(fun,Xs(1),Xs(3),Ys(1),Ys(3),Ys(2),Ys(3));
+    else
+      precip = areaIntegral(fun,Xs(1),Xs(3),Ys(2),Ys(3),Ys(1),Ys(3)); 
+    end
+  else if Xs(3)-Xs(2) < Tol,
+    % Całka obliczana w pojedynczym obszarze normalnym
+    if Ys(2) < Ys(3)
+      precip = areaIntegral(fun,Xs(1),Xs(3),Ys(1),Ys(2),Ys(1),Ys(3));
+    else
+      precip = areaIntegral(fun,Xs(1),Xs(3),Ys(1),Ys(3),Ys(1),Ys(2));
+    end
+  else 
+    Ym = (Ys(3)-Ys(1))/(Xs(3)-Xs(1))*(Xs(2)-Xs(1))+Ys(1);
+    if Ys(2) > Ym           % środkowy wierzchołek u góry
+      % Całka obliczana w pierwszym obszarze normalnym
+      precip1 = areaIntegral(fun,Xs(1),Xs(2),Ys(1),Ym,Ys(1),Ys(2));    
+      % Całka obliczana w drugim obszarze normalnym
+      precip2 = areaIntegral(fun,Xs(2),Xs(3),Ym,Ys(3),Ys(2),Ys(3));
+    else                    % środkowy wierzchołek na dole
+      % Całka obliczana w pierwszym obszarze normalnym
+      precip1 = areaIntegral(fun,Xs(1),Xs(2),Ys(1),Ys(2),Ys(1),Ym);    
+      % Całka obliczana w drugim obszarze normalnym
+      precip2 = areaIntegral(fun,Xs(2),Xs(3),Ys(2),Ys(3),Ym,Ys(3));
+    end
+    precip = precip1+precip2;
+  end
+end
+\end{lstlisting}
+
+
+
+
+
+
+
+
+\section{Konwersja współrzędnych}
+\begin{lstlisting}
+disp('Konwersja współrzędnych na wartości metryczne');
+alfa = min(rainfallPoints(:, 2)) + (max(rainfallPoints(:, 2)) - min(rainfallPoints(:, 2)))/2;
+R = 6378410;                       % Promień równikowy Ziemi w metrach
+r = cos(alfa*2*pi/360) * R;
+parallelLength = 2 * pi * r;
+xDegree = (parallelLength / 360);  % w metrach
+yDegree = 111196.672;              % w metrach
+
+metricMiddleX = geoMiddleX * xDegree; % w metrach
+metricMiddleY = geoMiddleY * yDegree; % w metrach
+middle_x = metricMiddleX;
+middle_y = metricMiddleY;
+
+rainfallPoints = [rainfallPoints(:, 1).*xDegree rainfallPoints(:, 2).*yDegree rainfallPoints(:, 3)];
+catchment = [catchment(:,1).*xDegree, catchment(:,2).*yDegree];
+\end{lstlisting}
+
+
+\section{Triangulacja}
+\begin{lstlisting}
+disp('Triangulacja punktów wejściowych.');
+figure
+hold on;
+ylabel(yAxisLabel)
+xlabel(xAxisLabel)
+dt = delaunayTriangulation(rainfallPoints(:, 1), rainfallPoints(:, 2));
+triplot(dt, '-yo', 'MarkerSize', 2, 'MarkerFaceColor','black','MarkerEdgeColor','black');
+%% Rysowanie obszaru zlewni na wykresie
+plot(catchment(:,1), catchment(:, 2),'-r');
+\end{lstlisting}
+
+
+
+
+\section{Wyznaczanie wektorów normalnych trójkąta}
+\begin{lstlisting}
+disp('Wyznaczanie wektorów normalnych dla płaszczyzn poszczególnych trójkątów.');
+numtri = length(dt.ConnectivityList);
+triangleVectors = zeros(numtri, 3);
+for i = 1:numtri
+triangle = dt.ConnectivityList(i, :);
+  A = [rainfallPoints(triangle(1), 1), rainfallPoints(triangle(1), 2), rainfallPoints(triangle(1), 3)];
+  B = [rainfallPoints(triangle(2), 1), rainfallPoints(triangle(2), 2), rainfallPoints(triangle(2), 3)];
+  C = [rainfallPoints(triangle(3), 1), rainfallPoints(triangle(3), 2), rainfallPoints(triangle(3), 3)];
+
+  AB = [B(1) - A(1), B(2) - A(2), B(3) - A(3)];
+  BC = [C(1) - B(1), C(2) - B(2), C(3) - B(3)];
+    
+  triangleVectors(i,:) = cross(AB, BC);
+end
+\end{lstlisting}
+
+
+
+\section{Interpolacja punktów}
+
+Funkcja wyznaczająca wartość punktu w oparciu o interpolację płaszczyzną.
+\begin{lstlisting}
+function [ z ] = findValueFromSurface( x, y, v, p )
+  %   x, y - współrzędne punktu szukanego
+  %   v - wektor normalny płaszczyzny [A B C]
+  %   p - punkt należący do płaszczyzny
+  if v(3) == 0
+    z = 0;
+  else
+    z = p(3) + (v(1)*(x - p(1)) + v(2)*(y - p(2)))/(-v(3));
+  end
+end
+\end{lstlisting}
+
+
+Szukanie punktów krytycznych dla wyznaczenia opadu powierzchniowego zlewni.
+\begin{lstlisting}
+disp('Interpolacja wartości dla węzłów granic zlewni oraz punktów przecięcia granicy zlewni z liniami triangulacji.');
+x = catchment(:, 1);
+y = catchment(:, 2);
+pointsAmmount = length(x);
+for i = 1:pointsAmmount
+  if i ~= 1
+    line = [x(i-1) y(i-1) x(i) y(i)];
+    numtri = length(dt.ConnectivityList);
+    checkedLines = zeros(0,2);
+    for j = 1:numtri
+      triangle = dt.ConnectivityList(j, :);
+
+      triangle_vx = [rainfallPoints(triangle(1),1),rainfallPoints(triangle(2),1),rainfallPoints(triangle(3),1)];
+      triangle_vy = [rainfallPoints(triangle(1),2),rainfallPoints(triangle(2),2),rainfallPoints(triangle(3),2)];
+
+      if max(inpolygon(x(i), y(i), triangle_vx, triangle_vy)) == 1
+        point_value = findValueFromSurface(x(i), y(i), triangleVectors(j,:), rainfallPoints(triangle(1),:));
+        borderPoints = [borderPoints; [x(i), y(i), point_value]];
+        h = plot(x(i),y(i),'bo','MarkerSize',5,'LineWidth',1);
+      end
+
+      for k = 1:3
+        v1_number = triangle(k);
+        v2_number = triangle(mod(k, 3) + 1);
+
+        endOne = rainfallPoints(v1_number, :);
+        endTwo = rainfallPoints(v2_number, :);
+
+        if ismember([v1_number v2_number], checkedLines, 'rows') == 0 && ismember([v2_number v1_number], checkedLines, 'rows') == 0
+          checkedLines = [checkedLines; [v1_number v2_number] ];
+          line2 = [endOne(1) endOne(2) endTwo(1) endTwo(2)];
+          [intersect_x, intersect_y] = lineintersect(line, line2);
+          if ~isnan(intersect_x)
+            h=plot(intersect_x,intersect_y,'rx','MarkerSize',10,'LineWidth',2);
+            intersect_z = findValueFromSurface(intersect_x, intersect_y, triangleVectors(j,:), rainfallPoints(triangle(1),:));
+            interpolationPoints = [interpolationPoints; [intersect_x, intersect_y, intersect_z]];
+          end
+        end
+      end
+    end
+    clear('checkedLines');
+  end
+end;
+\end{lstlisting}
+
+
+
+\section{Wyznaczanie objętości opadu}
+
+\begin{lstlisting}
+pointsInsideCatchment = stationsInsideCatchment(catchment(:,1), catchment(:,2), rainfallPoints);    
+triPoints = [borderPoints; interpolationPoints; pointsInsideCatchment];
+
+boarderPtsAmmount = length(borderPoints);
+    
+C = [(1:(boarderPtsAmmount - 1))' (2:boarderPtsAmmount)'; boarderPtsAmmount 1];
+triangulation = delaunayTriangulation(triPoints(:, 1), triPoints(:, 2), C);
+
+disp('Wyznaczanie trójkątów wewnątrz granicy zlewni.');
+IO = isInterior(triangulation);
+properTriangles = triangulation(IO, :);
+
+disp('Wyznaczanie objętości opadu w poszczególnych trójkątach i całej zlewni.');
+
+properTrianglesAmmount = length(properTriangles);
+volumes = zeros(properTrianglesAmmount, 2);
+for i = 1:properTrianglesAmmount
+  triangle = properTriangles(i, :);
+        
+  points = [
+    triPoints(triangle(1),:);
+    triPoints(triangle(2),:);
+    triPoints(triangle(3),:);
+  ];
+
+  baseField = polyarea([points(:,1);points(1,1)], [points(:,2);points(1,2)]); % m2
+  avgHeight = mean(points(:,3)) * 0.001;  % 1 mm = 0.001 m
+  volumes(i, 1) = baseField * avgHeight;     % w m3
+  volumes(i, 2) = precipOnTriangle(@paraboloidalPrecip, points(:,1)', points(:,2)') / 1000;
+  %  volumes(i, 2) = precipOnTriangle(@rationalPrecip, points(:,1)', points(:,2)') / 1000; % precipOnTriangle() daje wynik [mm * m * m] => [mm * m * m]/1000 = m^3
+end
+
+disp('Objętości opadu w poszczególnych trójkątach zapisana w macierzy volumes.');
+totalRainfall = sum(volumes(:,1));
+totalRealRainfall = sum(volumes(:,2));
+diff = (totalRealRainfall - totalRainfall) / totalRealRainfall * 100;
+    
+disp(strcat('Łączny opad powierzchniowy dla zlewni wynosi', {' '}, num2str(totalRainfall),{' '}, 'm3'));
+disp(strcat('Rzeczywista objętość opadu dla zlewni wynosi', {' '}, num2str(totalRealRainfall),{' '}, 'm3'));
+disp(strcat('Różnica wynosi', {' '}, num2str(diff),{' '}, '%'));
+\end{lstlisting}

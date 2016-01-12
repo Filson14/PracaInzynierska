@@ -243,7 +243,6 @@ analytics = zeros(length(pointsToDelete)+1, 4);
     xlabel(xAxisLabel)
     hold off;
     %% Pole wieloboku - polyarea
-    % U¿yæ properTriangles i triPoints
     disp('Wyznaczanie objêtoœci opadu w poszczególnych trójk¹tach i ca³ej zlewni.');
 
     properTrianglesAmmount = length(properTriangles);

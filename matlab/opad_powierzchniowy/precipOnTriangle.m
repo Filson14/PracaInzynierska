@@ -3,10 +3,9 @@ function precip = precipOnTriangle( fun,X,Y )
 %wspó³rzêdnymi 3 wierzcho³ków
 
 % Dane wejœciowe:
-% fun - wielkoœæ precipu w punkcie (x,y),
+% fun - funkcja wyznaczaj¹ca wielkoœæ opadu w punkcie (x,y),
 % X - wektor odciêtych x wierzcho³ków trójk¹ta,
 % Y - wektor rzêdnych y wierzcho³ków trójk¹ta.
-
 
 % Dana wyjœciowa:
 % precip - iloœæ wody, jaka spad³a na obszar zadanego trójk¹ta.
@@ -56,4 +55,3 @@ else if Xs(3)-Xs(2) < Tol,
         precip = precip1+precip2;
     end
 end
-
