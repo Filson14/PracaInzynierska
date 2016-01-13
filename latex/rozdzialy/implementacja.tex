@@ -31,6 +31,7 @@ gdzie
 \end{figure}
 
 \section{Wielkość opadu}
+\label{sec:funkcje_opadu}
 Z~powodu braku dostępu do rzeczywistych danych meteorologicznych oraz hydrologicznych, co zostało opisane w~rozdziale~\ref{cha:odczyt_danych}, wykluczona została możliwość racjonalnej i~miarodajnej analizy pomiarów wraz z~określeniem korelacji opadu i~wysokości poziomu wody rzeki. Wobec powyższego, zdecydowano o~zastosowaniu danych symulowanych. Stworzone zostały funkcje generujące pomiar opadu we wskazanym punkcie. Przygotowane zostały dwa warianty - opad paraboliczny oparty na wzorze~\ref{eq:opad_parabola} oraz zdefiniowany funkcją wymierną~\ref{eq:opad_wymierny}.
 
 
@@ -58,7 +59,7 @@ gdzie
 	\item[$h$] maksymalna wartość opadu.
 \end{description}
 
-Ustalona na potrzeby przeprowadzonych testów wielkość maksymalnego opadu wynosi 100 milimetrów. Dla opadu parabolicznego przyjęto współczynniki $\alpha$ i $\beta$ o wartościach odpowiednio \num{50e-12} oraz \num{70e-12}, natomiast dla drugiego wariantu opadu \num{50e-12} i~\num{200e-12}. Kształt funkcji opadu przedstawia rysunek~\ref{fig:opady}.
+Ustalona na potrzeby przeprowadzonych testów wielkość maksymalnego opadu wynosi 100 milimetrów. Dla opadu parabolicznego przyjęto współczynniki $\alpha$ i $\beta$ o wartościach odpowiednio \num{50e-12} oraz \num{70e-12}, natomiast dla drugiego wariantu opadu \num{50e-12} i~\num{200e-12}. Kształt funkcji opadu przedstawiają rysunki~\ref{fig:opad_paraboliczny} oraz~\ref{eq:opad_wymierny}.
 
 \begin{figure}[!ht]
 \centering
@@ -81,13 +82,13 @@ Ustalona na potrzeby przeprowadzonych testów wielkość maksymalnego opadu wyno
 
 \begin{figure}[!ht]
 	\label{fig:opad_wymierny}
-	\begin{subfigure}{0.5\textwidth}
+	\begin{subfigure}{1\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{chmura_wymierna_1}
 		\caption{Wykres zastosowanej funkcji wymiernej}
 		\label{fig:wymierna_3d}
 	\end{subfigure}	
-	\begin{subfigure}{0.5\textwidth}
+	\begin{subfigure}{1\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{chmura_wymierna_2}
 		\caption{Rzut wykresu zastosowanej funkcji wymiernej}

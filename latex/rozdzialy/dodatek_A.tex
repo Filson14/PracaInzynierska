@@ -167,24 +167,12 @@ Funkcja wyznaczająca opad rzeczywisty na wskazanym trójkącie.
 function precip = precipOnTriangle( fun,X,Y )
   %Funkcja oblicza wielkość opadu na powierzchnię trójkąta zadanego
   %współrzędnymi 3 wierzchołków
-
   % Dane wejściowe:
   % fun - funkcja wyznaczająca wielkość opadu w punkcie (x,y),
   % X - wektor odciętych x wierzchołków trójkąta,
   % Y - wektor rzędnych y wierzchołków trójkąta.
-
   % Dana wyjściowa:
   % precip - ilość wody, jaka spadła na obszar zadanego trójkąta.
-
-  % UWAGA: Jednostką wyniku jest [jx*jy*jh/jp, gdzie:
-  % jx, jy - jednostka odciętej x, rzędnej y,
-  % jh - jednostka wielkości opadu.
-  % W przypadku opadu podawanego jako wysokość słupa wody - 12mm = 0.012m i
-  % x, y podawanych w metrach - otrzymamy objętość wody, jaka spadła na
-  % zadany trójkąt.
-  % Podobnie w przypadku opadu podawanego jako ilość wody/m2 - 12 [litrów/m2] = 0.012m i
-  % x, y podawanych w metrach - otrzymamy objętość wody, jaka spadła na
-  % zadany trójkąt.
 
   % Sortowanie wierzchołków wzdłuż x - od lewej do prawej:
   [Xs,IX] = sort(X); Ys = Y(IX);

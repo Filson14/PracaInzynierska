@@ -1,5 +1,5 @@
 \chapter{Podstawy teoretyczne}
-Jak wspomniano w rozdziale~\ref{sec:cele}, dane wejściowe dla programu są wskazaniami pomiarów z~poszczególnych posterunków opadowych. Są to dane punktowe, zatem aby oszacować ilość wody jaka spadła na zadanym obszarze konieczne jest przeprowadzenie ich przekształceniu w~celu wyznaczenia opadu powierzchniowego.
+Jak wspomniano w rozdziale~\ref{sec:cele}, dane wejściowe dla programu są wskazaniami pomiarów z~poszczególnych posterunków opadowych. Są to dane punktowe, zatem aby oszacować ilość wody jaka spadła na zadanym obszarze konieczne jest przeprowadzenie ich przekształcenia w~celu wyznaczenia opadu powierzchniowego.
 
 \section{Powszechne metody wyznaczania opadu powierzchniowego}
 
@@ -23,7 +23,8 @@ Jak wspomniano we wstępie, praca ta traktuje o analizie danych pojedynczego opa
 	\label{fig:algorytm}
 \end{figure}
 
-Triangulacja polega na stworzeniu siatki trójkątów o~wierzchołkach w~zadanych punktach (w tym wypadku są to posterunki opadowe o znanej wysokości opadu). Zastosowano algorytm Delaunay'a, który wprowadza dodatkowe ograniczenie na tworzone trójkąty. Mianowicie, okrąg opisany na każdym z~nich nie może zawierać innych punktów siatki poza wierzchołkami danego trójkąta. Ta metoda ma na celu maksymalizację równoboczności powstałych trójkątów, a~co za tym idzie, równomierność budowanej siatki.
+%Triangulacja polega na stworzeniu siatki trójkątów o~wierzchołkach w~zadanych punktach (w tym wypadku są to posterunki opadowe o znanej wysokości opadu). 
+Zastosowano algorytm triangulacji Delaunay'a, który wprowadza dodatkowe ograniczenie na tworzone trójkąty. Mianowicie, okrąg opisany na każdym z~nich nie może zawierać innych punktów siatki poza wierzchołkami danego trójkąta. Ta metoda ma na celu maksymalizację równoboczności powstałych trójkątów, a~co za tym idzie, równomierność budowanej siatki.
 
 \begin{figure}[!ht]
 	\centering

@@ -1,22 +1,20 @@
 %% Automatyka usuwania pojedynczego posterunku
 clear;
-global middle_x;
-global middle_y;
+
 tic
 load ('.\zapisane dane\rainfallPoints.mat');
 load ('.\zapisane dane\catchment.mat');
 pointsToDelete = stationsInsideCatchment(catchment(:,1), catchment(:,2), rainfallPoints);
 analytics = zeros(length(pointsToDelete)+1, 4);
-pos = 0;
+pos = 23;
 % for pos = 0:length(pointsToDelete)
     %% Sprz¹tanie
     clearvars -except pointsToDelete toDelete pos analytics;
     clc;
     close all;
-    xAxisLabel = 'X [km]';
-    yAxisLabel = 'Y [km]';
+    xAxisLabel = 'X [m]';
+    yAxisLabel = 'Y [m]';
     zAxisLabel = 'Wysokoœæ opadu [mm]';
-    
     
     %% Usuniêcie posterunku
     disp(strcat('Rozpoczêto analizê bez punktu nr', {' '}, num2str(pos)));
@@ -29,13 +27,12 @@ pos = 0;
     disp('Przygotowanie danych wejœciowych.');
     load ('.\zapisane dane\rainfallPoints.mat');
     load ('.\zapisane dane\catchment.mat');
-    
-    %     clear('borderPoints');
-    %     clear('interpolationPoints');
-    %     clear('poinsInsideCatchment');
+
     interpolationPoints = [];
     borderPoints = [];
     
+    global middle_x;
+    global middle_y;
     
     geoMiddleX = min(catchment(:, 1)) + (max(catchment(:, 1)) - min(catchment(:, 1)))/2;
     geoMiddleY = min(catchment(:, 2)) + (max(catchment(:, 2)) - min(catchment(:, 2)))/2;
@@ -68,17 +65,17 @@ pos = 0;
     end
     
     %% Indentyfikatory posterunków wewn¹trz zlewni
-    % figure
-    % hold on;
-    % % triplot(dt, 'y');
-    % plot(pointsInsideCatchment(:,1),pointsInsideCatchment(:,2),'k.','MarkerSize',5,'LineWidth',1);
-    % plot(catchment(:,1), catchment(:,2), 'r');
-    % insidePoints = size(pointsInsideCatchment,1);
-    %  labels = arrayfun(@(x) {sprintf('%d', x)}, (1:insidePoints)');
-    % text(pointsInsideCatchment(:,1), pointsInsideCatchment(:,2),labels,'HorizontalAlignment','center', 'VerticalAlignment', 'bottom');
-    % xlabel(xAxisLabel);
-    % ylabel(yAxisLabel);
-    % hold off;
+%     figure
+%     hold on;
+%     triplot(dt, 'y');
+%     plot(pointsInsideCatchment(:,1),pointsInsideCatchment(:,2),'k.','MarkerSize',5,'LineWidth',1);
+%     plot(catchment(:,1), catchment(:,2), 'r');
+%     insidePoints = size(pointsInsideCatchment,1);
+%      labels = arrayfun(@(x) {sprintf('%d', x)}, (1:insidePoints)');
+%     text(pointsInsideCatchment(:,1), pointsInsideCatchment(:,2),labels,'HorizontalAlignment','center', 'VerticalAlignment', 'bottom');
+%     xlabel(xAxisLabel);
+%     ylabel(yAxisLabel);
+%     hold off;
     %% Usuwanie pojedynczych posterunków
     if pos ~= 0
         [~,index]=ismember([toDelete(:,1:2) 0],rainfallPoints,'rows');
@@ -94,8 +91,8 @@ pos = 0;
     end
     
     %% Generowanie wartoœci opadu
-%     rainfallPoints(:,3) = paraboloidalPrecip(rainfallPoints(:,1), rainfallPoints(:,2));
-    rainfallPoints(:,3) = rationalPrecip(rainfallPoints(:,1), rainfallPoints(:,2));
+    rainfallPoints(:,3) = paraboloidalPrecip(rainfallPoints(:,1), rainfallPoints(:,2));
+%     rainfallPoints(:,3) = rationalPrecip(rainfallPoints(:,1), rainfallPoints(:,2));
     %% Prezentacja danych wejœciowych
     figure;
     hold on;
@@ -201,9 +198,9 @@ pos = 0;
 
     disp('Filtrowanie punktów znanych znajduj¹cych siê wewn¹trz zlewni.');
     pointsInsideCatchment = stationsInsideCatchment(catchment(:,1), catchment(:,2), rainfallPoints);
-    
-    triPoints = [borderPoints; interpolationPoints; pointsInsideCatchment];
     h=plot(pointsInsideCatchment(:,1),pointsInsideCatchment(:,2),'ro','MarkerSize',5,'LineWidth',1);
+    triPoints = [borderPoints; interpolationPoints; pointsInsideCatchment];
+    
     hold off;
     %% Dane dla drugiej sieci trójk¹tów
     figure
@@ -215,7 +212,6 @@ pos = 0;
     hold off;
     
     %% Druga triangulacja - punkty dane i interpolowane.
-    %  Wyznaczenie opadu powierzchniowego
     disp('Triangulacja wraz z punktami interpolowanymi.');
     figure
     hold on;
@@ -241,7 +237,7 @@ pos = 0;
     ylabel(yAxisLabel)
     xlabel(xAxisLabel)
     hold off;
-    %% Pole wieloboku - polyarea
+    %%  Wyznaczenie opadu powierzchniowego
     disp('Wyznaczanie objêtoœci opadu w poszczególnych trójk¹tach i ca³ej zlewni.');
 
     properTrianglesAmmount = length(properTriangles);
@@ -259,8 +255,8 @@ pos = 0;
         baseField = polyarea([points(:,1);points(1,1)], [points(:,2);points(1,2)]); % m2
         avgHeight = mean(points(:,3)) * 0.001;  % 1 mm = 0.001 m
         volumes(i, 1) = baseField * avgHeight;     % w m3
-%       volumes(i, 2) = precipOnTriangle(@paraboloidalPrecip, points(:,1)', points(:,2)') / 1000; % Wydaje mi siê, ¿e wysokoœæ opadu jest w m zamiast mm. St¹d dzielenie przez 1000
-        volumes(i, 2) = precipOnTriangle(@rationalPrecip, points(:,1)', points(:,2)') / 1000; % precipOnTriangle() daje wynik [mm * m * m] => [mm * m * m]/1000 = m^3
+        volumes(i, 2) = precipOnTriangle(@paraboloidalPrecip, points(:,1)', points(:,2)') / 1000; % Wydaje mi siê, ¿e wysokoœæ opadu jest w m zamiast mm. St¹d dzielenie przez 1000
+%         volumes(i, 2) = precipOnTriangle(@rationalPrecip, points(:,1)', points(:,2)') / 1000; % precipOnTriangle() daje wynik [mm * m * m] => [mm * m * m]/1000 = m^3
 
     end
 
@@ -281,5 +277,5 @@ pos = 0;
 %         pause
 %     end
     
-% end
+%  end
 toc
