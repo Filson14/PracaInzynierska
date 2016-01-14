@@ -221,9 +221,9 @@ end
 \section{Konwersja współrzędnych}
 \begin{lstlisting}
 disp('Konwersja współrzędnych na wartości metryczne');
-alfa = min(rainfallPoints(:, 2)) + (max(rainfallPoints(:, 2)) - min(rainfallPoints(:, 2)))/2;
+alpha = min(rainfallPoints(:, 2)) + (max(rainfallPoints(:, 2)) - min(rainfallPoints(:, 2)))/2;
 R = 6378410;                       % Promień równikowy Ziemi w metrach
-r = cos(alfa*2*pi/360) * R;
+r = cos(alpha*2*pi/360) * R;
 parallelLength = 2 * pi * r;
 xDegree = (parallelLength / 360);  % w metrach
 yDegree = 111196.672;              % w metrach

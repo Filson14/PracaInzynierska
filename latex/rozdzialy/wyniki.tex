@@ -32,10 +32,10 @@ W~tej części przeprowadzono wpływ wyłączenia wskazanego posterunku opadoweg
 Rysunek~\ref{fig:numery_posterunkow} przedstawia identyfikatory wykluczanych z~analizy punktów, natomiast wiersze poniższych tabel prezentują rezultaty działania programu bez zadanego punktu. Wartość wpływu usunięcia posterunku określona została względem wyznaczonego opadu powierzchniowego z~użyciem wszystkich punktów.
 
 \begin{figure}[!ht]
-	\label{fig:numery_posterunkow}
-	\caption{Identyfikatory posterunków wewnątrz zlewni}
 	\centering
 	\includegraphics[width=1\linewidth]{identyfikatory_punktow}
+	\caption{Identyfikatory posterunków wewnątrz zlewni}
+	\label{fig:numery_posterunkow}
 \end{figure}
 
 
@@ -48,7 +48,7 @@ Rysunek~\ref{fig:numery_posterunkow} przedstawia identyfikatory wykluczanych z~a
 %nagłówek tabeli
 \cline{2-3} \cline{5-8}
 \multicolumn{1}{l}{} & \multicolumn{2}{|c|}{Opad $[m^3]$} & \multicolumn{1}{c}{} & \multicolumn{4}{|c|}{Wpływ posterunku} \\
-\hline Posterunek & Wyznaczony & Rzeczywisty & \multicolumn{1}{c}{Różnica [\%]} & \multicolumn{2}{|c|}{[$m^3$]}& \multicolumn{2}{|c|}{$\times 10^{-3} [\%]$} \\ \hline \hline
+\hline ID & Wyznaczony & Rzeczywisty & \multicolumn{1}{c}{Różnica [\%]} & \multicolumn{2}{|c|}{[$m^3$]}& \multicolumn{2}{|c|}{$\times 10^{-3} [\%]$} \\ \hline \hline
 \hline
 \endfirsthead
 
@@ -57,7 +57,7 @@ Rysunek~\ref{fig:numery_posterunkow} przedstawia identyfikatory wykluczanych z~a
 {\tablename\ \thetable\ -- \textit{Ciąg dalszy}} \\
 \cline{2-3} \cline{5-8}
 \multicolumn{1}{l}{} & \multicolumn{2}{|c|}{Opad $[m^3]$} & \multicolumn{1}{c}{} & \multicolumn{4}{|c|}{Wpływ posterunku} \\
-\hline Posterunek & Wyznaczony & Rzeczywisty & \multicolumn{1}{c}{Różnica [\%]} & \multicolumn{2}{|c|}{[$m^3$]}& \multicolumn{2}{|c|}{$\times 10^{-3} [\%]$} \\ \hline \hline
+\hline ID & Wyznaczony & Rzeczywisty & \multicolumn{1}{c}{Różnica [\%]} & \multicolumn{2}{|c|}{[$m^3$]}& \multicolumn{2}{|c|}{$\times 10^{-3} [\%]$} \\ \hline \hline
 \hline
 \endhead
 
@@ -183,4 +183,4 @@ Nie można pominąć faktu, iż podczas usuwania posterunków zaobserwowano ró�
 \section{Wielkość błędu}
 Zaproponowane dane testowe to obszar obejmujący szerokości geograficzne od 50.41 do 52.88 (w~formacie dziesiętnym). Stosowany sposób konwersji współrzędnych geograficznych (wzór~\ref{eq:konwersja_wspolrzednych}) dla takich wartości generuje niedokładność długości jednego stopnia wynoszącą $\pm 1.88 km$. Należy zwrócić uwagę, iż niedokładność ta nie wpływa na działanie omawianego programu, ponieważ tak on, jak i~funkcje wyznaczające wartości opadu oraz pseudorzeczywistego opadu powierzchniowego opierają się na współrzędnych metrycznych, już po konwersji, natomiast dane wejściowe do programu zostały spreparowane.  
 
-Wspomniane w~poprzednim podrozdziale niedokładności wyznaczonej wartości opadu powierzchniowego są zadowalające. Błąd względny w najgorszym przypadku wyniósł 3.08%.
+Wspomniane w~poprzednim podrozdziale niedokładności wyznaczonej wartości opadu powierzchniowego są zadowalające. Błąd względny w najgorszym przypadku wyniósł 3.08\%. Należy pamiętać, iż implementowane rozwiązanie miałoby być elementem składowym systemu alarmującego (który uwzględnia bufor bezpieczeństwa), wobec tego stuprocentowa dokładność nie jest jednym z wymagań.
