@@ -19,7 +19,7 @@ Zwana także metodą wieloboków lub wielokątów równego zadeszczenia. Prefero
 		\includegraphics[width=0.7\linewidth]{thiessen2}
 		\caption{Wieloboki wyznaczone na obszarze zlewni.}
 	\end{subfigure}	
-\caption{Schemat dla metody Thiesse. }
+\caption{Schemat dla metody Thiessena (źródło:~\cite{obliczanie_opadu_sredniego}). }
 \end{figure}
 
 \subsection{Metoda izohiet}
@@ -38,7 +38,7 @@ Dokonując rzutowania krzywej hipsometrycznej poprzez ćwiartkę III i II (w~opa
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=0.7\linewidth]{hipsometryczna}
-\caption{Wykres metody hipsometrycznej.}
+\caption{Wykres metody hipsometrycznej (źródło:~\cite{obliczanie_opadu_sredniego}.}
 \label{fig:hipsometryczna}
 \end{figure}
 
@@ -110,7 +110,7 @@ Jeżeli $C$, ze wzoru~\ref{eq:wartosc_interpolowana}, przyjmuje wartość 0 ozna
 Po przeprowadzeniu interpolacji wartości dokonuje się ponownej triangulacja, tym razem z~użyciem punktów interpolowanych oraz posterunków wewnątrz zlewni. Nowopowstała siatka trójkątów, wraz z~trzecim wymiarem jakim jest wysokość opadu, tworzy zbiór brył o~trójkątnych podstawach. Wyznaczając i~sumując objętość opadu w~każdej z~nich uzyskiwany jest łączny opad na wskazanej zlewni~\cite{matematyka_poradnik, mathMonthly}.
 
 \begin{equation}
-	V = \sum_{i=1}^{n}P_{pi}*\frac{h_{i1}+h_{i2}+h_{i3}}{3}
+	V = \sum_{i=1}^{n}P_{pi} \cdot \frac{h_{i1}+h_{i2}+h_{i3}}{3}
 \label{eq:opad_powierzchniowy}
 \end{equation}
 gdzie

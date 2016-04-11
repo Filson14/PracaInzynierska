@@ -1,6 +1,6 @@
 \chapter{Opracowanie wyników}
 
-Rozdział ten zawiera analizę wyników działania programu opisanego w~części~\ref{cha:implementacja}. Przeprowadzono także weryfikację wpływu usunięcia pojedynczego posterunku opadowego na uzyskane wskazanie opadowe na obszarze, co było jednym z~celów tej pracy.
+Rozdział ten zawiera analizę wyników działania programu opisanego w~części~\ref{cha:implementacja}. Przeprowadzono także weryfikację wpływu awarii pojedynczego posterunku opadowego na uzyskane wskazanie opadowe na obszarze, co było jednym z~celów tej pracy.
 
 \section{Warianty opadu}
 Opisany w~rozdziale~\ref{cha:implementacja} program został uruchomiony celem wyznaczenia wartości opadu powierzchniowego dla obu przygotowanych wariantów funkcji opadowej. Poniżej zaprezentowano uzyskane wyniki.
@@ -19,7 +19,7 @@ Opisany w~rozdziale~\ref{cha:implementacja} program został uruchomiony celem wy
 \end{center}
 \end{table}
 
-Jak można zauważyć, dla wariantu z~opadem parabolicznym mamy do czynienia z~niedomiarem. Jest to spodziewana sytuacja wynikająca z~interpolowania funkcji wklęsłej. Różnica z~rzeczywistą objętością opadu wynosi ok. 2.5\%, zatem jest to zadowalający wynik.
+Jak można zauważyć, dla wariantu z~opadem parabolicznym mamy do czynienia z~niedomiarem. Jest to spodziewana sytuacja wynikająca z~interpolowania funkcji wklęsłej funkcją odcinkami liniową. Różnica z~rzeczywistą objętością opadu wynosi ok. 2.5\%, zatem jest to zadowalający wynik.
 
 W przypadku wymiernego opadu uzyskano jeszcze lepsze wyniki. Błąd wyznaczonej wartości jest mniejszy niż jeden procent, a~należy zwrócić uwagę, iż dane przygotowane na potrzeby testów obejmują obszar rzędu stu tysięcy kilometrów kwadratowych.
 
@@ -173,10 +173,12 @@ Rysunek~\ref{fig:numery_posterunkow} przedstawia identyfikatory wykluczanych z~a
 \end{longtable}
 \end{center}
 
-Analizując wyniki dla wariantu parabolicznego można zauważyć, iż największy wpływ na zaburzenie wyniku miało usunięcie takich punktów jak 9, 11 i 23. Nie powinno to być niespodzianką, ponieważ zagęszczenie posterunków w~sąsiedztwie wyżej wymienionych jest niewielkie. Usunięcie ich powoduje pozostawienie obszaru o~stosunkowo dużej powierzchni bez stanowiska pomiarowego. Co tyczy się posterunków jak 1, 8 czy 18 - ich usunięcie nie wpływa na uzyskany wynik, a~nawet poprawia go. Takie rezultaty mogą być sygnałem dla osób odpowiedzialnych za rozmieszczenie posterunków do zwiększenia ich ilości na terenach z~deficytem urządzeń pomiarowych. Pokazują też, które z~nich (jak 1, 8, 17, 18 czy 22) można przenieść w~inne miejsce i~przyniesie to korzyści.
+Analizując wyniki dla wariantu parabolicznego można zauważyć, iż największy wpływ na zaburzenie wyniku miało usunięcie takich punktów jak 9, 11 i 23. Nie powinno to być niespodzianką, ponieważ zagęszczenie posterunków w~sąsiedztwie wyżej wymienionych jest niewielkie. Wykluczenie ich powoduje pozostawienie obszaru o~stosunkowo dużej powierzchni bez stanowiska pomiarowego. Co tyczy się posterunków jak 1, 8 czy 18 - ich usunięcie nie wpływa na uzyskany wynik, a~nawet poprawia go. Takie rezultaty mogą być sygnałem dla osób odpowiedzialnych za rozmieszczenie posterunków do zwiększenia ich ilości na terenach z~deficytem urządzeń pomiarowych. Pokazują też, które z~nich (jak 1, 8, 17, 18 czy 22) można przenieść w~inne miejsce i~przyniesie to korzyści.
 
 
 Wariant opadu określonego funkcją wymierną wykazuje mniejsze odchylenie rezultatu od wartości rzeczywistych. Wpływ wskazanych wyżej posterunków jest analogiczny i~w~tym przypadku co potwierdza poprawność działania narzędzia. Znaczne zwiększenie błędu powoduje usunięcie punktu numer 9~lub 11. Odnotowano większą wrażliwość na punkty 13 i~27, natomiast wykluczenie 23 spowodowało tutaj (minimalną) poprawę wyniku, przeciwnie do pierwszego wariantu.
+
+Zaznacza się, iż powyższa analiza została przeprowadzona dla jednego położenia chmury opadowej. Aby wyciągnąć ostateczne wnioski na temat ważności posterunków opadowych zaleca się przeprowadzenie analogicznych procesów badawczych dla odmiennych wariantów i~położeń chmur opadowych.
 
 Nie można pominąć faktu, iż podczas usuwania posterunków zaobserwowano różnice w~opadzie rzeczywistym wyliczonym opisaną w~części~\ref{sec:funkcje_opadu} metodą. Częstsze różnice obserwuje się dla wariantu opadu parabolicznego, czego powodem może być fakt spłaszczenia wspomnianej funkcji. Inną przyczyną może być generowanie trójkątów, które funkcja całkująca środowiska MatLab uważa za zbyt małe, stąd pewne odchylenie.
 

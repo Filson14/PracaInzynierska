@@ -12,7 +12,7 @@ Jednostki wzdłuż osi $Y$ przekształcone zostały stosując zależność $1^o=
 Dla długości geograficznej sytuacja nie jest tak prosta, gdyż długość jednego stopnia zależy od równoleżnika, na którym dokonuje się pomiaru. Przyjęto, że konwersja zostanie przeprowadzona w~oparciu o~długość równoleżnika leżącego na średniej szerokości geograficznej danych wejściowych. Praca zorientowana jest na analizę opadu z~konkretnej zlewni, zatem ewentualna niedokładność jest stosunkowo niewielka (zostanie podana dla konkretnego przypadku). Przekształcenia dokonano w~oparciu o~wzór~\ref{eq:konwersja_wspolrzednych}. Do obliczeń przyjęto promień równikowy Ziemi o~wartości 6378410~m.
 
 \begin{equation}
-	r = \cos(\alpha)*R \Rightarrow 1^o = \frac{2 \pi r}{360} [m] \\
+	r = \cos(\alpha) \cdot R \Rightarrow 1^o = \frac{2 \pi r}{360} [m] \\
 	\label{eq:konwersja_wspolrzednych}
 \end{equation}
 gdzie
@@ -32,19 +32,19 @@ gdzie
 
 \section{Wielkość opadu}
 \label{sec:funkcje_opadu}
-Z~powodu braku dostępu do rzeczywistych danych meteorologicznych oraz hydrologicznych, co zostało opisane w~rozdziale~\ref{cha:odczyt_danych}, wykluczona została możliwość racjonalnej i~rzeczowej analizy pomiarów wraz z~określeniem korelacji opadu i~wysokości poziomu wody rzeki. Wobec powyższego, zdecydowano o~zastosowaniu danych symulowanych. Stworzone zostały funkcje generujące pomiar opadu we wskazanym punkcie. Przygotowane zostały dwa warianty - opad paraboliczny oparty na wzorze~\ref{eq:opad_parabola} oraz zdefiniowany funkcją wymierną~\ref{eq:opad_wymierny}.
+Z~powodu braku dostępu do rzeczywistych danych meteorologicznych oraz hydrologicznych, co zostało opisane w~rozdziale~\ref{cha:odczyt_danych}, wykluczona została możliwość racjonalnej i~rzeczowej analizy pomiarów wraz z~określeniem korelacji opadu i~wysokości poziomu wody rzeki. Wobec powyższego, zdecydowano o~zastosowaniu danych symulowanych. Stworzone zostały funkcje generujące pomiar opadu we wskazanym punkcie. Przygotowane zostały dwa warianty - opad paraboliczny oparty na wzorze~\ref{eq:opad_parabola} oraz zdefiniowany funkcją wymierną~\ref{eq:opad_wymierny}. Od tego momentu termin "opad rzeczywisty" odnosi się do wartości opadu symolowanych przez powyższe funkcje.
 
 
 Pierwszy z~nich jest funkcją wklęsłą. Należy zaznaczyć, iż zastosowanie jej do generowania wartości opadu wymaga spłaszczenia, gdyż interesujące są jedynie wartości większe lub równe 0. Dla tego przypadku spodziewa się wyniku z~niedomiarem w~stosunku do wartości rzeczywistej. Drugi jest bardziej zróżnicowany. Posiada obszary wklęsłe i wypukłe. Spodziewany wynik powinien być bardziej dokładny. Zastosowanie wyżej opisanych metod pozwoli na weryfikację działania programu w~odmiennych warunkach.
 
 \begin{equation}
-z = h \cdot (1 - (\alpha (x - x_0)^2 - \beta (y - y_0)^2) );
+z = h \cdot (1 - \alpha (x - x_0)^2 - \beta (y - y_0)^2 );
 \label{eq:opad_parabola}
 \end{equation}
 gdzie
 \begin{description}[leftmargin=3cm, itemsep=0cm, labelsep=0cm]
 	\item[$\alpha, \beta$] współczynniki modyfikujące kształt opadu,
-	\item[$x_0, y_0$] współrzędne środka płaszczyzny,
+	\item[$x_0, y_0$] współrzędne środka strefy opadu,
 	\item[$h$] maksymalna wartość opadu.
 \end{description}
 
@@ -55,7 +55,7 @@ z = h \cdot \frac{1}{1 + \alpha (x-x_0)^2 + \beta (y-y_0)^2}
 gdzie
 \begin{description}[leftmargin=3cm, itemsep=0cm, labelsep=0cm]
 	\item[$\alpha, \beta$] współczynniki modyfikujące kształt opadu,
-	\item[$x_0, y_0$] współrzędne środka płaszczyzny,
+	\item[$x_0, y_0$] współrzędne środka strefy opadu,
 	\item[$h$] maksymalna wartość opadu.
 \end{description}
 
@@ -72,10 +72,10 @@ Ustalona na potrzeby przeprowadzonych testów wielkość maksymalnego opadu wyno
 	\begin{subfigure}{1\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{chmura_paraboloidalna_2}
-		\caption{Rzut wykresu funkcji na osie $X, Y$.}
+		\caption{Rzut wykresu funkcji na płaszczyznę XY.}
 		\label{fig:parabola_2d}
 	\end{subfigure}	
-\caption{Prezentacja funkcji opadu parabolicznego.}
+\caption{Prezentacja funkcji opadu parabolicznego na tle badanej zlewni.}
 \label{fig:opad_paraboliczny}
 \end{figure}
 
@@ -89,10 +89,10 @@ Ustalona na potrzeby przeprowadzonych testów wielkość maksymalnego opadu wyno
 	\begin{subfigure}{1\textwidth}
 		\centering
 		\includegraphics[width=1\linewidth]{chmura_wymierna_2}
-		\caption{Rzut wykresu funkcji na osie $X, Y$.}
+		\caption{Rzut wykresu funkcji na płaszczyznę XY.}
 		\label{fig:wymierna_2d}
 	\end{subfigure}	
-\caption{Prezentacja funkcji opadu wymiernego.}
+\caption{Prezentacja funkcji opadu wymiernego na tle badanej zlewni.}
 \label{fig:opad_wymierny}
 \end{figure}
 

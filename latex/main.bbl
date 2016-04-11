@@ -1,0 +1,76 @@
+\begin{thebibliography}{10}
+
+\bibitem{bodziony}
+M.~Bodziony.
+\newblock Hydrologia materiały pomocnicze.
+\newblock
+  \url{http://holmes.iigw.pl/~mbodzion/dydaktyka/monitoring_zasobow/pliki/materialy_pomocnicze.pdf}.
+
+\bibitem{obliczanie_opadu_sredniego}
+M.~Bodziony.
+\newblock Wyznaczenie średniego opadu obszarowego dla zlewni.
+\newblock
+  \url{http://holmes.iigw.pl/~mbodzion/dydaktyka/hydrologia_zao/pliki/rozklad_opadu.pdf}.
+
+\bibitem{matematyka_poradnik}
+I.~N. Bronsztejn and K.~A. Siemiendiajew.
+\newblock {\em Matematyka {P}oradnik encyklopedyczny}.
+\newblock Wydawnictwo PWN, Warszawa, 1973.
+
+\bibitem{precip_error}
+M.~Dutton and M.~Pollock.
+\newblock Errors in precipitation measurement: Wind.
+\newblock
+  \url{http://www.emltd.net/pdf/Errors%20in%20Precipitation%20Measurement%20-%20Wind%20-A%20Technical%20White%20Paper%20by%20EML.pdf}.
+
+\bibitem{imgw}
+{IMGW}.
+\newblock O działalności polskiej meteorologii i hydrologii.
+\newblock
+  \url{http://www.imgw.pl/index.php?option=com_content&view=article&id=58&Itemid=18}.
+
+\bibitem{pogodynka_pl}
+IMGW.
+\newblock Serwis pogodowy {IMGW-PIB}.
+\newblock \url{http://monitor.pogodynka.pl/}.
+
+\bibitem{pogodynka_prawo}
+IMGW.
+\newblock Zasady użytkowania serwisu internetowego {IMGW PIB}.
+\newblock \url{http://www.pogodybka,pl/prawo}.
+
+\bibitem{mathMonthly}
+R.~E. Moritz.
+\newblock On the generalization of a theorem in solid geometry.
+\newblock {\em The American Mathematical Monthly}, 15(5):95--99, 1908.
+
+\bibitem{systemy_kontroli_pogody}
+prisonplanet.pl.
+\newblock Systemy kontroli pogody do roku 2025.
+\newblock
+  \url{http://www.prisonplanet.pl/trend_trak/systemy_kontroli_pogody_do,p541840428}.
+
+\bibitem{powodz}
+Z.~Rudnicki.
+\newblock Powódź 2010.
+\newblock \url{http://home.agh.edu.pl/~zbrudnic/rok2010/powodz/index.html}.
+
+\bibitem{delaunayTriangulation}
+{The MathWorks, Inc.}
+\newblock Klasa {delaunayTriangulation}.
+\newblock
+  \url{http://www.mathworks.com/help/matlab/ref/delaunaytriangulation-class.html}.
+
+\bibitem{metody_obliczania_pb}
+M.~Walery.
+\newblock Metody obliczania opadów średnich obszarowych.
+\newblock
+  \url{http://materialy.wb.pb.edu.pl/mariawalery/files/2013/01/wyklad-z-hydrologii_met.-oblicz.-opadu-%C5%9Bred.1.pdf}.
+
+\bibitem{opad_metody}
+{Zakład Hydrologii i Geoinformacji, Instytut Geografii UJK}.
+\newblock Metody obliczania obszarowej wysokości opadów.
+\newblock
+  \url{http://www.ujk.edu.pl/zhig/hio/cw11_met_obl_obsz_wys_opadow.pdf}.
+
+\end{thebibliography}
